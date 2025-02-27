@@ -60,7 +60,7 @@ export class HarnMasterItemSheet extends ItemSheet {
       if (this.actor) {
         this.actor.itemTypes.skill.forEach(it => {
           if (it.system.type === 'Magic') {
-            data.convocations.push(it.data.name);
+            data.convocations.push(it.name);
             data.hasMagicSkills = true;
           }
         });
