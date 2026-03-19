@@ -31,6 +31,12 @@ jspm_packages/
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
 
+# Vite cache
+.vite/
+
+# Environment
+.env.local
+
 # Build files
 build/
 

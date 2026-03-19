@@ -1,0 +1,108 @@
+{
+  "id": "hm3",
+  "title": "HarnMaster 3",
+  "description": "The HarnMaster system for FoundryVTT!",
+  "version": "0.0.0",
+  "authors": [
+    {
+      "name": "Toasty",
+      "discord": "toasty#8538",
+      "flags": {}
+    }
+  ],
+  "url": "",
+  "license": "LICENSE",
+  "readme": "README.md",
+  "bugs": "",
+  "flags": {
+    "allowBugReporter": true
+  },
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12.331"
+  },
+  "esmodules": [
+    "hm3.js"
+  ],
+  "styles": [
+    "css/hm3.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json",
+      "flags": {}
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "HârnMaster 3 System",
+      "sorting": "m",
+      "packs": [
+        "character",
+        "possessions",
+        "esoteric",
+        "system-help"
+      ]
+    }
+  ],
+  "packs": [
+    {
+      "label": "Character",
+      "type": "Item",
+      "name": "character",
+      "system": "hm3",
+      "path": "packs/character",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Possessions",
+      "type": "Item",
+      "name": "possessions",
+      "system": "hm3",
+      "path": "packs/possessions",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "Esoteric",
+      "type": "Item",
+      "name": "esoteric",
+      "system": "hm3",
+      "path": "packs/esoteric",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "label": "System Help",
+      "name": "system-help",
+      "path": "packs/system-help",
+      "system": "hm3",
+      "type": "JournalEntry",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    }
+  ],
+  "socket": true,
+  "manifest": "",
+  "download": "",
+  "grid": {
+    "distance": 5,
+    "units": "ft"
+  },
+  "primaryTokenAttribute": "shockIndex"
+}
