@@ -1,4 +1,5 @@
 import * as utility from './utility.js';
+import * as diceLogic from './dice-logic.js';
 
 export class DiceHM3 {
     /*--------------------------------------------------------------------------------*/
@@ -542,105 +543,42 @@ export class DiceHM3 {
         };
 
         // determine location of injury
-        const armorLocationItem = DiceHM3._calcLocation(location, aim, dialogOptions.items);
-        if (!armorLocationItem) return;  // this means we couldn't find the location, so no injury
+        const armorLocationItem = diceLogic.selectHitLocation(location, aim, dialogOptions.items);
+        if (!armorLocationItem) return;
 
-        // Just to make life simpler, get the data element which is what we really care about.
         const armorLocationData = armorLocationItem.system;
-
         result.location = armorLocationItem.name;
         result.armorType = armorLocationData.layers === '' ? 'None' : armorLocationData.layers;
 
         // determine effective impact (impact - armor)
-        if (aspect === 'Blunt') {
-            result.armorValue = armorLocationData.blunt;
-        } else if (aspect === 'Edged') {
-            result.armorValue = armorLocationData.edged;
-        } else if (aspect === 'Piercing') {
-            result.armorValue = armorLocationData.piercing;
-        } else {
-            result.armorValue = armorLocationData.fire;
-        }
+        result.armorValue = diceLogic.getArmorValue(armorLocationData, aspect);
         result.effectiveImpact = Math.max(impact - result.armorValue, 0);
 
         // Determine Injury Level
-        if (result.effectiveImpact === 0) {
-            result.injuryLevelText = 'NA';
-        } else if (result.effectiveImpact >= 17) {
-            result.injuryLevelText = armorLocationData.effectiveImpact.ei17;
-        } else if (result.effectiveImpact >= 13) {
-            result.injuryLevelText = armorLocationData.effectiveImpact.ei13;
-        } else if (result.effectiveImpact >= 9) {
-            result.injuryLevelText = armorLocationData.effectiveImpact.ei9;
-        } else if (result.effectiveImpact >= 5) {
-            result.injuryLevelText = armorLocationData.effectiveImpact.ei5;
-        } else {
-            result.injuryLevelText = armorLocationData.effectiveImpact.ei1;
-        }
+        result.injuryLevelText = diceLogic.determineInjuryLevelText(
+            result.effectiveImpact, armorLocationData.effectiveImpact);
 
-        // Calculate injury level and whether it is a kill shot.
-        // Convert all 'K4' and 'K5' to 'G4' and 'G5'
-        switch(result.injuryLevelText) {
-            case 'M1':
-                result.injuryLevel = 1;
-                break;
+        // Parse injury level, kill shot, and amputation
+        const parsed = diceLogic.parseInjuryLevel(result.injuryLevelText, {
+            enableAmputate,
+            isAmputatable: armorLocationData.isAmputate,
+            aspect,
+        });
+        result.injuryLevel = parsed.injuryLevel;
+        result.isKillShot = parsed.isKillShot;
+        result.isAmputate = parsed.isAmputate;
 
-            case 'S2':
-                result.injuryLevel = 2;
-                break;
-
-            case 'S3':
-                result.injuryLevel = 3;
-                break;
-
-            case 'G4':
-                result.injuryLevel = 4;
-                result.isAmputate = enableAmputate && armorLocationData.isAmputate && (aspect === 'Edged');
-                break;
-
-            case 'K4':
-                result.injuryLevel = 4;
-                result.isKillShot = true;
-                result.isAmputate = enableAmputate && armorLocationData.isAmputate && (aspect === 'Edged');
-                break;
-
-            case 'G5':
-                result.injuryLevel = 5;
-                result.isAmputate = enableAmputate && armorLocationData.isAmputate && (aspect === 'Edged');
-                break;
-
-            case 'K5':
-                result.injuryLevel = 5;
-                result.isKillShot = true;
-                result.isAmputate = enableAmputate && armorLocationData.isAmputate && (aspect === 'Edged');
-                break;
-
-            case 'NA':
-                result.injuryLevel = 0;
-                break;
-        }
-
-        // Either mark as injured, or if not injured just immediately return.
         if (result.injuryLevel > 0) {
             result.isInjured = true;
         } else {
             return result;
         }
 
-        // Optional Rule - Bloodloss (Combat 14)
-        result.isBleeder = enableBloodloss && result.injuryLevel >= 4 && result.aspect != 'Fire';
-
-        // Optional Rule - Limb Injuries (Combat 14)
-        if (armorLocationData.isFumble) {
-            result.isFumble = enableLimbInjuries && result.injuryLevel >= 4;
-            result.isFumbleRoll = enableLimbInjuries || (!result.isFumble && result.injuryLevel >= 2);
-        }
-
-        // Optional Rule - Limb Injuries (Combat 14)
-        if (armorLocationData.isStumble) {
-            result.isStumble = enableLimbInjuries && result.injuryLevel >= 4;
-            result.isStumbleRoll = enableLimbInjuries || (!result.isStumble && result.injuryLevel >= 2);
-        }
+        // Determine secondary effects (bloodloss, fumble, stumble)
+        const effects = diceLogic.determineInjuryEffects(
+            result.injuryLevel, aspect, armorLocationData,
+            { enableBloodloss, enableLimbInjuries });
+        Object.assign(result, effects);
 
         return result;
     }
@@ -654,57 +592,7 @@ export class DiceHM3 {
      * @param {*} items 
      */
     static _calcLocation(location, aim, items) {
-        const lcAim = aim.toLowerCase();
-        let result = null;
-        if (location.toLowerCase() === 'random') {
-            // First, get total of all probWeight for a given aim
-            let totalWeight = 0;
-            let numArmorLocations = 0;
-            items.forEach(it => {
-                if (it.type === 'armorlocation') {
-                    totalWeight += it.system.probWeight[lcAim];
-                    numArmorLocations++;
-                }
-            });
-
-            // if no armorlocations found, then return null
-            if (numArmorLocations === 0) {
-                return null;
-            }
-
-            // At this point, we know we found armorlocations,
-            // but it is possible that they all have a weight
-            // of zero.  In that case, we will end up just
-            // picking the first one.
-
-            // Assuming we have found some weights, we can now
-            // roll to get a random number.
-            let rollWeight = 0;
-            if (totalWeight > 0) {
-                rollWeight = Math.floor(MersenneTwister.random()*totalWeight)+1;
-            }
-
-            // find the location that meets that number
-            let done = false;
-            items.forEach(it => {
-                if (!done && it.type === 'armorlocation') {
-                    rollWeight -= it.system.probWeight[lcAim];
-                    if (rollWeight <= 0) {
-                        result = it;
-                        done = true;
-                    }
-                }
-            });
-        } else {
-            // Not random, let's just find the designated item
-            items.forEach(it => {
-                if (result === null && it.type === 'armorlocation' && it.name === location) {
-                    result = it;
-                }
-            });
-        }
-
-        return result;
+        return diceLogic.selectHitLocation(location, aim, items, MersenneTwister.random());
     }
 
     /*--------------------------------------------------------------------------------*/
@@ -804,44 +692,7 @@ export class DiceHM3 {
      * @param {*} items List of items containing 'weapongear' items.
      */
     static calcWeaponAspect(weapon, items) {
-        // Note that although "Fire" is in this list, because it is a
-        // type of damage, no normal weapon uses it as its aspect.
-        // It is here so that it can be selected (no default impact
-        // damage would be specified for that aspect).
-        const result = {
-            defaultAspect: "Other",
-            aspects: {
-                "Blunt": 0,
-                "Edged": 0,
-                "Piercing": 0,
-                "Fire": 0,
-                "Other": 0
-            }
-        }
-
-        // Search for the specified weapon, and then choose the aspect with
-        // the greatest impact (this will become the default aspect)
-        items.forEach(it => {
-            const itemData = it.system;
-            if (it.type === 'weapongear' && it.name === weapon) {
-                let maxImpact = Math.max(itemData.blunt, itemData.piercing, itemData.edged, 0);
-                result.aspects["Blunt"] = itemData.blunt;
-                result.aspects["Edged"] = itemData.edged;
-                result.aspects["Piercing"] = itemData.piercing;
-                if (maxImpact === itemData.piercing) {
-                    result.defaultAspect = "Piercing";
-                } else if (maxImpact === itemData.edged) {
-                    result.defaultAspect = "Edged";
-                } else if (maxImpact === itemData.blunt) {
-                    result.defaultAspect = "Blunt";
-                } else {
-                    // This shouldn't happen, but if all else fails, choose "Other"
-                    result.defaultAspect = "Other"
-                }
-            }
-        });
-
-        return result;
+        return diceLogic.calcWeaponAspect(weapon, items);
     }
     
     /**
@@ -1178,52 +1029,38 @@ export class DiceHM3 {
     /*--------------------------------------------------------------------------------*/
 
     static async rollTest(testData) {
-
         const diceType = testData.diceSides === 6 ? "d6" : "d100";
         const numDice = (testData.diceNum > 0) ? testData.diceNum : 1;
         const diceSpec = numDice + diceType;
         const rollObj = new Roll(diceSpec, testData.data);
         const roll = await rollObj.evaluate();
         if (!roll) {
-            console.error(`Roll evaluation failed, diceSpec=${diceSpec}`)
+            console.error(`Roll evaluation failed, diceSpec=${diceSpec}`);
         }
         const modifier = Number(testData.modifier);
-        const baseTargetNum = Number(testData.target) + modifier;
-        // Ensure target num is between 9 and 95; always a 5% chance of success/failure
-        const targetNum = Math.max(Math.min(baseTargetNum, 95), 5);
-        let isCrit = (roll.total % 5) === 0;
-        const levelDesc = isCrit ? "Critical" : "Marginal";
-        let description = "";
-        let isSuccess = false;
 
+        let interpreted;
         if (diceType === 'd100') {
-            // ********** Failure ***********
-            if (roll.total > targetNum) {
-                description = levelDesc + " Failure";
-            }
-            // ********** Success ***********
-            else {
-                description = levelDesc + " Success";
-                isSuccess = true;
-            }
+            interpreted = diceLogic.interpretD100Roll(roll.total, Number(testData.target), modifier);
         } else {
-            isCrit = false;      // d6 rolls have no criticals associated with them
-            isSuccess = roll.total <= targetNum;
-            description = isSuccess ? "Success" : "Failure";
+            const baseTarget = Number(testData.target) + modifier;
+            const targetNum = Math.max(Math.min(baseTarget, 95), 5);
+            interpreted = diceLogic.interpretD6Roll(roll.total, targetNum);
+            interpreted.targetNum = targetNum;
+            interpreted.isCapped = baseTarget !== targetNum;
         }
 
-        let rollResults = {
-            "type": testData.type,
-            "target": targetNum,
-            "isCapped": baseTargetNum !== targetNum,
-            "modifier": modifier,
-            "rollObj": roll,
-            "isCritical": isCrit,
-            "isSuccess": isSuccess,
-            "description": description,
-            "preData": testData
-        }
-        return rollResults;
+        return {
+            type: testData.type,
+            target: interpreted.targetNum,
+            isCapped: interpreted.isCapped,
+            modifier: modifier,
+            rollObj: roll,
+            isCritical: interpreted.isCritical,
+            isSuccess: interpreted.isSuccess,
+            description: interpreted.description,
+            preData: testData,
+        };
     }
 
     /*--------------------------------------------------------------------------------*/

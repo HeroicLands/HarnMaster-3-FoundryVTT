@@ -513,10 +513,199 @@ function defaultMeleeWeapon(token) {
     }
 }
 
+/* ----------------------------------------- */
+/*  Shared Defense Helpers                   */
+/* ----------------------------------------- */
+
+/**
+ * Validate tokens and defender permissions. Returns false if invalid.
+ */
+function validateDefenseTokens(atkToken, defToken) {
+    if (!isValidToken(atkToken) || !isValidToken(defToken)) return false;
+    if (!defToken.isOwner) {
+        ui.notifications.warn(`You do not have permissions to perform this operation on ${defToken.name}`);
+        return false;
+    }
+    return true;
+}
+
+/**
+ * Roll a d100 attack or defense test.
+ */
+async function rollD100Test(target, modifier = 0) {
+    return DiceHM3.rollTest({
+        data: {},
+        diceSides: 100,
+        diceNum: 1,
+        modifier: modifier,
+        target: target,
+    });
+}
+
+/**
+ * Convert a roll result to a two-character code (e.g., "cs", "mf").
+ */
+function rollResultCode(roll) {
+    return `${roll.isCritical ? "c" : "m"}${roll.isSuccess ? "s" : "f"}`;
+}
+
+/**
+ * Show Dice So Nice animations for attack and optional defense roll.
+ */
+async function showDiceSoNice(atkRoll, defRoll = null) {
+    if (!game.dice3d) return;
+    const aRoll = atkRoll.rollObj;
+    aRoll.dice[0].options.colorset = "glitterparty";
+    await game.dice3d.showForRoll(aRoll, game.user, true);
+    if (defRoll) {
+        const dRoll = defRoll.rollObj;
+        dRoll.dice[0].options.colorset = "bloodmoon";
+        await game.dice3d.showForRoll(dRoll, game.user, true);
+    }
+}
+
+/**
+ * Roll impact dice if the combat result calls for it.
+ * @returns {Roll|null}
+ */
+async function rollImpact(numDice) {
+    if (!numDice) return null;
+    return new Roll(`${numDice}d6`).evaluate();
+}
+
+/**
+ * Format impact roll values for display (e.g., "3 + 5 + 2").
+ */
+function formatImpactRoll(impactRoll) {
+    return impactRoll ? impactRoll.dice[0].values.join(" + ") : null;
+}
+
+/**
+ * Calculate total impact from roll + modifier.
+ */
+function calcTotalImpact(impactRoll, impactMod) {
+    return impactRoll ? impactRoll.total + parseInt(impactMod) : 0;
+}
+
+/**
+ * Get the outnumbered modifier for a defender token.
+ */
+function outnumberedModifier(defToken) {
+    const outnumbered = defToken.actor?.system?.eph?.outnumbered;
+    if (outnumbered > 1) {
+        return Math.floor((outnumbered - 1) * -10);
+    }
+    return 0;
+}
+
+/**
+ * Get the outnumbered display value (0 if not outnumbered).
+ */
+function outnumberedValue(defToken) {
+    const outnumbered = defToken.actor?.system?.eph?.outnumbered;
+    return outnumbered > 1 ? outnumbered : null;
+}
+
+/**
+ * Create and send a combat result chat message.
+ */
+async function sendCombatChatMessage(speaker, chatData, impactRoll) {
+    const chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
+    const html = await renderTemplate(chatTemplate, chatData);
+    const messageData = {
+        user: game.user.id,
+        speaker: speaker,
+        content: html.trim(),
+    };
+    if (chatData.hasAttackHit) {
+        messageData.sound = CONFIG.sounds.dice;
+        messageData.rolls = [impactRoll];
+    } else {
+        messageData.style = CONST.CHAT_MESSAGE_STYLES.OTHER;
+    }
+    await ChatMessage.create(messageData, {});
+}
+
+/**
+ * Resolve a standard (non-counterstrike) defense: roll attack, roll defense,
+ * look up result, roll impact, build chat data, send message.
+ */
+async function resolveStandardDefense({
+    atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod,
+    defense, effDML, defModifier = 0, defRoll = null, extraChatData = {},
+    missAudioSrc = null,
+}) {
+    const speaker = ChatMessage.getSpeaker({ token: atkToken.document });
+
+    // Roll attacker
+    const atkRoll = await rollD100Test(effAML);
+
+    // Roll defender (if not already rolled externally)
+    if (!defRoll && defense !== "ignore") {
+        defRoll = await rollD100Test(effDML, defModifier);
+    }
+
+    await showDiceSoNice(atkRoll, defRoll);
+
+    // Determine result
+    const atkResult = rollResultCode(atkRoll);
+    const defResult = defRoll ? rollResultCode(defRoll) : null;
+
+    const defenseKey = defense.toLowerCase().replace(/\s.*/, ""); // "Block w/ Sword" → "block"
+    let combatResult;
+    if (type === "melee") {
+        combatResult = meleeCombatResult(atkResult, defResult, defenseKey, impactMod);
+    } else {
+        combatResult = missileCombatResult(atkResult, defResult, defenseKey, impactMod);
+    }
+
+    const atkImpactRoll = await rollImpact(combatResult.outcome.atkDice);
+
+    const chatData = {
+        title: "Attack Result",
+        attacker: atkToken.name,
+        atkTokenId: atkToken.id,
+        defender: defToken.name,
+        defTokenId: defToken.id,
+        attackWeapon: weaponName,
+        effAML: effAML,
+        defense: defense,
+        effDML: effDML + defModifier,
+        attackRoll: atkRoll.rollObj.total,
+        atkRollResult: atkRoll.description,
+        defenseRoll: defRoll ? defRoll.rollObj.total : 0,
+        defRollResult: defRoll ? defRoll.description : "",
+        resultDesc: combatResult.desc,
+        hasAttackHit: combatResult.outcome.atkDice,
+        addlWeaponImpact: 0,
+        weaponImpact: impactMod,
+        impactRoll: formatImpactRoll(atkImpactRoll),
+        totalImpact: calcTotalImpact(atkImpactRoll, impactMod),
+        atkAim: aim,
+        atkAspect: aspect,
+        dta: combatResult.outcome.dta,
+        isAtkStumbleRoll: combatResult.outcome.atkStumble,
+        isAtkFumbleRoll: combatResult.outcome.atkFumble,
+        isDefStumbleRoll: combatResult.outcome.defStumble,
+        isDefFumbleRoll: combatResult.outcome.defFumble,
+        visibleAtkActorId: atkToken.actor.id,
+        visibleDefActorId: defToken.actor.id,
+        ...extraChatData,
+    };
+
+    await sendCombatChatMessage(speaker, chatData, atkImpactRoll);
+
+    if (missAudioSrc && !combatResult.outcome.atkDice && game.settings.get("hm3", "combatAudio")) {
+        AudioHelper.play({ src: missAudioSrc, autoplay: true, loop: false }, true);
+    }
+
+    return { chatData, combatResult, atkRoll, defRoll, atkImpactRoll, speaker };
+}
+
 /**
  * Resume the attack with the defender performing the "Counterstrike" defense.
  * Note that this defense is only applicable to melee attacks.
- * 
+ *
  * @param {*} atkToken Token representing the attacker
  * @param {*} defToken Token representing the defender
  * @param {*} atkWeaponName Name of the weapon the attacker is using
@@ -526,11 +715,7 @@ function defaultMeleeWeapon(token) {
  * @param {*} atkImpactMod Additional modifier to impact
  */
 export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName, atkEffAML, atkAim, atkAspect, atkImpactMod) {
-    if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
-    if (!defToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
-        return null;
-    }
+    if (!validateDefenseTokens(atkToken, defToken)) return null;
 
     const speaker = ChatMessage.getSpeaker({token: atkToken.document});
 
@@ -545,63 +730,27 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     options.type = 'Counterstrike';
     options.attackerName = defToken.name;
     options.defenderName = atkToken.name;
-
-    if (defToken.actor?.system?.eph?.outnumbered > 1) {
-        options.defaultModifier = Math.floor(defToken.actor.system.eph.outnumbered-1) * -10;
-    }
+    options.defaultModifier = outnumberedModifier(defToken);
 
     const csDialogResult = await attackDialog(options);
     if (!csDialogResult) return null;
 
-    // Roll Attacker's Attack
-    const atkRoll = await DiceHM3.rollTest({
-        data: {},
-        diceSides: 100,
-        diceNum: 1,
-        modifier: 0,
-        target: atkEffAML
-    });
-
+    const atkRoll = await rollD100Test(atkEffAML);
     const csEffEML = csDialogResult.weapon.system.attackMasteryLevel;
+    const csRoll = await rollD100Test(csEffEML, csDialogResult.addlModifier);
 
-    // Roll Counterstrike Attack
-    const csRoll = await DiceHM3.rollTest({
-        data: {},
-        diceSides: 100,
-        diceNum: 1,
-        modifier: csDialogResult.addlModifier,
-        target: csEffEML
-    });
+    await showDiceSoNice(atkRoll, csRoll);
 
-    // If we have "Dice So Nice" module, roll them dice!
-    if (game.dice3d) {
-        const aRoll = atkRoll.rollObj;
-        aRoll.dice[0].options.colorset = "glitterparty";
-        await game.dice3d.showForRoll(aRoll, game.user, true);
-
-        const cRoll = csRoll.rollObj;
-        cRoll.dice[0].options.colorset = "bloodmoon";
-        await game.dice3d.showForRoll(cRoll, game.user, true);
-    }
-
-    const atkResult = `${atkRoll.isCritical?'c':'m'}${atkRoll.isSuccess?'s':'f'}`;
-    const defResult = `${csRoll.isCritical?'c':'m'}${csRoll.isSuccess?'s':'f'}`;
+    const atkResult = rollResultCode(atkRoll);
+    const defResult = rollResultCode(csRoll);
     const combatResult = meleeCombatResult(atkResult, defResult, 'counterstrike',
         atkImpactMod, csDialogResult.impactMod);
 
-    // We now know the results of the attack, roll applicable damage
-    let atkImpactRoll = null;
-    if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate();
-    }
-    
-    let csImpactRoll = null;
-    if (combatResult.outcome.defDice) {
-        csImpactRoll = await new Roll(`${combatResult.outcome.defDice}d6`).evaluate();
-    }
+    const atkImpactRoll = await rollImpact(combatResult.outcome.atkDice);
+    const csImpactRoll = await rollImpact(combatResult.outcome.defDice);
 
     const atkChatData = {
-        title: `Attack Result`,
+        title: 'Attack Result',
         attacker: atkToken.name,
         atkTokenId: atkToken.id,
         defender: defToken.name,
@@ -617,10 +766,10 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         defRollResult: '',
         resultDesc: combatResult.desc,
         hasAttackHit: combatResult.outcome.atkDice,
-        addlWeaponImpact: 0,   // in future, maybe ask this in dialog?
+        addlWeaponImpact: 0,
         weaponImpact: atkImpactMod,
-        impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(" + ") : null,
-        totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(atkImpactMod) : 0,
+        impactRoll: formatImpactRoll(atkImpactRoll),
+        totalImpact: calcTotalImpact(atkImpactRoll, atkImpactMod),
         atkAim: atkAim,
         atkAspect: atkAspect,
         isAtkStumbleRoll: combatResult.outcome.atkStumble,
@@ -628,20 +777,20 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         isDefStumbleRoll: null,
         isDefFumbleRoll: null,
         visibleAtkActorId: atkToken.actor.id,
-        visibleDefActorId: defToken.actor.id
-    } 
+        visibleDefActorId: defToken.actor.id,
+    };
 
     const csChatData = {
-        title: `Counterstrike Result`,
+        title: 'Counterstrike Result',
         attacker: defToken.name,
         atkTokenId: defToken.id,
         defender: atkToken.name,
         defTokenId: atkToken.id,
-        outnumbered: defToken.actor?.system?.eph?.outnumbered > 1 ? defToken.actor.system.eph.outnumbered : 0,
+        outnumbered: outnumberedValue(defToken) || 0,
         attackWeapon: csDialogResult.weapon.name,
         mlType: 'AML',
         addlModifierAbs: Math.abs(csDialogResult.addlModifier),
-        addlModifierSign: csDialogResult.addlModifier < 0?'-':'+',
+        addlModifierSign: csDialogResult.addlModifier < 0 ? '-' : '+',
         origEML: csEffEML,
         effEML: csEffEML + csDialogResult.addlModifier,
         effAML: csEffEML + csDialogResult.addlModifier,
@@ -652,10 +801,10 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         defRollResult: '',
         resultDesc: combatResult.csDesc,
         hasAttackHit: combatResult.outcome.defDice,
-        addlWeaponImpact: 0,   // in future, maybe ask this in dialog?
+        addlWeaponImpact: 0,
         weaponImpact: csDialogResult.impactMod,
-        impactRoll: csImpactRoll ? csImpactRoll.dice[0].values.join(" + ") : null,
-        totalImpact: csImpactRoll ? csImpactRoll.total + parseInt(csDialogResult.impactMod) : 0,
+        impactRoll: formatImpactRoll(csImpactRoll),
+        totalImpact: calcTotalImpact(csImpactRoll, csDialogResult.impactMod),
         atkAim: csDialogResult.aim,
         atkAspect: csDialogResult.aspect,
         dta: combatResult.outcome.dta,
@@ -664,52 +813,11 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         isDefStumbleRoll: null,
         isDefFumbleRoll: null,
         visibleAtkActorId: defToken.actor.id,
-        visibleDefActorId: atkToken.actor.id
-    }
-
-    let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
-
-    /*-----------------------------------------------------
-     *    Attack Chat
-     *----------------------------------------------------*/
-    let html = await renderTemplate(chatTemplate, atkChatData);
-
-    let messageData = {
-        user: game.user.id,
-        speaker: speaker,
-        content: html.trim()
+        visibleDefActorId: atkToken.actor.id,
     };
-    if (combatResult.outcome.atkDice) {
-        messageData.sound = CONFIG.sounds.dice;
-        messageData.rolls = [atkImpactRoll];
-    } else {
-        messageData.style = CONST.CHAT_MESSAGE_STYLES.OTHER;
-    }
 
-    const messageOptions = {};
-
-    // Create a chat message
-    await ChatMessage.create(messageData, messageOptions)
-
-    /*-----------------------------------------------------
-     *    Counterstrike Chat
-     *----------------------------------------------------*/
-    html = await renderTemplate(chatTemplate, csChatData);
-
-    messageData = {
-        user: game.user.id,
-        speaker: speaker,
-        content: html.trim()
-    };
-    if (combatResult.outcome.defDice) {
-        messageData.sound = CONFIG.sounds.dice;
-        messageData.rolls = [csImpactRoll];
-    } else {
-        messageData.style = CONST.CHAT_MESSAGE_STYLES.OTHER;
-    }
-
-    // Create a chat message
-    await ChatMessage.create(messageData, messageOptions)
+    await sendCombatChatMessage(speaker, atkChatData, atkImpactRoll);
+    await sendCombatChatMessage(speaker, csChatData, csImpactRoll);
 
     return {atk: atkChatData, cs: csChatData};
 }
@@ -727,116 +835,19 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
  * @param {*} impactMod Additional modifier to impact
  */
 export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
-    if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
-    if (!defToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
-        return null;
-    }
-
-    const speaker = ChatMessage.getSpeaker({token: atkToken.document});
-
-    const atkRoll = await DiceHM3.rollTest({
-        data: {},
-        diceSides: 100,
-        diceNum: 1,
-        modifier: 0,
-        target: effAML
-    });
+    if (!validateDefenseTokens(atkToken, defToken)) return null;
 
     const effDML = defToken.actor.system.dodge;
+    const defModifier = outnumberedModifier(defToken);
 
-    let outnumberedMod = 0;
-    if (defToken.actor?.system?.eph?.outnumbered > 1) {
-        outnumberedMod = Math.floor((defToken.actor.system.eph.outnumbered - 1) * -10);
-    }
-
-    const defRoll = await DiceHM3.rollTest({
-        data: {},
-        diceSides: 100,
-        diceNum: 1,
-        modifier: outnumberedMod,
-        target: effDML
+    const { chatData } = await resolveStandardDefense({
+        atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod,
+        defense: "Dodge",
+        effDML,
+        defModifier,
+        extraChatData: { outnumbered: outnumberedValue(defToken) },
+        missAudioSrc: "systems/hm3/audio/swoosh1.ogg",
     });
-
-    if (game.dice3d) {
-        const aRoll = atkRoll.rollObj;
-        aRoll.dice[0].options.colorset = "glitterparty";
-        await game.dice3d.showForRoll(aRoll, game.user, true);
-
-        const dRoll = defRoll.rollObj;
-        dRoll.dice[0].options.colorset = "bloodmoon";
-        await game.dice3d.showForRoll(dRoll, game.user, true);
-    }
-
-    const atkResult = `${atkRoll.isCritical?'c':'m'}${atkRoll.isSuccess?'s':'f'}`;
-    const defResult = `${defRoll.isCritical?'c':'m'}${defRoll.isSuccess?'s':'f'}`;
-    let combatResult = null;
-    if (type === 'melee') {
-        combatResult = meleeCombatResult(atkResult, defResult, 'dodge', impactMod);
-    } else {
-        combatResult = missileCombatResult(atkResult, defResult, 'dodge', impactMod);
-    }
-
-    let atkImpactRoll = null;
-    if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate();
-    }
-
-    const chatData = {
-        title: `Attack Result`,
-        attacker: atkToken.name,
-        atkTokenId: atkToken.id,
-        defender: defToken.name,
-        defTokenId: defToken.id,
-        attackWeapon: weaponName,
-        outnumbered: defToken.actor?.system?.eph?.outnumbered > 1 ? defToken.actor.system.eph.outnumbered : null,
-        effAML: effAML,
-        defense: 'Dodge',
-        effDML: effDML+outnumberedMod,
-        attackRoll: atkRoll.rollObj.total,
-        atkRollResult: atkRoll.description,
-        defenseRoll: defRoll.rollObj.total,
-        defRollResult: defRoll.description,
-        resultDesc: combatResult.desc,
-        hasAttackHit: combatResult.outcome.atkDice,
-        addlWeaponImpact: 0,   // in future, maybe ask this in dialog?
-        weaponImpact: impactMod,
-        impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(" + ") : null,
-        totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
-        atkAim: aim,
-        atkAspect: aspect,
-        dta: combatResult.outcome.dta,
-        isAtkStumbleRoll: combatResult.outcome.atkStumble,
-        isAtkFumbleRoll: combatResult.outcome.atkFumble,
-        isDefStumbleRoll: combatResult.outcome.defStumble,
-        isDefFumbleRoll: combatResult.outcome.defFumble,
-        visibleAtkActorId: atkToken.actor.id,
-        visibleDefActorId: defToken.actor.id
-    } 
-
-    let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
-
-    const html = await renderTemplate(chatTemplate, chatData);
-
-    let messageData = {
-        user: game.user.id,
-        speaker: speaker,
-        content: html.trim()
-    };
-    if (combatResult.outcome.atkDice) {
-        messageData.sound = CONFIG.sounds.dice;
-        messageData.rolls = [atkImpactRoll];
-    } else {
-        messageData.style = CONST.CHAT_MESSAGE_STYLES.OTHER;
-    }
-
-    const messageOptions = {};
-
-    // Create a chat message
-    await ChatMessage.create(messageData, messageOptions)
-    if (!combatResult.outcome.atkDice && game.settings.get('hm3', 'combatAudio')) {
-        AudioHelper.play({src: "systems/hm3/audio/swoosh1.ogg", autoplay: true, loop: false}, true);
-    }
 
     return chatData;
 }
@@ -854,37 +865,20 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
  * @param {*} impactMod Additional modifier to impact
  */
 export async function blockResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
-    if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
-    if (!defToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
-        return null;
-    }
-
-    const speaker = ChatMessage.getSpeaker({token: atkToken.document});
-
-    const atkRoll = await DiceHM3.rollTest({
-        data: {},
-        diceSides: 100,
-        diceNum: 1,
-        modifier: 0,
-        target: effAML
-    });
+    if (!validateDefenseTokens(atkToken, defToken)) return null;
 
     let prompt = null;
 
-    // setup defensive available weapons.  This is all equipped melee weapons initially,
-    // but later we may limit it to only shields.
+    // Setup defensive available weapons — all equipped melee weapons initially,
+    // but may be limited to only shields for high-velocity missiles.
     let defAvailWeapons = defToken.actor.itemTypes.weapongear;
     const shields = defAvailWeapons.filter(w => w.system.isEquipped && /shield|\bbuckler\b/i.test(w.name));
 
     let atkWeapon = null;
-    // Missile Pre-processing.  If attacker is using a high-velocity weapon, then defender
-    // can only block with a shield.  If attacker is using a low-velocity weapon, then defender
-    // can either block with a shield (at full DML) or with a melee weapon (at 1/2 DML).
     if (type === 'missile') {
         atkWeapon = atkToken.actor.itemTypes.missilegear.find(w => w.name === weaponName);
         const highVelocityMissile = /\bbow\b|shortbow|longbow|crossbow|\bsling\b|\barrow\b|\bbolt\b|\bbullet\b/i.test(weaponName);
-    
+
         if (highVelocityMissile) {
             if (!shields.length) {
                 ui.notifications.warn(`${weaponName} is a high-velocity missile that can only be blocked with a shield, and you don't have a shield equipped. Block defense refused.`);
@@ -900,9 +894,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         atkWeapon = atkToken.actor.itemTypes.weapongear.find(w => w.name === weaponName);
     }
 
-    // pop up dialog asking for which weapon to use for blocking
-    // Only melee weapons can be used for blocking
-    // Default weapon is one with highest DML
+    // Select blocking weapon — default is highest DML
     let weapons = [];
     let defaultWeapon = null;
     let maxDML = -9999;
@@ -913,163 +905,67 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
             }
             weapons.push(w);
         }
-    })
-    
+    });
+
     if (weapons.length === 0) {
         return ui.notifications.warn(`${defToken.name} has no weapons that can be used for blocking, block defense refused.`);
     }
-    
-    let outnumberedMod = 0;
-    if (defToken.actor?.system?.eph?.outnumbered > 1) {
-        outnumberedMod = Math.floor(defToken.actor.system.eph.outnumbered - 1) * -10;
-    }
 
-    const options = {
+    const defModifier = outnumberedModifier(defToken);
+    const dialogResult = await selectWeaponDialog({
         name: defToken.name,
         prompt: prompt,
         weapons: weapons,
         defaultWeapon: defaultWeapon,
-        defaultModifier: outnumberedMod,
-        modifierType: 'Defense'
-    };
-    const dialogResult = await selectWeaponDialog(options);
-
+        defaultModifier: defModifier,
+        modifierType: 'Defense',
+    });
     if (!dialogResult) return null;
 
-    let effDML;
     const defWeapon = defToken.actor.itemTypes.weapongear.find(w => w.name === dialogResult.weapon);
-    if (defWeapon) {
-        effDML = defWeapon.system.defenseMasteryLevel;
-    } else {
-        effDML = 5;
+    let effDML = defWeapon ? defWeapon.system.defenseMasteryLevel : 5;
+
+    // Non-shield blocking a missile defends at 1/2 DML
+    if (type === 'missile' && !shields.some(s => s.name === dialogResult.weapon.name)) {
+        effDML = Math.max(Math.round(effDML / 2), 5);
     }
 
-    // If attacking weapon is a missile and defending weapon is not
-    // a sheild, then it will defend at 1/2 DML.
-    if (type === 'missile') {
-        if (!shields.some(s => s.name === dialogResult.weapon.name)) {
-            effDML = Math.max(Math.round(effDML/2), 5);
-        }
-    }
+    // Roll defense before calling resolveStandardDefense (block needs defRoll pre-rolled
+    // so we can pass the dialog modifier)
+    const defRoll = await rollD100Test(effDML, dialogResult.addlModifier);
 
-    const defRoll = await DiceHM3.rollTest({
-        data: {},
-        diceSides: 100,
-        diceNum: 1,
-        modifier: dialogResult.addlModifier,
-        target: effDML
+    const { chatData, combatResult } = await resolveStandardDefense({
+        atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod,
+        defense: `Block w/ ${dialogResult.weapon}`,
+        effDML,
+        defModifier: dialogResult.addlModifier,
+        defRoll,
+        extraChatData: {
+            outnumbered: outnumberedValue(defToken),
+            mlType: 'DML',
+            defendWeapon: defWeapon ? defWeapon.name : "",
+            addlModifierAbs: Math.abs(dialogResult.addlModifier),
+            addlModifierSign: dialogResult.addlModifier < 0 ? '-' : '+',
+            origEML: effDML,
+            effEML: effDML + dialogResult.addlModifier,
+        },
+        missAudioSrc: "systems/hm3/audio/shield-bash.ogg",
     });
 
-    if (game.dice3d) {
-        const aRoll = atkRoll.rollObj;
-        aRoll.dice[0].options.colorset = "glitterparty";
-        await game.dice3d.showForRoll(aRoll, game.user, true);
-
-        const dRoll = defRoll.rollObj;
-        dRoll.dice[0].options.colorset = "bloodmoon";
-        await game.dice3d.showForRoll(dRoll, game.user, true);
-    }
-
-    const atkResult = `${atkRoll.isCritical?'c':'m'}${atkRoll.isSuccess?'s':'f'}`;
-    const defResult = `${defRoll.isCritical?'c':'m'}${defRoll.isSuccess?'s':'f'}`;
-
-    let combatResult;
-    if (type === 'melee') {
-        combatResult = meleeCombatResult(atkResult, defResult, 'block', impactMod);
-    } else {
-        combatResult = missileCombatResult(atkResult, defResult, 'block', impactMod);
-    }
-
-    let atkImpactRoll = null;
-    if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate();
-    }
-
-    // If there was a block, check whether a weapon broke
-    let weaponBroke = {attackWeaponBroke: false, defendWeaponBroke: false};
+    // Check weapon break on successful block
     if (game.settings.get('hm3', 'weaponDamage') && combatResult.outcome.block) {
-        weaponBroke = await checkWeaponBreak(atkWeapon, defWeapon);
-
-        // If either of the weapons has broken, then mark the appropriate
-        // weapon as "unequipped"
+        const weaponBroke = await checkWeaponBreak(atkWeapon, defWeapon);
+        chatData.atkWeaponBroke = weaponBroke.attackWeaponBroke;
+        chatData.defWeaponBroke = weaponBroke.defendWeaponBroke;
 
         if (weaponBroke.attackWeaponBroke) {
             const item = atkToken.actor.items.get(atkWeapon.id);
             await item.update({'system.isEquipped': false});
         }
-
         if (weaponBroke.defendWeaponBroke) {
             const item = defToken.actor.items.get(defWeapon.id);
             await item.update({'system.isEquipped': false});
         }
-    }
-
-    const chatData = {
-        title: `Attack Result`,
-        attacker: atkToken.name,
-        atkTokenId: atkToken.id,
-        defender: defToken.name,
-        defTokenId: defToken.id,
-        outnumbered: defToken.actor?.system?.eph?.outnumbered > 1 ? defToken.actor.system.eph.outnumbered : null,
-        mlType: 'DML',
-        attackWeapon: weaponName,
-        defendWeapon: defWeapon ? defWeapon.name : "",
-        effAML: effAML,
-        effDML: effDML + dialogResult.addlModifier,
-        defense: `Block w/ ${dialogResult.weapon}`,
-        addlModifierAbs: Math.abs(dialogResult.addlModifier),
-        addlModifierSign: dialogResult.addlModifier < 0 ? '-':'+',
-        origEML: effDML,
-        effEML: effDML + dialogResult.addlModifier,
-        attackRoll: atkRoll.rollObj.total,
-        atkIsCritical: atkRoll.isCritical,
-        atkIsSuccess: atkRoll.isSuccess,
-        atkRollResult: atkRoll.description,
-        defenseRoll: defRoll.rollObj.total,
-        defIsCritical: defRoll.isCritical,
-        defIsSuccess: defRoll.isSuccess,
-        defRollResult: defRoll.description,
-        resultDesc: combatResult.desc,
-        hasAttackHit: combatResult.outcome.atkDice,
-        addlWeaponImpact: 0,   // in future, maybe ask this in dialog?
-        weaponImpact: impactMod,
-        impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(" + ") : null,
-        totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
-        atkAim: aim,
-        atkAspect: aspect,
-        dta: combatResult.outcome.dta,
-        atkWeaponBroke: weaponBroke.attackWeaponBroke,
-        defWeaponBroke: weaponBroke.defendWeaponBroke,
-        isAtkStumbleRoll: combatResult.outcome.atkStumble,
-        isAtkFumbleRoll: combatResult.outcome.atkFumble,
-        isDefStumbleRoll: combatResult.outcome.defStumble,
-        isDefFumbleRoll: combatResult.outcome.defFumble,
-        visibleAtkActorId: atkToken.actor.id,
-        visibleDefActorId: defToken.actor.id
-    } 
-
-    let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
-
-    const html = await renderTemplate(chatTemplate, chatData);
-
-    let messageData = {
-        user: game.user.id,
-        speaker: speaker,
-        content: html.trim()
-    };
-    if (combatResult.outcome.atkDice) {
-        messageData.sound = CONFIG.sounds.dice;
-        messageData.rolls = [atkImpactRoll];
-    } else {
-        messageData.style = CONST.CHAT_MESSAGE_STYLES.OTHER;
-    }
-
-    const messageOptions = {};
-
-    // Create a chat message
-    await ChatMessage.create(messageData, messageOptions)
-    if (!combatResult.outcome.atkDice && game.settings.get('hm3', 'combatAudio')) {
-        AudioHelper.play({src: "systems/hm3/audio/shield-bash.ogg", autoplay: true, loop: false}, true);
     }
 
     return chatData;
@@ -1173,95 +1069,14 @@ export async function checkWeaponBreak(atkWeapon, defWeapon) {
  * @param {*} impactMod Additional modifier to impact
  */
 export async function ignoreResume(atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod) {
-    if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
-    if (!defToken.isOwner) {
-        ui.notifications.warn(`You do not have permissions to perform this operation on ${attackToken.name}`);
-        return null;
-    }
+    if (!validateDefenseTokens(atkToken, defToken)) return null;
 
-    const speaker = ChatMessage.getSpeaker({token: atkToken.document});
-
-    const atkRoll = await DiceHM3.rollTest({
-        data: {},
-        diceSides: 100,
-        diceNum: 1,
-        modifier: 0,
-        target: effAML
-    });
-
-    const effDML = 0;
-
-    if (game.dice3d) {
-        const aRoll = atkRoll.rollObj;
-        aRoll.dice[0].options.colorset = "glitterparty";
-        await game.dice3d.showForRoll(aRoll, game.user, true);
-    }
-
-    const atkResult = `${atkRoll.isCritical?'c':'m'}${atkRoll.isSuccess?'s':'f'}`;
-    let combatResult;
-    if (type === 'melee') {
-        combatResult = meleeCombatResult(atkResult, null, 'ignore', impactMod);
-    } else {
-        combatResult = missileCombatResult(atkResult, null, 'ignore', impactMod);
-    }
-
-    let atkImpactRoll = null;
-    if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate();
-    }
-
-    const chatData = {
-        title: `Attack Result`,
-        attacker: atkToken.name,
-        atkTokenId: atkToken.id,
-        defender: defToken.name,
-        defTokenId: defToken.id,
-        mlType: 'AML',
-        attackWeapon: weaponName,
-        effAML: effAML,
-        defense: 'Ignore',
+    const { chatData } = await resolveStandardDefense({
+        atkToken, defToken, type, weaponName, effAML, aim, aspect, impactMod,
+        defense: "Ignore",
         effDML: 0,
-        attackRoll: atkRoll.rollObj.total,
-        atkRollResult: atkRoll.description,
-        defenseRoll: 0,
-        defRollResult: '',
-        resultDesc: combatResult.desc,
-        hasAttackHit: combatResult.outcome.atkDice,
-        addlWeaponImpact: 0,   // in future, maybe ask this in dialog?
-        weaponImpact: impactMod,
-        impactRoll: atkImpactRoll ? atkImpactRoll.dice[0].values.join(" + ") : null,
-        totalImpact: atkImpactRoll ? atkImpactRoll.total + parseInt(impactMod) : 0,
-        atkAim: aim,
-        atkAspect: aspect,
-        dta: combatResult.outcome.dta,
-        isAtkStumbleRoll: combatResult.outcome.atkStumble,
-        isAtkFumbleRoll: combatResult.outcome.atkFumble,
-        isDefStumbleRoll: combatResult.outcome.defStumble,
-        isDefFumbleRoll: combatResult.outcome.defFumble,
-        visibleAtkActorId: atkToken.actor.id,
-        visibleDefActorId: defToken.actor.id
-    } 
-
-    let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
-
-    const html = await renderTemplate(chatTemplate, chatData);
-
-    let messageData = {
-        user: game.user.id,
-        speaker: speaker,
-        content: html.trim()
-    };
-    if (combatResult.outcome.atkDice) {
-        messageData.sound = CONFIG.sounds.dice;
-        messageData.rolls = [atkImpactRoll];
-    } else {
-        messageData.style = CONST.CHAT_MESSAGE_STYLES.OTHER;
-    }
-
-    const messageOptions = {};
-
-    // Create a chat message
-    await ChatMessage.create(messageData, messageOptions)
+        extraChatData: { mlType: "AML" },
+    });
 
     return chatData;
 }

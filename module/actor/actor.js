@@ -2,6 +2,7 @@ import { HM3 } from '../config.js';
 import { DiceHM3 } from '../dice-hm3.js';
 import * as macros from '../macros.js';
 import * as utility from '../utility.js';
+import * as logic from './actor-logic.js';
 
 /**
  * Extend the base Actor by defining a custom roll data structure which is ideal for the Simple system.
@@ -241,8 +242,7 @@ export class HarnMasterActor extends Actor {
         // Prepare data items unique to containers
         if (this.type === 'container') {
             actorData.capacity.value = actorData.totalWeight;
-            actorData.capacity.pct = Math.round(((actorData.capacity.max - actorData.capacity.value) / (actorData.capacity.max || 1)) * 100);
-            actorData.capacity.pct = Math.max(Math.min(actorData.capacity.pct, 100), 0);  // ensure value is between 0 and 100 inclusive)
+            actorData.capacity.pct = logic.calcCapacityPct(actorData.capacity.value, actorData.capacity.max);
             return;
         }
 
@@ -285,8 +285,11 @@ export class HarnMasterActor extends Actor {
         actorData.condition = 0;
 
         // Calculate endurance (in case Condition not present)
-        actorData.endurance = Math.round((actorData.abilities.strength.base + actorData.abilities.stamina.base +
-            actorData.abilities.will.base) / 3);
+        actorData.endurance = logic.calcEndurance(
+            actorData.abilities.strength.base,
+            actorData.abilities.stamina.base,
+            actorData.abilities.will.base,
+        );
 
         // Calculate values based on items
         actorItems.forEach(it => {
@@ -304,8 +307,9 @@ export class HarnMasterActor extends Actor {
         // Safety net: We divide things by endurance, so ensure it is > 0
         actorData.endurance = Math.max(actorData.endurance, 1);
 
-        eph.effectiveWeight = actorData.loadRating ? Math.max(actorData.totalWeight - actorData.loadRating, 0) : actorData.totalWeight;
-        actorData.encumbrance = Math.floor(eph.effectiveWeight / actorData.endurance);
+        const enc = logic.calcEncumbrance(actorData.totalWeight, actorData.loadRating, actorData.endurance);
+        eph.effectiveWeight = enc.effectiveWeight;
+        actorData.encumbrance = enc.encumbrance;
 
         // Setup temporary work values masking the base values
         eph.move = actorData.move.base;
@@ -482,48 +486,9 @@ export class HarnMasterActor extends Actor {
      * Calculate the total weight of all gear carried
      */
     calcTotalGearWeight() {
-        const actorItems = this.items;
-        const actorData = this.system;
-
-        // If not the owner of this actor, then this method is useless
         if (!this.isOwner) return;
-
-        // check to ensure items are available
-        if (!actorItems) return;
-
-        // Find all containergear, and track whether container is carried or not
-        const containerCarried = {};
-        actorItems.forEach(it => {
-            if (it.type === 'containergear') {
-                containerCarried[it.id] = it.system.isCarried;
-            }
-        });
-
-        let totalWeight = 0;
-        actorItems.forEach(it => {
-            const itemData = it.system;
-            if (it.type.endsWith('gear')) {
-                // If gear is on-person, then check the carried flag to determine
-                // whether the gear is carried. Otherwise, it must be in a container,
-                // so check whether the container is carried.
-                if (itemData.container === 'on-person') {
-                    if (itemData.isCarried) {
-                        totalWeight += itemData.weight * itemData.quantity;
-                    }
-                } else {
-                    if (containerCarried[itemData.container]) {
-                        totalWeight += itemData.weight * itemData.quantity;
-                    }
-                }
-            }
-        });
-
-        // Normalize weight to two decimal points
-        totalWeight = Math.round((totalWeight + Number.EPSILON) * 100) / 100;
-
-        actorData.totalWeight = totalWeight;
-
-        return;
+        if (!this.items) return;
+        this.system.totalWeight = logic.calcTotalGearWeight(Array.from(this.items));
     }
 
     /**
@@ -617,26 +582,14 @@ export class HarnMasterActor extends Actor {
     }
 
     _setupEffectiveAbilities(actorData) {
-        const eph = this.system.eph;
-
-        // Affected by physical penalty
-        actorData.abilities.strength.effective = Math.max(Math.round(eph.strength + Number.EPSILON) - actorData.physicalPenalty, 0);
-        actorData.abilities.stamina.effective = Math.max(Math.round(eph.stamina + Number.EPSILON) - actorData.physicalPenalty, 0);
-        actorData.abilities.agility.effective = Math.max(Math.round(eph.agility + Number.EPSILON) - actorData.physicalPenalty, 0);
-        actorData.abilities.dexterity.effective = Math.max(Math.round(eph.dexterity + Number.EPSILON) - actorData.physicalPenalty, 0);
-
-        // Affected by universal penalty
-        actorData.abilities.intelligence.effective = Math.max(Math.round(eph.intelligence + Number.EPSILON) - actorData.universalPenalty, 0);
-        actorData.abilities.aura.effective = Math.max(Math.round(eph.aura + Number.EPSILON) - actorData.universalPenalty, 0);
-        actorData.abilities.will.effective = Math.max(Math.round(eph.will + Number.EPSILON) - actorData.universalPenalty, 0);
-        actorData.abilities.eyesight.effective = Math.max(Math.round(eph.eyesight + Number.EPSILON) - actorData.universalPenalty, 0);
-        actorData.abilities.hearing.effective = Math.max(Math.round(eph.hearing + Number.EPSILON) - actorData.universalPenalty, 0);
-        actorData.abilities.smell.effective = Math.max(Math.round(eph.smell + Number.EPSILON) - actorData.universalPenalty, 0);
-        actorData.abilities.voice.effective = Math.max(Math.round(eph.voice + Number.EPSILON) - actorData.universalPenalty, 0);
-
-        // Not affected by any penalties
-        actorData.abilities.comeliness.effective = Math.max(Math.round(eph.comeliness + Number.EPSILON), 0);
-        actorData.abilities.morality.effective = Math.max(Math.round(eph.morality + Number.EPSILON), 0);
+        const effective = logic.calcEffectiveAbilities(
+            this.system.eph,
+            actorData.physicalPenalty,
+            actorData.universalPenalty,
+        );
+        for (const [ability, value] of Object.entries(effective)) {
+            actorData.abilities[ability].effective = value;
+        }
     }
 
     /**
@@ -662,7 +615,7 @@ export class HarnMasterActor extends Actor {
                 let assocSkill = itemData.assocSkill;
                 if (typeof combatSkills[assocSkill] !== 'undefined') {
                     let skillEml = combatSkills[assocSkill].eml;
-                    itemData.attackMasteryLevel = (skillEml || 0) + (itemData.attackModifier || 0);
+                    itemData.attackMasteryLevel = logic.calcMissileAml(skillEml, itemData.attackModifier);
                 }
             } else if (it.type === 'weapongear') {
                 // Reset mastery levels in case nothing matches
@@ -686,8 +639,8 @@ export class HarnMasterActor extends Actor {
                 let assocSkill = itemData.assocSkill;
                 if (typeof combatSkills[assocSkill] !== 'undefined') {
                     let skillEml = combatSkills[assocSkill].eml;
-                    itemData.attackMasteryLevel = (skillEml || 0) + (itemData.attack || 0) + (itemData.attackModifier || 0);
-                    itemData.defenseMasteryLevel = (skillEml || 0) + (itemData.defense || 0);
+                    itemData.attackMasteryLevel = logic.calcWeaponAml(skillEml, itemData.attack, itemData.attackModifier);
+                    itemData.defenseMasteryLevel = logic.calcWeaponDml(skillEml, itemData.defense);
                 }
             }
         });
@@ -705,16 +658,16 @@ export class HarnMasterActor extends Actor {
                 case 'psionic':
                 case 'spell':
                 case 'invocation':
-                    itemData.effectiveMasteryLevel = Math.max(itemData.effectiveMasteryLevel, 5);
+                    itemData.effectiveMasteryLevel = logic.clampMasteryLevel(itemData.effectiveMasteryLevel);
                     break;
 
                 case 'weapongear':
-                    itemData.attackMasteryLevel = Math.max(itemData.attackMasteryLevel, 5);
-                    itemData.defenseMasteryLevel = Math.max(itemData.defenseMasteryLevel, 5);
+                    itemData.attackMasteryLevel = logic.clampMasteryLevel(itemData.attackMasteryLevel);
+                    itemData.defenseMasteryLevel = logic.clampMasteryLevel(itemData.defenseMasteryLevel);
                     break;
 
                 case 'missilegear':
-                    itemData.attackMasteryLevel = Math.max(itemData.attackMasteryLevel, 5);
+                    itemData.attackMasteryLevel = logic.clampMasteryLevel(itemData.attackMasteryLevel);
                     break;
             }
         })
@@ -751,7 +704,7 @@ export class HarnMasterActor extends Actor {
         this.items.forEach(it => {
             const itemData = it.system;
             if (it.type === 'spell' && itemData.convocation && itemData.convocation.toLowerCase() === lcConvocation) {
-                itemData.effectiveMasteryLevel = eml - (itemData.level * 5);
+                itemData.effectiveMasteryLevel = logic.calcSpellEml(eml, itemData.level);
                 itemData.skillIndex = Math.floor(ml / 10);
                 itemData.masteryLevel = ml;
                 itemData.skillBase = sb;
@@ -766,7 +719,7 @@ export class HarnMasterActor extends Actor {
         this.items.forEach(it => {
             const itemData = it.system;
             if (it.type === 'invocation' && itemData.diety && itemData.diety.toLowerCase() === lcDiety) {
-                itemData.effectiveMasteryLevel = eml - (itemData.circle * 5);
+                itemData.effectiveMasteryLevel = logic.calcInvocationEml(eml, itemData.circle);
                 itemData.skillIndex = Math.floor(ml / 10);
                 itemData.masteryLevel = ml;
                 itemData.skillBase = sb;
@@ -1284,40 +1237,26 @@ export class HarnMasterActor extends Actor {
 
 
     static _normalcdf(x) {
-        var t = 1 / (1 + .2316419 * Math.abs(x));
-        var d = .3989423 * Math.exp(-x * x / 2);
-        var prob = d * t * (.3193815 + t * (-.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
-        if (x > 0) {
-            prob = 1 - prob
-        }
-        return prob
+        return logic.normalcdf(x);
     }
 
     static normProb(z, mean, sd) {
-        let prob;
-        if (sd == 0) {
-            prob = z < mean ? 0 : 100;
-        } else {
-            prob = Math.round(HarnMasterActor._normalcdf((z - mean) / sd) * 100);
-        }
-
-        return prob;
+        return logic.normProb(z, mean, sd);
     }
 
     static calcUniversalPenalty(actor) {
         const data = actor.system;
-        data.universalPenalty = data.eph.totalInjuryLevels + data.eph.fatigue;
+        data.universalPenalty = logic.calcUniversalPenalty(data.eph.totalInjuryLevels, data.eph.fatigue);
     }
-    
+
     static calcPhysicalPenalty(actor) {
         const data = actor.system;
-        data.physicalPenalty = data.universalPenalty + data.encumbrance;
+        data.physicalPenalty = logic.calcPhysicalPenalty(data.universalPenalty, data.encumbrance);
     }
-    
+
     static calcShockIndex(actor) {
         const data = actor.system;
-        data.shockIndex.value = 
-            HarnMasterActor.normProb(data.endurance, data.universalPenalty * 3.5, data.universalPenalty);
+        data.shockIndex.value = logic.calcShockIndex(data.endurance, data.universalPenalty);
     }    
 }
 
