@@ -75,16 +75,6 @@ Hooks.once('init', async function () {
         trait: "Trait"    
     };
     CONFIG.Combat.documentClass = HarnMasterCombat;
-    // TinyMCE is deprecated in v13 (replaced by ProseMirror), guard against removal
-    if (CONFIG.TinyMCE?.style_formats) {
-        CONFIG.TinyMCE.style_formats[0].items.push({
-            title: 'Highlight',
-            block: 'section',
-            classes: 'highlight',
-            wrapper: true
-        });
-    }
-
     // Register sheet application classes
     Actors.unregisterSheet("core", ActorSheet);
     Actors.registerSheet("hm3", HarnMasterCharacterSheet, {
@@ -127,15 +117,7 @@ Hooks.once('init', async function () {
         return str.toLowerCase();
     });
 
-    // TinyMCE font configuration (deprecated in v13, replaced by ProseMirror)
-    if (CONFIG.TinyMCE) {
-        let defaultFonts = "Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Signika=Signika,sans-serif;Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats"
-        let extraFonts = "Martel=Martel;Roboto=Roboto;Lakise=Lakise;Runic=Runic;Lankorian Blackhand=Lankorian Blackhand";
-        CONFIG.TinyMCE.font_formats = (CONFIG.TinyMCE.font_formats?CONFIG.TinyMCE.font_formats:defaultFonts) + ";"+extraFonts;
-    }
     // Register the Hârnic fonts within Foundry (e.g. Text drawing tool, ProseMirror editor)
-//    let fontFamilies = extraFonts.split(";").map(f => f.split("=")[0]).filter(f => f.length);
-//    fontFamilies.forEach(f => CONFIG.fontFamilies.push(f));
     Object.assign(CONFIG.fontDefinitions, {
         "Lakise": {editor: true, fonts: [{urls: ['./systems/hm3/fonts/Harn-Lakise-Normal.otf']}]},
         "Runic": {editor: true, fonts: [{urls: ['./systems/hm3/fonts/Harn-Runic-Normal.otf']}]},
