@@ -75,12 +75,15 @@ Hooks.once('init', async function () {
         trait: "Trait"    
     };
     CONFIG.Combat.documentClass = HarnMasterCombat;
-    CONFIG.TinyMCE.style_formats[0].items.push({
-        title: 'Highlight',
-        block: 'section',
-        classes: 'highlight',
-        wrapper: true
-    })
+    // TinyMCE is deprecated in v13 (replaced by ProseMirror), guard against removal
+    if (CONFIG.TinyMCE?.style_formats) {
+        CONFIG.TinyMCE.style_formats[0].items.push({
+            title: 'Highlight',
+            block: 'section',
+            classes: 'highlight',
+            wrapper: true
+        });
+    }
 
     // Register sheet application classes
     Actors.unregisterSheet("core", ActorSheet);
@@ -124,17 +127,13 @@ Hooks.once('init', async function () {
         return str.toLowerCase();
     });
 
-    // Add a font selector dropdown to the TineMCE editor
-    //CONFIG.TinyMCE.toolbar = "styleselect forecolor backcolor bullist numlist image table hr link removeformat code fontselect fontsizeselect save";
-    //CONFIG.TinyMCE.toolbar = "styles bullist numlist image table hr link removeformat code fontselect save";
-    // Register the Hârnic fonts with Foundry and TinyMCE
-    // These are the default fonts for browsers
-    let defaultFonts = "Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Signika=Signika,sans-serif;Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats"
-    // These are the fonts we add
-    let extraFonts = "Martel=Martel;Roboto=Roboto;Lakise=Lakise;Runic=Runic;Lankorian Blackhand=Lankorian Blackhand";
-    // Configure the TinyMCE font drop-down (note: Monk's Enhanced Journal will overwrite this)
-    CONFIG.TinyMCE.font_formats = (CONFIG.TinyMCE.font_formats?CONFIG.TinyMCE.font_formats:defaultFonts) + ";"+extraFonts;
-    // Register the extra fonts within Foundry itsel (e.g. Text drawing tool)
+    // TinyMCE font configuration (deprecated in v13, replaced by ProseMirror)
+    if (CONFIG.TinyMCE) {
+        let defaultFonts = "Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Signika=Signika,sans-serif;Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats"
+        let extraFonts = "Martel=Martel;Roboto=Roboto;Lakise=Lakise;Runic=Runic;Lankorian Blackhand=Lankorian Blackhand";
+        CONFIG.TinyMCE.font_formats = (CONFIG.TinyMCE.font_formats?CONFIG.TinyMCE.font_formats:defaultFonts) + ";"+extraFonts;
+    }
+    // Register the Hârnic fonts within Foundry (e.g. Text drawing tool, ProseMirror editor)
 //    let fontFamilies = extraFonts.split(";").map(f => f.split("=")[0]).filter(f => f.length);
 //    fontFamilies.forEach(f => CONFIG.fontFamilies.push(f));
     Object.assign(CONFIG.fontDefinitions, {
@@ -145,9 +144,9 @@ Hooks.once('init', async function () {
 
 });
 
-Hooks.on("renderChatMessage", (app, html, data) => {
+Hooks.on("renderChatMessageHTML", (message, html) => {
     // Display action buttons
-    combat.displayChatActionButtons(app, html, data);
+    combat.displayChatActionButtons(message, html);
 });
 Hooks.on('renderChatLog', (app, html, data) => HarnMasterActor.chatListeners(html));
 Hooks.on('renderChatPopout', (app, html, data) => HarnMasterActor.chatListeners(html));
@@ -181,7 +180,7 @@ Hooks.once("ready", function () {
             migrations.migrateWorld();
         }
     } else {
-        game.settings.set("hm3", "systemMigrationVersion", game.system.data.version);
+        game.settings.set("hm3", "systemMigrationVersion", game.system.version);
     }
 
     Hooks.on("hotbarDrop", (bar, data, slot) => macros.createHM3Macro(data, slot));

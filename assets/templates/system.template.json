@@ -18,8 +18,8 @@
     "allowBugReporter": true
   },
   "compatibility": {
-    "minimum": "12",
-    "verified": "12.331"
+    "minimum": "13",
+    "verified": "13.344"
   },
   "esmodules": [
     "hm3.js"

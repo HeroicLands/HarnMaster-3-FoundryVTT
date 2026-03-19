@@ -87,9 +87,8 @@ export class DiceHM3 {
             user: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            rolls: [roll.rollObj]
         };
 
         const messageOptions = {
@@ -221,9 +220,8 @@ export class DiceHM3 {
             user: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            rolls: [roll.rollObj]
         };
 
         const messageOptions = {
@@ -280,7 +278,7 @@ export class DiceHM3 {
     static async sdrRoll(item) {
         const speaker = ChatMessage.getSpeaker();
 
-        let roll = await (new Roll(`1d100 + @sb`, {sb: item.system.skillBase.value})).evaluate({async: true});
+        let roll = await (new Roll(`1d100 + @sb`, {sb: item.system.skillBase.value})).evaluate();
 
         const isSuccess = roll.total > item.system.masteryLevel;
 
@@ -312,7 +310,7 @@ export class DiceHM3 {
             speaker: speaker,
             content: html.trim(),
             user: game.user.id,
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            style: CONST.CHAT_MESSAGE_STYLES.ROLL,
             sound: CONFIG.sounds.dice,
             roll: roll
         };
@@ -381,7 +379,7 @@ export class DiceHM3 {
             speaker: speaker,
             content: html.trim(),
             user: game.user.id,
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            style: CONST.CHAT_MESSAGE_STYLES.OTHER,
             sound: CONFIG.sounds.notify
         };
 
@@ -783,9 +781,8 @@ export class DiceHM3 {
             user: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            rolls: [roll.rollObj]
         };
 
         const messageOptions = {
@@ -953,9 +950,8 @@ export class DiceHM3 {
             user: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            rolls: [roll.rollObj]
         };
 
         const messageOptions = {
@@ -1120,9 +1116,8 @@ export class DiceHM3 {
             user: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            rolls: [roll.rollObj]
         };
 
         const messageOptions = {
@@ -1188,7 +1183,7 @@ export class DiceHM3 {
         const numDice = (testData.diceNum > 0) ? testData.diceNum : 1;
         const diceSpec = numDice + diceType;
         const rollObj = new Roll(diceSpec, testData.data);
-        const roll = await rollObj.evaluate({async: true});
+        const roll = await rollObj.evaluate();
         if (!roll) {
             console.error(`Roll evaluation failed, diceSpec=${diceSpec}`)
         }

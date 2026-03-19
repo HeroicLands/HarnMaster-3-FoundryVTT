@@ -124,7 +124,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         user: game.user.id,
         speaker: speaker,
         content: html.trim(),
-        type: CONST.CHAT_MESSAGE_TYPES.OTHER
+        style: CONST.CHAT_MESSAGE_STYLES.OTHER
     };
 
     const messageOptions = {};
@@ -255,7 +255,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
         user: game.user.id,
         speaker: speaker,
         content: html.trim(),
-        type: CONST.CHAT_MESSAGE_TYPES.OTHER
+        style: CONST.CHAT_MESSAGE_STYLES.OTHER
     };
 
     const messageOptions = {};
@@ -592,12 +592,12 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     // We now know the results of the attack, roll applicable damage
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate({async: true});
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate();
     }
     
     let csImpactRoll = null;
     if (combatResult.outcome.defDice) {
-        csImpactRoll = await new Roll(`${combatResult.outcome.defDice}d6`).evaluate({async: true});
+        csImpactRoll = await new Roll(`${combatResult.outcome.defDice}d6`).evaluate();
     }
 
     const atkChatData = {
@@ -680,11 +680,10 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         content: html.trim()
     };
     if (combatResult.outcome.atkDice) {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
         messageData.sound = CONFIG.sounds.dice;
-        messageData.roll = atkImpactRoll;
+        messageData.rolls = [atkImpactRoll];
     } else {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
+        messageData.style = CONST.CHAT_MESSAGE_STYLES.OTHER;
     }
 
     const messageOptions = {};
@@ -703,11 +702,10 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
         content: html.trim()
     };
     if (combatResult.outcome.defDice) {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
         messageData.sound = CONFIG.sounds.dice;
-        messageData.roll = csImpactRoll;
+        messageData.rolls = [csImpactRoll];
     } else {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
+        messageData.style = CONST.CHAT_MESSAGE_STYLES.OTHER;
     }
 
     // Create a chat message
@@ -781,7 +779,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate({async: true});
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate();
     }
 
     const chatData = {
@@ -826,11 +824,10 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
         content: html.trim()
     };
     if (combatResult.outcome.atkDice) {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
         messageData.sound = CONFIG.sounds.dice;
-        messageData.roll = atkImpactRoll;
+        messageData.rolls = [atkImpactRoll];
     } else {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
+        messageData.style = CONST.CHAT_MESSAGE_STYLES.OTHER;
     }
 
     const messageOptions = {};
@@ -985,7 +982,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate({async: true});
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate();
     }
 
     // If there was a block, check whether a weapon broke
@@ -1061,11 +1058,10 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
         content: html.trim()
     };
     if (combatResult.outcome.atkDice) {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
         messageData.sound = CONFIG.sounds.dice;
-        messageData.roll = atkImpactRoll;
+        messageData.rolls = [atkImpactRoll];
     } else {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
+        messageData.style = CONST.CHAT_MESSAGE_STYLES.OTHER;
     }
 
     const messageOptions = {};
@@ -1100,8 +1096,8 @@ export async function checkWeaponBreak(atkWeapon, defWeapon) {
     const atkWeaponQuality = atkWeapon.system.weaponQuality;
     const defWeaponQuality = defWeapon.system.weaponQuality;
 
-    const atkBreakRoll = await new Roll('3d6').evaluate({async: true});
-    const defBreakRoll = await new Roll('3d6').evaluate({async: true});
+    const atkBreakRoll = await new Roll('3d6').evaluate();
+    const defBreakRoll = await new Roll('3d6').evaluate();
 
     if (atkWeaponQuality <= defWeaponQuality) {
         // Check attacker first, then defender
@@ -1117,7 +1113,6 @@ export async function checkWeaponBreak(atkWeapon, defWeapon) {
 
     const messageData = {
         user: game.user.id,
-        type: CONST.CHAT_MESSAGE_TYPES.ROLL,
         sound: CONFIG.sounds.dice
     };
 
@@ -1137,7 +1132,7 @@ export async function checkWeaponBreak(atkWeapon, defWeapon) {
 
     messageData.content = html.trim();
     messageData.speaker = ChatMessage.getSpeaker({token: defToken.document});
-    messageData.roll = atkBreakRoll;
+    messageData.rolls = [atkBreakRoll];
 
     const messageOptions = {};
 
@@ -1157,7 +1152,7 @@ export async function checkWeaponBreak(atkWeapon, defWeapon) {
 
     messageData.content = html.trim();
     messageData.speaker = ChatMessage.getSpeaker({token: defToken.document});
-    messageData.roll = defBreakRoll;
+    messageData.rolls = [defBreakRoll];
 
     await ChatMessage.create(messageData, messageOptions);
 
@@ -1212,7 +1207,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
 
     let atkImpactRoll = null;
     if (combatResult.outcome.atkDice) {
-        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate({async: true});
+        atkImpactRoll = await new Roll(`${combatResult.outcome.atkDice}d6`).evaluate();
     }
 
     const chatData = {
@@ -1257,11 +1252,10 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
         content: html.trim()
     };
     if (combatResult.outcome.atkDice) {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
         messageData.sound = CONFIG.sounds.dice;
-        messageData.roll = atkImpactRoll;
+        messageData.rolls = [atkImpactRoll];
     } else {
-        messageData.type = CONST.CHAT_MESSAGE_TYPES.OTHER;
+        messageData.style = CONST.CHAT_MESSAGE_STYLES.OTHER;
     }
 
     const messageOptions = {};
@@ -1512,14 +1506,14 @@ export function rangeToTarget(sourceToken, targetToken, gridUnits=false) {
  * Optionally hide the display of chat card action buttons which cannot be performed by the user
  */
 export const displayChatActionButtons = function(message, html, data) {
-    const chatCard = html.find(".hm3.chat-card");
-    if ( chatCard.length > 0 ) {
+    const chatCard = html.querySelector(".hm3.chat-card");
+    if (chatCard) {
         // If the user is the GM, proceed
         if (game.user.isGM) return;
 
         // Otherwise conceal action buttons
-        const buttons = chatCard.find("button[data-action]");
-        buttons.each((i, btn) => {
+        const buttons = chatCard.querySelectorAll("button[data-action]");
+        buttons.forEach((btn) => {
             const actor = btn.dataset.visibleActorId ? game.actors.get(btn.dataset.visibleActorId) : null;
             if (!actor || !actor.isOwner) {
                 btn.style.display = "none";

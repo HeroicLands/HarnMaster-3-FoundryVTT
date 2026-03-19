@@ -974,7 +974,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                     user: game.user.id,
                     speaker: ChatMessage.getSpeaker(),
                     content: html.trim(),
-                    type: CONST.CHAT_MESSAGE_TYPES.OTHER
+                    style: CONST.CHAT_MESSAGE_STYLES.OTHER
                 };
 
                 // Create a chat message
