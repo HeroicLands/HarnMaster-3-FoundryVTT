@@ -24,7 +24,7 @@ permissions:
 jobs:
     # Its own job, and needing no install, so it reports in seconds and reports
     # independently of whether the build passes. The compendium source is the
-    # JSON under packs/<name>/_source/; the LevelDB is build output and belongs
+    # JSON under assets/packs/<name>/; the LevelDB is build output and belongs
     # in build/stage/packs/, which is not tracked.
     #
     # `packs/.gitignore` has listed these patterns for years and was not enough:
