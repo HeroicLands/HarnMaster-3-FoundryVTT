@@ -1,0 +1,90 @@
+# How `@heroiclands/package-build` builds this system.
+#
+# HM3 uses only the packaging half of the toolchain. Its compendium content is
+# committed JSON under `assets/packs/<name>/`, not a Markdown content tree, so
+# there is no `itemBuilders` registry and no `assets/content/`. The two halves
+# are independent: `packs:` below is a *declaration* of what this package ships,
+# and nothing here requires the packs to have been generated from Markdown.
+#
+# `foundryPackage` is not declared — it is read from `package.json`'s `name`.
+
+contentPackage: hm3
+packageKind: systems
+
+stats:
+    systemId: hm3
+    lastModifiedBy: hm3build00000000
+
+# The Foundry core range. `minimum` is what every compiled document is stamped
+# with as `_stats.coreVersion`, so moving it moves the stamp.
+compatibility:
+    minimum: "12"
+    verified: "12.331"
+
+# The one pack list. `packs[]` in the generated `system.json` is derived from
+# it — label, type, name, the `hm3` system id and the `packs/<name>` path — so
+# a pack is declared here and nowhere else.
+#
+# Note: per-pack `ownership` is deliberately not carried. The manifest
+# generator does not emit it, so Foundry's defaults apply. This was a conscious
+# trade rather than an oversight.
+packs:
+    - { name: character, label: Character, type: Item }
+    - { name: possessions, label: Possessions, type: Item }
+    - { name: esoteric, label: Esoteric, type: Item }
+    - { name: system-help, label: System Help, type: JournalEntry }
+
+packageBuild:
+    # Everything Foundry loads that is not generated. `css/` is absent on
+    # purpose: it is compiled straight into the stage by `build:css`, and
+    # `system.json` is written into the stage by `build:system`.
+    #
+    # `template.json` is not optional — it is the system's data model, and a
+    # stage without it loads as a system with no document types at all.
+    assets:
+        - { from: module, to: module }
+        - { from: templates, to: templates }
+        - { from: lang, to: lang }
+        - { from: images, to: images }
+        - { from: fonts, to: fonts }
+        - { from: audio, to: audio }
+        - { from: ui, to: ui }
+        - { from: lib, to: lib }
+        - { from: template.json, to: template.json }
+        - { from: LICENSE, to: LICENSE }
+        - { from: README.md, to: README.md }
+        - { from: WALKTHROUGH.md, to: WALKTHROUGH.md }
+
+    lang:
+        sources: lang/*.json
+
+    # `FOUNDRYVTT_<STAGE>_DATA` picks the data root a deploy writes into.
+    deploy:
+        envPrefix: HM3
+
+    # Emitted as declared. The identity, the four release addresses, the
+    # version, the compatibility range and the pack list are derived instead,
+    # and are refused if also declared here.
+    manifest:
+        title: HarnMaster 3
+        description: The HarnMaster system for FoundryVTT!
+        authors:
+            - name: Toasty
+              discord: toasty#8538
+        license: LICENSE
+        readme: README.md
+        flags:
+            allowBugReporter: true
+        esmodules:
+            - module/hm3.js
+        styles:
+            - css/hm3.css
+        languages:
+            - { lang: en, name: English, path: lang/en.json }
+        packFolders:
+            - name: HârnMaster 3 System
+              sorting: m
+              packs: [character, possessions, esoteric, system-help]
+        socket: true
+        grid: { distance: 5, units: ft }
+        primaryTokenAttribute: shockIndex

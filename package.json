@@ -2,7 +2,7 @@
     "name": "hm3",
     "private": true,
     "version": "1.6.3",
-    "description": "The HârnMaster 3 system for Foundry VTT",
+    "description": "The H\u00e2rnMaster 3 system for Foundry VTT",
     "type": "module",
     "license": "SEE LICENSE IN LICENSE",
     "author": {
@@ -19,13 +19,23 @@
         "node": ">=24.0.0"
     },
     "scripts": {
+        "clean": "package-build clean",
         "build": "npm ci && npm run build:noci",
         "build:local": "npm i && npm run build:noci",
-        "build:noci": "run-s build:css",
-        "build:css": "sass --load-path=scss scss/hm3.scss css/hm3.css",
-        "watch:css": "sass --load-path=scss --watch scss/hm3.scss css/hm3.css"
+        "build:noci": "run-s build:css build:assets build:compiledb build:system",
+        "build:css": "sass --load-path=scss scss/hm3.scss build/stage/css/hm3.css",
+        "watch:css": "sass --load-path=scss --watch scss/hm3.scss build/stage/css/hm3.css",
+        "build:assets": "package-build assets",
+        "build:compiledb": "node utils/compile-packs.mjs",
+        "build:unpackdb": "node utils/unpack-packs.mjs",
+        "build:system": "package-build manifest",
+        "build:pack-release": "package-build release",
+        "push:dev": "package-build deploy dev",
+        "deploy:dev": "run-s build:local push:dev",
+        "lint:lang": "package-build lang check"
     },
     "devDependencies": {
+        "@foundryvtt/foundryvtt-cli": "^3.0.4",
         "@heroiclands/package-build": "^3.0.0",
         "npm-run-all": "^4.1.5",
         "sass": "^1.103.1"
