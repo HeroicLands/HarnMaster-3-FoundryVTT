@@ -39,7 +39,7 @@ export class HarnMasterItemSheet extends ItemSheet {
     data.hasRitualSkills = false;
     data.hasMagicSkills = false;
 
-    data.macroTypes = foundry.utils.deepClone(game.system.documentTypes.Macro);
+    data.macroTypes = foundry.utils.deepClone(game.documentTypes.Macro);
     
     data.containers = { 'On Person': 'on-person' };
     // Containers are not allowed in other containers.  So if this item is a container,
@@ -60,7 +60,7 @@ export class HarnMasterItemSheet extends ItemSheet {
       if (this.actor) {
         this.actor.itemTypes.skill.forEach(it => {
           if (it.system.type === 'Magic') {
-            data.convocations.push(it.data.name);
+            data.convocations.push(it.name);
             data.hasMagicSkills = true;
           }
         });
@@ -169,8 +169,15 @@ export class HarnMasterItemSheet extends ItemSheet {
   }
 
   async _armorgearLocationAdd(event) {
-    const dataset = event.currentTarget.dataset;
     const itemData = this.item.system;
+
+    // Read the picker directly. It is transient UI state, not stored on the
+    // item, and reading it now rather than from the last render is also what
+    // makes the first click add the location actually selected.
+    const location = event.currentTarget
+      .closest('.armorgear-location')
+      ?.querySelector('.armorgear-target-location')?.value;
+    if (!location) return null;
 
     await this._onSubmit(event);  // Submit any unsaved changes
 
@@ -181,8 +188,8 @@ export class HarnMasterItemSheet extends ItemSheet {
     }
 
     // Only add location to list if it is unique
-    if (locations.indexOf(dataset.location) === -1) {
-      locations.push(dataset.location);
+    if (locations.indexOf(location) === -1) {
+      locations.push(location);
     }
 
     // Update the list on the server

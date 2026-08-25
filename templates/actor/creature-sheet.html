@@ -902,11 +902,7 @@
             <div class="form-group">
                 <label>Type</label>
                 <select name="system.macros.type">
-                    {{#select adata.macros.type}}
-                    {{#each macroTypes}}
-                    <option value="{{this}}">{{this}}</option>
-                    {{/each}}
-                    {{/select}}
+                    {{selectOptions macroTypes selected=adata.macros.type}}
                 </select>
             </div>
         

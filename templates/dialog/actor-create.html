@@ -22,12 +22,10 @@
         <label>{{ localize "DOCUMENT.Folder" }}</label>
         <div class="form-fields">
             <select name="folder">
-                {{#select folder}}
                 <option value=""></option>
                 {{#each folders}}
-                <option value="{{ this.id }}">{{ this.name }}</option>
+                <option value="{{ this.id }}" {{#if (eq this.id ../folder)}}selected{{/if}}>{{ this.name }}</option>
                 {{/each}}
-                {{/select}}
             </select>
         </div>
     </div>

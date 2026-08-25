@@ -317,11 +317,7 @@
                             <input class="value" type="text" name="system.sunsign" value="{{adata.sunsign}}" data-dtype="String" />
                             {{else}}
                             <select class="value" name="system.sunsign" data-dtype="String">
-                                {{#select adata.sunsign}}
-                                    {{#each config.sunsigns}}
-                                        <option value="{{this}}">{{this}}</option>
-                                    {{/each}}
-                                {{/select}}
+                                {{selectOptions config.sunsigns selected=adata.sunsign}}
                             </select>
                             {{/if}}
                         </div>
@@ -1226,11 +1222,7 @@
             <div class="form-group">
                 <label>Type</label>
                 <select name="system.macros.type">
-                    {{#select adata.macros.type}}
-                    {{#each macroTypes}}
-                    <option value="{{this}}">{{this}}</option>
-                    {{/each}}
-                    {{/select}}
+                    {{selectOptions macroTypes selected=adata.macros.type}}
                 </select>
             </div>
         

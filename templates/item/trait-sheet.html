@@ -7,11 +7,7 @@
                 <div class="skill-type flexrow">
                     <label class="label">Type</label>
                     <select class="value" name="system.type">
-                        {{#select idata.type}}
-                            {{#each config.traitTypes}}
-                                <option value="{{this}}">{{this}}</option>
-                            {{/each}}
-                        {{/select}}
+                        {{selectOptions config.traitTypes selected=idata.type}}
                     </select>
                 </div>
             </div>

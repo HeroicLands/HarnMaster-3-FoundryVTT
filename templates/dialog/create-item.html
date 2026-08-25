@@ -8,11 +8,7 @@
         <label>{{extraLabel}}</label>
         {{#if extraList}}
         <select class="resource-value" name="extra_value" data-dtype="String">
-            {{#select extra_value}}
-            {{#each extraList}}
-                <option value="{{this}}">{{this}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions extraList selected=extra_value}}
         </select>
         {{else}}
         <input type="text" name="extra_value" data-dtype="String"/>

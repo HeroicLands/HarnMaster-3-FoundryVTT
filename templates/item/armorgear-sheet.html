@@ -6,11 +6,7 @@
             <div class="flexrow">
                 <label>In Container:</label>
                 <select name="system.container">
-                    {{#select idata.container}}
-                        {{#each containers as |cid cname|}}
-                            <option value="{{cid}}">{{cname}}</option>
-                        {{/each}}
-                    {{/select}}
+                    {{selectOptions containers selected=idata.container inverted=true}}
                 </select>
             </div>
         </div>
@@ -94,16 +90,14 @@
                 <legend>Locations</Legend>
                 <div class="armorgear-location flexrow" id="armorgear-location-select">
                     <label class="label">Location:</label>
-                    <select class="value" name="system.targetLocation">
-                        {{#select idata.targetLocation}}
-                            {{#each config.injuryLocations as |value key|}}
-                                {{#if (ne key "Custom")}}
-                                    <option value="{{key}}">{{key}}</option>
-                                {{/if}}
-                            {{/each}}
-                        {{/select}}
+                    <select class="value armorgear-target-location">
+                        {{#each config.injuryLocations as |value key|}}
+                            {{#if (ne key "Custom")}}
+                                <option value="{{key}}">{{key}}</option>
+                            {{/if}}
+                        {{/each}}
                     </select>
-                    <a class="armorgear-location-add" data-location="{{idata.targetLocation}}"><i
+                    <a class="armorgear-location-add"><i
                             class="fas fa-plus"></i> Add</a>
                 </div>
                 <ol class="grid grid-fixed-row grid-4col" id="armorgear-location-display">

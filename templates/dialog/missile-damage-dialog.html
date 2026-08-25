@@ -9,15 +9,9 @@
     <div class="form-group">
         <label for="range">Range (&plus; Impact):</label>
         <select name="range">
-            {{#select defaultRange}}
             {{#each ranges as |value key|}}
-                {{#if (eq key weaponAspect)}}
-                    <option value="{{key}}" selected>{{key}} ({{value}})</option>
-                {{else}}
-                    <option value="{{key}}">{{key}} ({{value}})</option>
-                {{/if}}
+                <option value="{{key}}" {{#if (eq key ../defaultRange)}}selected{{/if}}>{{key}} ({{value}})</option>
             {{/each}}
-            {{/select}}
         </select>
     </div>
     <div class="form-group">

@@ -6,11 +6,7 @@
             <div class="flexrow">
                 <label>In Container:</label>
                 <select name="system.container">
-                    {{#select idata.container}}
-                        {{#each containers as |cid cname|}}
-                            <option value="{{cid}}">{{cname}}</option>
-                        {{/each}}
-                    {{/select}}
+                    {{selectOptions containers selected=idata.container inverted=true}}
                 </select>
             </div>
         </div>
@@ -51,22 +47,14 @@
                 <div class="resource" id="missilegear=weaponaspect">
                     <label class="resource-label" for="system.weaponAspect">Weapon Aspect</label>
                     <select class="resource-value" name="system.weaponAspect" data-dtype="String">
-                        {{#select idata.weaponAspect}}
-                            <option value="Piercing">Piercing</option>
-                            <option value="Blunt">Blunt</option>
-                            <option value="Edged">Edged</option>
-                        {{/select}}
+                        {{selectOptions config.allowedAspects selected=idata.weaponAspect}}
                     </select>
                 </div>
                 <div class="resource" id="missilegear-assocskill">
                     <label class="resource-label" for="system.assocSkill">Associated Skill</label>
                     {{#if hasCombatSkills}}
                         <select class="resource-value" name="system.assocSkill" data-dtype="String">
-                            {{#select idata.assocSkill}}
-                                {{#each combatSkills}}
-                                    <option value="{{this}}">{{this}}</option>
-                                {{/each}}
-                            {{/select}}
+                            {{selectOptions combatSkills selected=idata.assocSkill}}
                         </select>
                     {{else}}
                         <input type="text" name="system.assocSkill" value="{{idata.assocSkill}}" data-dtype="String" />
