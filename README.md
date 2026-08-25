@@ -134,49 +134,40 @@ There are separate probability weights for High, Mid, and Low aiming points.  Fo
 
 # Building
 
-If you wish to fork this code and build your own version, that is completely fine.  You will ultimately need to package the system into two files: a ZIP and a MANIFEST.  The following BASH script is an example of how to do this:
+The system is built by npm scripts; nothing is assembled by hand.
 
-```
-#!/bin/sh
-
-VERSION=$(jq --raw-output .version $HOME/dev/github/HarnMaster-3-FoundryVTT/system.json)
-BUILDDIR=$(mktemp -d -t hmk-$VERSION-XXXXXX)
-RELEASEDIR=$HOME/Games/fvtt/releases/hm3/$VERSION
-HM3FILE=hm3-$VERSION
-echo "Begin packaging HarnMaster 3 $VERSION"
-# If any prior version of the release exists, remove it
-rm -rf $RELEASEDIR
-
-# Create the release directory
-mkdir -p $RELEASEDIR
-
-# Copy all releaseable parts of the system
-rsync -avz -f "- _source" -f "- scss" -f "- package.json" -f "- package-lock.json" -f "- lib" -f "- packs" -f "- .git" -f "- nogit" -f "- .DS_Store" -f "- .gitignore" -f "- .vscode/*" -f "- *.code-workspace" HarnMaster-3-FoundryVTT/* $BUILDDIR
-
-# Build the packs from source files
-for i in $(jq -r '.packs[] | [.name, .type] | @csv' HarnMaster-3-FoundryVTT/system.json | sed 's/"//g'); do
-    SPEC=(${i//,/ })
-    PACK=${SPEC[0]}
-    TYPE=${SPEC[1]}
-    mkdir -p $BUILDDIR/packs/$PACK
-    fvtt package pack -n $PACK -v --type System --id hm3 -t $TYPE --in $HOME/github/HarnMaster-3-FoundryVTT/packs/$PACK/_source --out $BUILDDIR/packs/
-done
-
-# Create release zip file in release directory
-(cd $BUILDDIR; zip -r $RELEASEDIR/$HM3FILE.zip * -x "*/.DS_Store")
-
-# Copy release manifest to release directory
-cp $BUILDDIR/system.json $RELEASEDIR/$HM3FILE.json
-
-ln $RELEASEDIR/$HM3FILE.zip $RELEASEDIR/system.zip
-ln $RELEASEDIR/$HM3FILE.json $RELEASEDIR/system.json
-
-echo "Finished packaging HarnMaster 3 $VERSION"
+```bash
+npm install          # first time
+npm run build:local  # compile styles, stage assets, build packs, write system.json
 ```
 
-This script depends on the `foundryvtt-cli` package in order to run; see https://github.com/foundryvtt/foundryvtt-cli.  This package, in turn, requires Node.js to be installed.
+The result is a complete, loadable system in `build/stage/`. **That, not the
+repository root, is what Foundry loads** — `system.json`, the compiled CSS and
+the compendium packs are all build output and none of them exist in the
+checkout. Install it with `npm run deploy:dev`, or copy `build/stage/` into
+`$FOUNDRY_DATA_DIR/systems/hm3`.
 
-You can then unzip the ZIP file into your `$FOUNDRY_DATA_DIR/systems/hm3` directory (create that directory if it doesn't exist).
+## Compendium content
+
+The source of truth is per-document JSON under `assets/packs/<name>/`. The
+LevelDB directories Foundry reads are built from it into `build/stage/packs/`
+and are **never committed** — `npm run lint:packs` fails the build if any are
+tracked, and CI runs it.
+
+To take changes you made inside Foundry back into the source:
+
+```bash
+npm run build:unpackdb   # extract build/stage/packs/ back to assets/packs/
+git diff                 # review what changed
+```
+
+Round-tripping without editing produces no diff, so anything `git diff` shows
+is a change you made.
+
+## Releasing
+
+Releases are cut by CI from changesets, not by hand. See
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 # Credits
 
