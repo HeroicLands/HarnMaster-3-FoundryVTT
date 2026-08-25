@@ -1,101 +1,22 @@
-.window-content {
-    background: url("../ui/parchment.jpg") repeat;
-    font-size: 13px;
-    color: #191813;
-}
+@use "../utils/typography" as *;
+@use "../utils/colors" as *;
+@use "../utils/mixins" as *;
+@use "../utils/variables" as *;
 
-input[type="text"],
-input[type="number"],
-select {
-    height: calc(100% - 2px);
-    border: 1px solid #7a7971;
-    background: rgba(0, 0, 0, 0.05);
-    color: #191813;
-}
-
-input[type="text"]:hover,
-input[type="number"]:hover,
-input[type="text"]:focus,
-input[type="number"]:focus {
-    border: 1px solid #111;
-    box-shadow: 0 0 8px red;
-}
-
-input:disabled,
-select:disabled,
-textarea:disabled {
-    color: #4b4a44;
-}
-
-input:disabled:hover,
-select:disabled:hover,
-textarea:disabled:hover,
-input:disabled:focus,
-select:disabled:focus,
-textarea:disabled:focus {
-    box-shadow: none !important;
-    border: 1px solid transparent !important;
-    outline: none !important;
-}
-
-button {
-    background: rgba(0, 0, 0, 0.1);
-    border: 2px groove #eeede0;
-}
-
-label.checkbox {
-    flex: auto;
-    padding: 0;
-    margin: 0;
-    height: 22px;
-    line-height: 22px;
-    font-size: 11px;
-}
-
-label.checkbox > input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    margin: 0 2px 0 0;
-    position: relative;
-    top: 4px;
-}
-
-label.checkbox.right > input[type="checkbox"] {
-    margin: 0 0 0 2px;
-}
-
-label.init-checkbox {
-    flex: auto;
-    padding: 0;
-    margin: 0 0 0 2px;
-    height: 22px;
-    line-height: 22px;
-}
-.sheet {
-
+@mixin top {
     .window-content {
-        overflow-y: hidden;
-        padding: 5px;
         background: url("../ui/parchment.jpg") repeat;
         font-size: 13px;
         color: #191813;
     }
 
-    .window-content form {
-        height: 100%;
-        overflow: hidden;
-    }
-    
-    .window-content .tab {
-        height: 100%;
-        overflow-y: hidden;
-        align-content: flex-start;
-    }
-
     input[type="text"],
-    input[type="number"] {
-        background: none;
-        border: 1px solid transparent;
+    input[type="number"],
+    select {
+        height: calc(100% - 2px);
+        border: 1px solid #7a7971;
+        background: rgba(0, 0, 0, 0.05);
+        color: #191813;
     }
 
     input[type="text"]:hover,
@@ -103,117 +24,203 @@ label.init-checkbox {
     input[type="text"]:focus,
     input[type="number"]:focus {
         border: 1px solid #111;
+        box-shadow: 0 0 8px red;
     }
 
-    select {
-        flex: 1;
-        font-size: 12px;
-        height: 22px;
-        background: transparent;
-    }
-
-    .editable .rollable:hover {
-        color: #000;
-        text-shadow: 0 0 10px red;
-        cursor: pointer;
-    }
-
-    span.sep {
-        flex: none;
-        margin: 0 1px;
-        display: inline;
-        position: relative;
-        color: #7a7971;
-        font-weight: normal;
-    }
-
-    .editor {
-        height: 100%;
-    }
-
-    .editor .tox-toolbar-overlord,
-    .editor .tox-toolbar__primary {
-        background: none;
-    }
-
-    .sheet-header .header-details {
-        font-size: 20px;
-        font-weight: 700;
-    }
-
-    .sheet-header h1 {
-        flex: 1;
-        border-bottom: none;
-        height: 60px;
-        margin: 0;
-        padding: 5px;
-    }
-
-    .sheet-header h1 input {
-        display: block;
-        height: 50px;
-        font-size: 32px;
-        margin: 0;
-    }
-
-    .sheet-header img.profile {
-        flex: 0 0 100px;
-        max-width: 100px;
-        height: 100px;
-        object-fit: contain;
-        border: none;
-        border-right: 2px groove #eeede0;
-    }
-
-    .sheet-header .summary {
-        flex: 0 0 100%;
-        height: 40px;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        border-top: 2px groove #eeede0;
-        border-bottom: none;
-    }
-
-    .sheet-header .summary li {
-        height: calc(100% - 6px);
-        float: left;
-        margin: 2px 0;
-        padding: 0;
-        border-right: 2px groove #eeede0;
-        line-height: 34px;
+    input:disabled,
+    select:disabled,
+    textarea:disabled {
         color: #4b4a44;
     }
-    
-    .sheet-header .summary li:last-child {
-        border-right: none;
+
+    input:disabled:hover,
+    select:disabled:hover,
+    textarea:disabled:hover,
+    input:disabled:focus,
+    select:disabled:focus,
+    textarea:disabled:focus {
+        box-shadow: none !important;
+        border: 1px solid transparent !important;
+        outline: none !important;
     }
 
-    .sheet-navigation {
-        flex: 0 0 30px;
-        margin-bottom: 5px;
-        font-size: 20px;
-        font-weight: 700;
+    button {
+        background: rgba(0, 0, 0, 0.1);
+        border: 2px groove #eeede0;
     }
 
-    .sheet-navigation .item {
-        height: 30px;
-        line-height: 32px;
-        margin: 0 24px;
-        border-bottom: 3px solid #b5b3a4;
+    label.checkbox {
+        flex: auto;
+        padding: 0;
+        margin: 0;
+        height: 22px;
+        line-height: 22px;
+        font-size: 11px;
     }
-    
-    .sheet-navigation .item.active {
-        border-bottom: 3px solid #44191A;
-    }
-}
 
-.sheet-body .macro .command {
-    height: calc(100% - 80px);
+    label.checkbox > input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        margin: 0 2px 0 0;
+        position: relative;
+        top: 4px;
+    }
+
+    label.checkbox.right > input[type="checkbox"] {
+        margin: 0 0 0 2px;
+    }
+
+    label.init-checkbox {
+        flex: auto;
+        padding: 0;
+        margin: 0 0 0 2px;
+        height: 22px;
+        line-height: 22px;
+    }
+    .sheet {
+
+        .window-content {
+            overflow-y: hidden;
+            padding: 5px;
+            background: url("../ui/parchment.jpg") repeat;
+            font-size: 13px;
+            color: #191813;
+        }
+
+        .window-content form {
+            height: 100%;
+            overflow: hidden;
+        }
     
-    textarea {
-        width: 100%;
-        height: 100%; 
-        box-sizing: border-box;
-    }    
+        .window-content .tab {
+            height: 100%;
+            overflow-y: hidden;
+            align-content: flex-start;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            background: none;
+            border: 1px solid transparent;
+        }
+
+        input[type="text"]:hover,
+        input[type="number"]:hover,
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            border: 1px solid #111;
+        }
+
+        select {
+            flex: 1;
+            font-size: 12px;
+            height: 22px;
+            background: transparent;
+        }
+
+        .editable .rollable:hover {
+            color: #000;
+            text-shadow: 0 0 10px red;
+            cursor: pointer;
+        }
+
+        span.sep {
+            flex: none;
+            margin: 0 1px;
+            display: inline;
+            position: relative;
+            color: #7a7971;
+            font-weight: normal;
+        }
+
+        .editor {
+            height: 100%;
+        }
+
+        .editor .tox-toolbar-overlord,
+        .editor .tox-toolbar__primary {
+            background: none;
+        }
+
+        .sheet-header .header-details {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .sheet-header h1 {
+            flex: 1;
+            border-bottom: none;
+            height: 60px;
+            margin: 0;
+            padding: 5px;
+        }
+
+        .sheet-header h1 input {
+            display: block;
+            height: 50px;
+            font-size: 32px;
+            margin: 0;
+        }
+
+        .sheet-header img.profile {
+            flex: 0 0 100px;
+            max-width: 100px;
+            height: 100px;
+            object-fit: contain;
+            border: none;
+            border-right: 2px groove #eeede0;
+        }
+
+        .sheet-header .summary {
+            flex: 0 0 100%;
+            height: 40px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            border-top: 2px groove #eeede0;
+            border-bottom: none;
+        }
+
+        .sheet-header .summary li {
+            height: calc(100% - 6px);
+            float: left;
+            margin: 2px 0;
+            padding: 0;
+            border-right: 2px groove #eeede0;
+            line-height: 34px;
+            color: #4b4a44;
+        }
+    
+        .sheet-header .summary li:last-child {
+            border-right: none;
+        }
+
+        .sheet-navigation {
+            flex: 0 0 30px;
+            margin-bottom: 5px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .sheet-navigation .item {
+            height: 30px;
+            line-height: 32px;
+            margin: 0 24px;
+            border-bottom: 3px solid #b5b3a4;
+        }
+    
+        .sheet-navigation .item.active {
+            border-bottom: 3px solid #44191A;
+        }
+    }
+
+    .sheet-body .macro .command {
+        height: calc(100% - 80px);
+    
+        textarea {
+            width: 100%;
+            height: 100%; 
+            box-sizing: border-box;
+        }    
+    }
 }

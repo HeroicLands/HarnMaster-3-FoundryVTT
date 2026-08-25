@@ -1,460 +1,467 @@
-.combat {
-    h2 {
-        flex: 1;
-        margin: 0;
-        line-height: 36px;
-        font-family: "Modesto Condensed", "Palatino Linotype", serif;
-        font-size: 20px;
-        font-weight: 700;
-        color: #4b4a44;
-        background-color: #bbb;
-        border-top: 2px groove #FFF;
-        border-bottom: 2px groove #FFF;
-        padding: 5px;
-    }
+@use "../utils/typography" as *;
+@use "../utils/colors" as *;
+@use "../utils/mixins" as *;
+@use "../utils/variables" as *;
 
-    .combat-stats {
-        gap: 2px;
-        overflow: hidden;
+@mixin combat {
+    .combat {
+        h2 {
+            flex: 1;
+            margin: 0;
+            line-height: 36px;
+            font-family: "Modesto Condensed", "Palatino Linotype", serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #4b4a44;
+            background-color: #bbb;
+            border-top: 2px groove #FFF;
+            border-bottom: 2px groove #FFF;
+            padding: 5px;
+        }
 
-        .combat-stat {
-            align-items: center;
+        .combat-stats {
+            gap: 2px;
+            overflow: hidden;
 
-            .combat-eff-fatigue {
-                flex: 0 0 25px;
+            .combat-stat {
+                align-items: center;
+
+                .combat-eff-fatigue {
+                    flex: 0 0 25px;
+                }
+
+                .combat-fatigue-input {
+                    flex: 0 0 25px;
+                    text-align: center;
+                }
+
+                .combat-stat-label {
+                    flex: 0 0 55px;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+            
+                .combat-stat-value {
+                    flex: 0 0 40px;
+                    background: #bbb;
+                    padding: 2px;
+                    text-align: center;
+                }
             }
+        }
 
-            .combat-fatigue-input {
-                flex: 0 0 25px;
-                text-align: center;
-            }
+        .weapons-list {
+            list-style: none;
+            margin: 7px 0;
+            padding: 0;
+            overflow-y: auto;
 
-            .combat-stat-label {
-                flex: 0 0 55px;
+            .weapon-header {
                 font-weight: bold;
-                text-transform: uppercase;
             }
+
+            .weapon {
+                border-bottom: 1px solid #bbb;
+
+                .item-name.damage-roll:hover .item-image {
+                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                }
+        
+                .item-name.damage-roll .item-image:hover {
+                    background-image: url("../../../icons/svg/d20-black.svg") !important;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                }
             
-            .combat-stat-value {
-                flex: 0 0 40px;
-                background: #bbb;
-                padding: 2px;
-                text-align: center;
+                .weapon-image {
+                    flex: 0 0 24px;
+                    margin-right: 5px;
+                }
+
+                img {
+                    display: block;
+                }
+
+                .weapon-damage {
+                    flex: 0 0 35px;
+                    text-align: center;
+
+                    .inactive {
+                        color: #b5b3a4;
+                    }
+
+                    .active {
+                        color: #4b4a44;
+                    }
+                }
+
+                .weapon-name {
+                    flex: 0 0 150px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+
+                .weapon-name-inv {
+                    flex: 0 0 200px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+
+                .weapon-qty {
+                    flex: 0 0 25px;
+                    text-align: center;
+                }
+
+                .weapon-weight {
+                    flex: 0 0 25px;
+                    text-align: center;
+                }
+
+                .weapon-qty-inv {
+                    flex: 0 0 40px;
+                    text-align: center;
+                }
+
+                .weapon-weight-inv {
+                    flex: 0 0 40px;
+                    text-align: center;
+                }
+
+                .weapon-quality {
+                    flex: 0 0 25px;
+                    text-align: center;
+                }
+
+                .weapon-atkdef {
+                    flex: 0 0 40px;
+                    text-align: center;
+                }
+
+                .weapon-atkmod {
+                    flex: 0 0 25px;
+                    text-align: center;
+                }
+
+                .weapon-blunt {
+                    flex: 0 0 25px;
+                    text-align: center;
+
+                    &.active:hover {
+                        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                        background-size: 27px;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        color: black;
+                    }
+                }
+
+                .weapon-edged {
+                    flex: 0 0 25px;
+                    text-align: center;
+
+                    &.active:hover {
+                        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                        background-size: 27px;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        color: black;
+                    }
+                }
+
+                .weapon-piercing {
+                    flex: 0 0 25px;
+                    text-align: center;
+
+                    &.active:hover {
+                        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                        background-size: 27px;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        color: black;
+                    }
+                }
+
+                .weapon-value {
+                    flex: 0 0 40px;
+                    text-align: center;
+                }
+
+                .weapon-attack {
+                    flex: 0 0 30px;
+                    text-align: center;
+
+                    &.active:hover {
+                        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                        background-size: 27px;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        color: black;
+                    }
+                }
+
+                .weapon-defense {
+                    flex: 0 0 30px;
+                    text-align: center;
+
+                    &.active:hover {
+                        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                        background-size: 27px;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        color: black;
+                    }
+                }
+            
+                .weapon-notes {
+                    flex: 1 0 75px;
+                    padding-left: 10px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+            
+                .item-controls-inv {
+                    flex: 0 0 55px;
+                    text-align: right;
+                }
+            
+                .item-controls {
+                    flex: 0 0 70px;
+                    text-align: right;
+
+                    .item-equip {
+                        color: #b5b3a4;
+                    }
+              
+                    .item-carry {
+                        color: #b5b3a4;
+                    }
+        
+                    .active {
+                        color: #4b4a44;
+                    }
+              
+                }
+
+            }
+        }
+
+        .missiles-list {
+            list-style: none;
+            margin: 7px 0;
+            padding: 0;
+            overflow-y: auto;
+
+            .missile-header {
+                font-weight: bold;
+            }
+
+            .missile {
+                height: 30px;
+                line-height: 24px;
+                padding: 3px 0;
+                border-bottom: 1px solid #bbb;
+
+                .item-name.missile-damage-roll:hover .item-image {
+                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                }
+        
+                .item-name.missile-damage-roll .item-image:hover {
+                    background-image: url("../../../icons/svg/d20-black.svg") !important;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                }
+            
+                .missile-image {
+                    flex: 0 0 24px;
+                    margin-right: 5px;
+                }
+
+                img {
+                    display: block;
+                }
+
+                .missile-damage {
+                    flex: 0 0 35px;
+                    text-align: center;
+
+                    .inactive {
+                        color: #b5b3a4;
+                    }
+
+                    .active {
+                        color: #4b4a44;
+                    }
+                }
+
+                .missile-name {
+                    flex: 0 0 130px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+
+                .missile-name-inv {
+                    flex: 0 0 200px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+
+                .missile-qty {
+                    flex: 0 0 25px;
+                    text-align: center;
+                }
+
+                .missile-weight {
+                    flex: 0 0 30px;
+                    text-align: center;
+                }
+
+                .missile-qty-inv {
+                    flex: 0 0 40px;
+                    text-align: center;
+                }
+
+                .missile-weight-inv {
+                    flex: 0 0 40px;
+                    text-align: center;
+                }
+
+                .missile-skill {
+                    flex: 0 0 75px;
+                    text-align: left;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    padding-left: 3px;
+                }
+
+                .missile-short {
+                    flex: 0 0 45px;
+                    text-align: center;
+
+                    &.active:hover {
+                        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                        background-size: 27px;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        color: black;
+                    }
+                }
+
+                .missile-medium {
+                    flex: 0 0 45px;
+                    text-align: center;
+
+                    &.active:hover {
+                        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                        background-size: 27px;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        color: black;
+                    }
+                }
+
+                .missile-long {
+                    flex: 0 0 45px;
+                    text-align: center;
+
+                    &.active:hover {
+                        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                        background-size: 27px;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        color: black;
+                    }
+                }
+
+                .missile-extreme {
+                    flex: 0 0 45px;
+                    text-align: center;
+
+                    &.active:hover {
+                        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                        background-size: 27px;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        color: black;
+                    }
+                }
+
+                .missile-value {
+                    flex: 0 0 40px;
+                    text-align: center;
+                }
+
+                .missile-attack {
+                    flex: 0 0 30px;
+                    text-align: center;
+
+                    &.active:hover {
+                        background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                        background-size: 27px;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        color: black;
+                    }
+                }
+            
+                .missile-notes {
+                    flex: 1 0 50px;
+                    padding-left: 10px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+            
+                .item-controls-inv {
+                    flex: 0 0 55px;
+                    text-align: right;
+                }
+            
+                .item-controls {
+                    flex: 0 0 70px;
+                    text-align: right;
+                    .item-equip {
+                        color: #b5b3a4;
+                    }
+              
+                    .item-carry {
+                        color: #b5b3a4;
+                    }
+              
+                    .active {
+                        color: #4b4a44;
+                    }
+              
+                }
+
             }
         }
     }
 
-    .weapons-list {
-        list-style: none;
-        margin: 7px 0;
-        padding: 0;
-        overflow-y: auto;
-
-        .weapon-header {
+    .range-table {
+        .range-header {
             font-weight: bold;
         }
 
-        .weapon {
-            border-bottom: 1px solid #bbb;
-
-            .item-name.damage-roll:hover .item-image {
-                background-image: url("../../../icons/svg/d20-grey.svg") !important;
-                background-repeat: no-repeat;
-                background-position: center;
-            }
-        
-            .item-name.damage-roll .item-image:hover {
-                background-image: url("../../../icons/svg/d20-black.svg") !important;
-                background-repeat: no-repeat;
-                background-position: center;
-            }
-            
-            .weapon-image {
-                flex: 0 0 24px;
-                margin-right: 5px;
-            }
-
-            img {
-                display: block;
-            }
-
-            .weapon-damage {
-                flex: 0 0 35px;
-                text-align: center;
-
-                .inactive {
-                    color: #b5b3a4;
-                }
-
-                .active {
-                    color: #4b4a44;
-                }
-            }
-
-            .weapon-name {
-                flex: 0 0 150px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-            }
-
-            .weapon-name-inv {
-                flex: 0 0 200px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-            }
-
-            .weapon-qty {
-                flex: 0 0 25px;
-                text-align: center;
-            }
-
-            .weapon-weight {
-                flex: 0 0 25px;
-                text-align: center;
-            }
-
-            .weapon-qty-inv {
-                flex: 0 0 40px;
-                text-align: center;
-            }
-
-            .weapon-weight-inv {
-                flex: 0 0 40px;
-                text-align: center;
-            }
-
-            .weapon-quality {
-                flex: 0 0 25px;
-                text-align: center;
-            }
-
-            .weapon-atkdef {
-                flex: 0 0 40px;
-                text-align: center;
-            }
-
-            .weapon-atkmod {
-                flex: 0 0 25px;
-                text-align: center;
-            }
-
-            .weapon-blunt {
-                flex: 0 0 25px;
-                text-align: center;
-
-                &.active:hover {
-                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
-            }
-
-            .weapon-edged {
-                flex: 0 0 25px;
-                text-align: center;
-
-                &.active:hover {
-                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
-            }
-
-            .weapon-piercing {
-                flex: 0 0 25px;
-                text-align: center;
-
-                &.active:hover {
-                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
-            }
-
-            .weapon-value {
-                flex: 0 0 40px;
-                text-align: center;
-            }
-
-            .weapon-attack {
-                flex: 0 0 30px;
-                text-align: center;
-
-                &.active:hover {
-                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
-            }
-
-            .weapon-defense {
-                flex: 0 0 30px;
-                text-align: center;
-
-                &.active:hover {
-                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
-            }
-            
-            .weapon-notes {
-                flex: 1 0 75px;
-                padding-left: 10px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-            }
-            
-            .item-controls-inv {
-                flex: 0 0 55px;
-                text-align: right;
-            }
-            
-            .item-controls {
-                flex: 0 0 70px;
-                text-align: right;
-
-                .item-equip {
-                    color: #b5b3a4;
-                }
-              
-                .item-carry {
-                    color: #b5b3a4;
-                }
-        
-                .active {
-                    color: #4b4a44;
-                }
-              
-            }
-
-        }
-    }
-
-    .missiles-list {
-        list-style: none;
-        margin: 7px 0;
-        padding: 0;
-        overflow-y: auto;
-
-        .missile-header {
+        .range-label {
+            flex: 0 0 50px;
             font-weight: bold;
+            text-align: left;
         }
 
-        .missile {
-            height: 30px;
-            line-height: 24px;
-            padding: 3px 0;
-            border-bottom: 1px solid #bbb;
-
-            .item-name.missile-damage-roll:hover .item-image {
-                background-image: url("../../../icons/svg/d20-grey.svg") !important;
-                background-repeat: no-repeat;
-                background-position: center;
-            }
-        
-            .item-name.missile-damage-roll .item-image:hover {
-                background-image: url("../../../icons/svg/d20-black.svg") !important;
-                background-repeat: no-repeat;
-                background-position: center;
-            }
-            
-            .missile-image {
-                flex: 0 0 24px;
-                margin-right: 5px;
-            }
-
-            img {
-                display: block;
-            }
-
-            .missile-damage {
-                flex: 0 0 35px;
-                text-align: center;
-
-                .inactive {
-                    color: #b5b3a4;
-                }
-
-                .active {
-                    color: #4b4a44;
-                }
-            }
-
-            .missile-name {
-                flex: 0 0 130px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-            }
-
-            .missile-name-inv {
-                flex: 0 0 200px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-            }
-
-            .missile-qty {
-                flex: 0 0 25px;
-                text-align: center;
-            }
-
-            .missile-weight {
-                flex: 0 0 30px;
-                text-align: center;
-            }
-
-            .missile-qty-inv {
-                flex: 0 0 40px;
-                text-align: center;
-            }
-
-            .missile-weight-inv {
-                flex: 0 0 40px;
-                text-align: center;
-            }
-
-            .missile-skill {
-                flex: 0 0 75px;
-                text-align: left;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-                padding-left: 3px;
-            }
-
-            .missile-short {
-                flex: 0 0 45px;
-                text-align: center;
-
-                &.active:hover {
-                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
-            }
-
-            .missile-medium {
-                flex: 0 0 45px;
-                text-align: center;
-
-                &.active:hover {
-                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
-            }
-
-            .missile-long {
-                flex: 0 0 45px;
-                text-align: center;
-
-                &.active:hover {
-                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
-            }
-
-            .missile-extreme {
-                flex: 0 0 45px;
-                text-align: center;
-
-                &.active:hover {
-                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
-            }
-
-            .missile-value {
-                flex: 0 0 40px;
-                text-align: center;
-            }
-
-            .missile-attack {
-                flex: 0 0 30px;
-                text-align: center;
-
-                &.active:hover {
-                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
-                    background-size: 27px;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    color: black;
-                }
-            }
-            
-            .missile-notes {
-                flex: 1 0 50px;
-                padding-left: 10px;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-            }
-            
-            .item-controls-inv {
-                flex: 0 0 55px;
-                text-align: right;
-            }
-            
-            .item-controls {
-                flex: 0 0 70px;
-                text-align: right;
-                .item-equip {
-                    color: #b5b3a4;
-                }
-              
-                .item-carry {
-                    color: #b5b3a4;
-                }
-              
-                .active {
-                    color: #4b4a44;
-                }
-              
-            }
-
+        .range-value {
+            flex: 0 0 60px;
+            margin: 0 2px;
+            text-align: center;
         }
-    }
-}
-
-.range-table {
-    .range-header {
-        font-weight: bold;
-    }
-
-    .range-label {
-        flex: 0 0 50px;
-        font-weight: bold;
-        text-align: left;
-    }
-
-    .range-value {
-        flex: 0 0 60px;
-        margin: 0 2px;
-        text-align: center;
     }
 }

@@ -1,3 +1,8 @@
+@use "../utils/typography" as *;
+@use "../utils/colors" as *;
+@use "../utils/mixins" as *;
+@use "../utils/variables" as *;
+
 // ApplicationV2 chrome.
 //
 // Under AppV1 the sheet template's own `<form class="sheet flexcol">` was the

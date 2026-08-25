@@ -1,9 +1,16 @@
-.resource-label {
-  font-weight: bold;
-  text-transform: uppercase;
-}
+@use "../utils/typography" as *;
+@use "../utils/colors" as *;
+@use "../utils/mixins" as *;
+@use "../utils/variables" as *;
 
-.artifact {
-  padding-top: 5px;
-  align-items: center;
+@mixin resource {
+    .resource-label {
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .artifact {
+      padding-top: 5px;
+      align-items: center;
+    }
 }

@@ -1,35 +1,57 @@
-// Import utilities.
-@import 'utils/typography';
-@import 'utils/colors';
-@import 'utils/mixins';
-@import 'utils/variables';
+// Utilities. `@use` has no shared global namespace the way `@import` did,
+// so every partial that needs these loads them itself; they are listed here
+// too because the entry point's own rules may use them.
+@use "utils/typography" as *;
+@use "utils/colors" as *;
+@use "utils/mixins" as *;
+@use "utils/variables" as *;
 
 /* Global styles */
-@import 'global/window';
-@import 'global/appv2';
-@import 'global/editor';
-@import 'global/grid';
-@import 'global/flex';
-@import 'global/chat';
-@import 'global/tooltip';
-@import 'global/nav';
-@import 'global/hotbar';
+@use "global/window";
+@use "global/appv2";
+@use "global/editor";
+@use "global/grid";
+@use "global/flex";
+@use "global/chat";
+@use "global/tooltip";
+@use "global/nav";
+@use "global/hotbar";
 
 /* Styles limited to hm3 sheets */
+//
+// These were `@import`ed inside the selector to scope them. `@use` is only
+// allowed at the top level, so each partial exposes a mixin of the same
+// name and is included here instead — same nesting, same output.
+@use "components/top" as top;
+@use "components/facade" as facade;
+@use "components/forms" as forms;
+@use "components/resource" as resource;
+@use "components/tabs" as tabs;
+@use "components/items" as items;
+@use "components/combat" as combat;
+@use "components/inv" as inv;
+@use "components/profile" as profile;
+@use "components/injuries" as injuries;
+@use "components/skills" as skills;
+@use "components/spell" as spell;
+@use "components/armorloc" as armorloc;
+@use "components/gear" as gear;
+@use "components/effects" as effects;
+
 .hm3 {
-  @import 'components/top';
-  @import 'components/facade';
-  @import 'components/forms';
-  @import 'components/resource';
-  @import 'components/tabs';
-  @import 'components/items';
-  @import 'components/combat';
-  @import 'components/inv';
-  @import 'components/profile';
-  @import 'components/injuries';
-  @import 'components/skills';
-  @import 'components/spell';
-  @import 'components/armorloc';
-  @import 'components/gear';
-  @import 'components/effects'
+    @include top.top;
+    @include facade.facade;
+    @include forms.forms;
+    @include resource.resource;
+    @include tabs.tabs;
+    @include items.items;
+    @include combat.combat;
+    @include inv.inv;
+    @include profile.profile;
+    @include injuries.injuries;
+    @include skills.skills;
+    @include spell.spell;
+    @include armorloc.armorloc;
+    @include gear.gear;
+    @include effects.effects;
 }

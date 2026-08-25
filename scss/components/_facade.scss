@@ -1,11 +1,18 @@
-.facade {
-    img.facade-image {
-        flex: 0 0 200px;
-        object-fit: contain;
-        background: white;
-    }
+@use "../utils/typography" as *;
+@use "../utils/colors" as *;
+@use "../utils/mixins" as *;
+@use "../utils/variables" as *;
+
+@mixin facade {
+    .facade {
+        img.facade-image {
+            flex: 0 0 200px;
+            object-fit: contain;
+            background: white;
+        }
     
-    .facade-description {
-        margin-left: 5px;
+        .facade-description {
+            margin-left: 5px;
+        }
     }
 }

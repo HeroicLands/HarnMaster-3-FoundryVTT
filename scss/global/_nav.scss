@@ -1,3 +1,8 @@
+@use "../utils/typography" as *;
+@use "../utils/colors" as *;
+@use "../utils/mixins" as *;
+@use "../utils/variables" as *;
+
 .sheet nav.sheet-tabs {
     height: 32px;
     flex: 0 0 32px;
