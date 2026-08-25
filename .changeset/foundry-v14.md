@@ -17,16 +17,29 @@ What changed that you will notice:
 - **Rich text is ProseMirror.** The "Highlight" block is still there, now under
   the editor's Custom insert menu. The Hârnic fonts — Lakise, Runic and
   Lankorian Blackhand — are still in the editor's font list.
+- **Sheets are rebuilt on Foundry's current application framework.** They look
+  and behave as before, but they now sit in v14's window chrome.
 - **Chat cards work again.** Their action buttons had lost their click handlers
   in v13, when the chat log stopped passing jQuery. Roll messages had also been
   posting with the roll detached: nothing to expand, and nothing for Dice So
   Nice to animate.
+- **Active effects can be created again.** The fields Foundry stores an effect's
+  name and image in were renamed, and creating one with the old names failed
+  validation outright.
+- **The active effect sheet offers HârnMaster's list of effect keys again.** It
+  had quietly fallen back to Foundry's own sheet, leaving keys to be typed by
+  hand.
+- **The Theatre of the Mind checkbox is back in scene configuration.** It
+  anchored itself to a field that was renamed, so it had stopped appearing.
 - **Messages you post on someone else's behalf keep their attribution.** The
   field Foundry stores it in was renamed and the old one was being discarded
   silently.
-- **The missile damage dialog preselects the right range**, and the armour
-  sheet's Add Location button adds the location you actually picked rather than
-  the one before it.
+- **Moving a container between actors works**, as does deleting a container with
+  its contents — the warning that its contents would go with it was not true.
+- **The missile damage dialog preselects the right range**, the armour sheet's
+  Add Location button adds the location you actually picked rather than the one
+  before it, and the missile macro dialog's Attack and Damage buttons no longer
+  fail outright.
 - **Dropdowns across every sheet and dialog** were rebuilt on the helper that
   replaced the one v14 removed.
 
