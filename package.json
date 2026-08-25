@@ -2,7 +2,7 @@
     "name": "hm3",
     "private": true,
     "version": "1.6.3",
-    "description": "The H\u00e2rnMaster 3 system for Foundry VTT",
+    "description": "The HârnMaster 3 system for Foundry VTT",
     "type": "module",
     "license": "SEE LICENSE IN LICENSE",
     "author": {
@@ -35,6 +35,9 @@
         "deploy:dev": "run-s build:local push:dev",
         "lint:lang": "package-build lang check",
         "lint:packs": "node utils/check-no-compiled-packs.mjs",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:coverage": "vitest run --coverage",
         "changeset": "changeset",
         "changeset:version": "changeset version && npm install --package-lock-only",
         "changeset:check": "changeset status --since=origin/main"
@@ -44,6 +47,7 @@
         "@foundryvtt/foundryvtt-cli": "^3.0.4",
         "@heroiclands/package-build": "^3.0.0",
         "npm-run-all": "^4.1.5",
-        "sass": "^1.103.1"
+        "sass": "^1.103.1",
+        "vitest": "^3.2.7"
     }
 }

@@ -59,6 +59,13 @@ jobs:
             - name: Localization
               run: npm run lint:lang
 
+            # The combat result tables, the utility helpers and the shape of
+            # CONFIG.HM3, none of which need Foundry. Under a second, and a
+            # failure names the rule that broke rather than just reporting that
+            # the system would not load.
+            - name: Unit tests
+              run: npm test
+
             # Compiles the styles, stages the assets, builds all four compendium
             # packs from their committed JSON, and generates system.json. A
             # failure here means the system would not load.

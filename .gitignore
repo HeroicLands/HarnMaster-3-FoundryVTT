@@ -1,17 +1,44 @@
 # Dependency directories
-node_modules/
-jspm_packages/
+/node_modules/
 
 # dotenv environment variables file
-.env
-.env.test
+/.env
+/.env.test
+/.env.local
 
-# parcel-bundler cache (https://parceljs.org/)
-.cache
+# AI
+/.claude/
+CLAUDE.md
+AI.md
 
-# Visual Studio
-.vscode/
-*.code-workspace
+# IDE and editor config — per-user; never commit one contributor's editor setup
+# (project-wide policy like Prettier/ESLint config stays tracked; it's not IDE-specific)
+# VS Code (incl. recommended-extensions and settings)
+/.vscode/
+/*.code-workspace
+# JetBrains IDEs (IntelliJ IDEA, WebStorm, etc.) and Fleet
+/.idea/
+/.fleet/
+# Zed
+/.zed/
+# Sublime Text (project + workspace)
+*.sublime-workspace
+*.sublime-project
+# Vim / Neovim
+*.swp
+*.swo
+Session.vim
+.netrwhist
+# Emacs (backups, auto-save, lock files)
+*~
+\#*\#
+.\#*
+
+# Obsidian (assets/content is opened as a vault; local UI state only)
+assets/content/.obsidian/
+
+# GitHub
+.github/copilot-instructions.md
 
 # macOS specific files
 # general
@@ -32,23 +59,26 @@ jspm_packages/
 .com.apple.timemachine.donotpresent
 
 # Build files
-build/
-
-# Distrubution files
-dist/
-
-# Package builds
-package/
-
-# Hidden files
-nogit/
-
-# Foundry Project Creator config file
-foundryconfig.json
-
-# Compiled CSS now lands in the build stage, not the repository.
+/build/
+/coverage/
 /css/
 
-# Foundry writes its compiled LevelDB here when a stage is deployed in place.
-# The compendium source is assets/packs/; this directory is build output only.
-/packs/
+# Cypress run artifacts (specs/support/config are committed)
+/cypress/videos/
+/cypress/screenshots/
+/cypress/downloads/
+
+# Wrangler scratch, from serving the assembled site locally
+# (`npx wrangler pages dev build/site`) to check status codes and 404s.
+/.wrangler/
+
+# Hidden files
+/nogit/
+*.wip
+
+# Generated types package declaration (built via `npm run build:sohl-types`)
+/packages/sohl-types/index.d.ts
+
+# Generated content-build declarations, emitted from the package's JSDoc at
+# pack time (`npm run build:content-build-types`). Sources are the `.mjs`.
+/packages/content-build/types/
