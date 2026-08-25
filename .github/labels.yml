@@ -1,0 +1,81 @@
+# Authoritative label registry for HarnMaster-3-FoundryVTT.
+#
+# GitHub's labels are reconciled to this file by the org-wide labels action, run
+# from .github/workflows/labels-sync.yml. The set is CLOSED: any label on GitHub
+# that is not listed here is deleted — from the repository and from every issue
+# carrying it. Do not invent labels; extending the set is a deliberate edit here.
+#
+# `bug` and `enhancement` are deliberately absent. Under the HeroicLands issue
+# standard those are the *type* axis — a GitHub issue type, one per issue — and
+# §3 is explicit that work-shape must not also be encoded as a label. This
+# repository used them as labels from 2020 until they were migrated: every issue
+# that carried one had its issue type set first (71 Bug, 69 Feature across the
+# tracker), so reconciling moves the information rather than destroying it. The
+# 124 closed issues still carrying the old labels lose them on the next sync and
+# keep their type.
+#
+# What remains is subject matter only, which is what a label is for.
+
+# ------------------------------------------------- subject matter, in use here
+
+
+
+- name: compendium
+  color: "672dc4"
+  description: Add, remove, or modify compendium content.
+
+- name: cosmetic
+  color: "d4c5f9"
+  description: Cosmetic error — does not impact function.
+
+- name: regression
+  color: "d93f0b"
+  description: Something that previously worked and stopped.
+
+- name: wontfix
+  color: "ffffff"
+  description: This will not be worked on.
+
+# ------------------------------------------------- shared with the other repos
+
+- name: devops
+  color: "e07b31"
+  description: Build, tooling, pack pipeline, release, repo config.
+
+- name: security
+  color: "b60205"
+  description: "Attack surface: data integrity, script execution, or injection risk."
+
+- name: tech-debt
+  color: "68691b"
+  description: Restructuring or cleanup of working code or tooling; refactors.
+
+- name: breaking-change
+  color: "8d0f09"
+  description: Alters a document ID, data model, or pack compatibility in a way worlds will notice.
+
+- name: blocked
+  color: "c5702e"
+  description: Cannot proceed until an external dependency or another issue clears.
+
+- name: documentation
+  color: "0075ca"
+  description: Documentation about this repository — README, process, authoring guides.
+
+- name: duplicate
+  color: "cfd3d7"
+  description: This issue or pull request already exists.
+
+- name: question
+  color: "0f5594"
+  description: Further information is requested.
+
+# ------------------------------------------------------ onboarding a new hand
+
+- name: good first issue
+  color: "7057ff"
+  description: Good for newcomers.
+
+- name: help wanted
+  color: "008672"
+  description: Extra attention is needed.
