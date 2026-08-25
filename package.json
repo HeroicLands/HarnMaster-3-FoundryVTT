@@ -32,7 +32,8 @@
         "build:pack-release": "package-build release",
         "push:dev": "package-build deploy dev",
         "deploy:dev": "run-s build:local push:dev",
-        "lint:lang": "package-build lang check"
+        "lint:lang": "package-build lang check",
+        "lint:packs": "node utils/check-no-compiled-packs.mjs"
     },
     "devDependencies": {
         "@foundryvtt/foundryvtt-cli": "^3.0.4",
