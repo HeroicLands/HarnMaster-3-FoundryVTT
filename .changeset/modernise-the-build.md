@@ -11,7 +11,7 @@ the repository moved and they had not. Per-pack `ownership` is no longer
 declared, so Foundry's defaults apply.
 
 The compendium packs are unchanged: 674 documents across the same four packs,
-still authored as JSON under `packs/<name>/_source/`, now compiled into the
+still authored as JSON under `assets/packs/<name>/`, now compiled into the
 build stage instead of in place.
 
 Internally: the 2019 gulp/node-sass build is replaced by Dart Sass (it could no
