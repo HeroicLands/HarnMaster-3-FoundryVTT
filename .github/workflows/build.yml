@@ -22,6 +22,24 @@ permissions:
     contents: read
 
 jobs:
+    # Its own job, and needing no install, so it reports in seconds and reports
+    # independently of whether the build passes. The compendium source is the
+    # JSON under packs/<name>/_source/; the LevelDB is build output and belongs
+    # in build/stage/packs/, which is not tracked.
+    #
+    # `packs/.gitignore` has listed these patterns for years and was not enough:
+    # .gitignore is advice to `git add`, so a contributor who needed loadable
+    # packs and could not see how to build them commented the rule out and
+    # committed the binaries instead (#398). Until now they were right that
+    # there was no other way — there was no build step that produced them. Now
+    # there is, and this makes the rule enforceable rather than advisory.
+    no-compiled-packs:
+        name: No compiled packs committed
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+            - run: node utils/check-no-compiled-packs.mjs
+
     build:
         name: Build
         runs-on: ubuntu-latest

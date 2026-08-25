@@ -33,6 +33,7 @@
         "push:dev": "package-build deploy dev",
         "deploy:dev": "run-s build:local push:dev",
         "lint:lang": "package-build lang check",
+        "lint:packs": "node utils/check-no-compiled-packs.mjs",
         "changeset": "changeset",
         "changeset:version": "changeset version && npm install --package-lock-only",
         "changeset:check": "changeset status --since=origin/main"
