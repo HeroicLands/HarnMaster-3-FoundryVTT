@@ -1,0 +1,34 @@
+#!/usr/bin/env sh
+#
+# Reject commit messages that carry AI/assistant attribution.
+#
+# This project does not want Co-Authored-By trailers naming an AI assistant, nor
+# "Generated with Claude Code"-style signatures, in its history. The matching CI
+# guard is the shared HeroicLands/.github/actions/no-attribution action, which
+# this repository's .github/workflows/no-attribution.yml calls. That action holds
+# the pattern for every repository; this hook is the only other copy, because a
+# git hook runs from your checkout and cannot live in an action. Keep them in sync.
+#
+# Installed for everyone via the package.json "prepare" script, which points
+# git at this directory (`git config core.hooksPath .githooks`) on `npm install`.
+
+msg_file="$1"
+
+# Scan only the real message: drop the diff appended by `commit --verbose` (from
+# the scissors comment onward) and strip remaining comment lines.
+content="$(sed '/^#.*>8/,$d' "$msg_file" | grep -v '^#')"
+
+# Anchored to the start of a line: real attribution is a trailer / signature at
+# column 0, so prose that merely *mentions* these phrases mid-sentence (e.g. this
+# hook's own docs) does not trip it. The generated-with branch tolerates a
+# leading emoji/space.
+pattern='^[[:space:]]*co-authored-by:.*(claude|anthropic)|^[^[:alpha:]]*generated with .*claude code'
+
+if printf '%s\n' "$content" | grep -iEq "$pattern"; then
+    echo "commit-msg: AI/assistant attribution is not allowed in commit messages." >&2
+    printf '%s\n' "$content" | grep -iEn "$pattern" | sed 's/^/    /' >&2
+    echo "Remove the 'Co-Authored-By: …' / 'Generated with Claude Code' line and commit again." >&2
+    exit 1
+fi
+
+exit 0
