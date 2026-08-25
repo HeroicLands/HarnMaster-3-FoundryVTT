@@ -1,7 +1,7 @@
 # How `@heroiclands/package-build` builds this system.
 #
 # HM3 uses only the packaging half of the toolchain. Its compendium content is
-# committed JSON under `packs/<name>/_source/`, not a Markdown content tree, so
+# committed JSON under `assets/packs/<name>/`, not a Markdown content tree, so
 # there is no `itemBuilders` registry and no `assets/content/`. The two halves
 # are independent: `packs:` below is a *declaration* of what this package ships,
 # and nothing here requires the packs to have been generated from Markdown.
