@@ -392,7 +392,7 @@ export class DiceHM3 {
         // Create a chat message
         await ChatMessage.create(messageData, messageOptions);
         if (game.settings.get("hm3", "combatAudio")) {
-            AudioHelper.play({src: "systems/hm3/audio/grunt1.ogg", autoplay: true, loop: false}, true);
+            foundry.audio.AudioHelper.play({src: "systems/hm3/audio/grunt1.ogg", autoplay: true, loop: false}, true);
         }
         return chatTemplateData;
     }

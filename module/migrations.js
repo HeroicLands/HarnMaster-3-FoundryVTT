@@ -279,9 +279,9 @@ export const migrateActorData = function (actor) {
     let itemUpdate = migrateItemData(itemData);
 
     // Update the Owned Item
-    if ( !isObjectEmpty(itemUpdate) ) {
+    if ( !foundry.utils.isEmpty(itemUpdate) ) {
       itemUpdate._id = itemData._id;
-      arr.push(expandObject(itemUpdate));
+      arr.push(foundry.utils.expandObject(itemUpdate));
     }
 
     return arr;
@@ -455,7 +455,7 @@ export const migrateItemData = function (item) {
       t.actorData = {};
     }
     else if ( !t.actorLink ) {
-      const actorData = duplicate(t.actorData);
+      const actorData = foundry.utils.duplicate(t.actorData);
       actorData.type = token.actor?.type;
       const update = migrateActorData(actorData);
       ['items', 'effects'].forEach(embeddedName => {
@@ -500,7 +500,7 @@ export const migrateItemData = function (item) {
  * @private
  */
 const _migrateRemoveDeprecated = function (ent, updateData) {
-  const flat = flattenObject(ent);
+  const flat = foundry.utils.flattenObject(ent);
 
   const toPreDep = Object.entries(updateData).filter(e => e[0])
   // Identify objects to deprecate

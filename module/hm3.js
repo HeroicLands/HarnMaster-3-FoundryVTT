@@ -75,12 +75,16 @@ Hooks.once('init', async function () {
         trait: "Trait"    
     };
     CONFIG.Combat.documentClass = HarnMasterCombat;
-    CONFIG.TinyMCE.style_formats[0].items.push({
-        title: 'Highlight',
-        block: 'section',
-        classes: 'highlight',
-        wrapper: true
-    })
+
+    // Register the "Highlight" block with the ProseMirror editor. TinyMCE was
+    // removed in Foundry v14, taking CONFIG.TinyMCE with it;
+    // CONFIG.TextEditor.inserts is the replacement extension point, and
+    // <selection></selection> reproduces what the old `wrapper: true` did.
+    CONFIG.TextEditor.inserts.push({
+        action: "highlight",
+        title: "HM3.Editor.Highlight",
+        html: '<section class="highlight"><selection></selection></section>'
+    });
 
     // Register sheet application classes
     Actors.unregisterSheet("core", ActorSheet);
@@ -124,19 +128,11 @@ Hooks.once('init', async function () {
         return str.toLowerCase();
     });
 
-    // Add a font selector dropdown to the TineMCE editor
-    //CONFIG.TinyMCE.toolbar = "styleselect forecolor backcolor bullist numlist image table hr link removeformat code fontselect fontsizeselect save";
-    //CONFIG.TinyMCE.toolbar = "styles bullist numlist image table hr link removeformat code fontselect save";
-    // Register the Hârnic fonts with Foundry and TinyMCE
-    // These are the default fonts for browsers
-    let defaultFonts = "Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Signika=Signika,sans-serif;Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats"
-    // These are the fonts we add
-    let extraFonts = "Martel=Martel;Roboto=Roboto;Lakise=Lakise;Runic=Runic;Lankorian Blackhand=Lankorian Blackhand";
-    // Configure the TinyMCE font drop-down (note: Monk's Enhanced Journal will overwrite this)
-    CONFIG.TinyMCE.font_formats = (CONFIG.TinyMCE.font_formats?CONFIG.TinyMCE.font_formats:defaultFonts) + ";"+extraFonts;
-    // Register the extra fonts within Foundry itsel (e.g. Text drawing tool)
-//    let fontFamilies = extraFonts.split(";").map(f => f.split("=")[0]).filter(f => f.length);
-//    fontFamilies.forEach(f => CONFIG.fontFamilies.push(f));
+    // Register the Harnic fonts with Foundry. `editor: true` is what puts a
+    // family in the ProseMirror font menu: FontConfig.getAvailableFonts()
+    // collects exactly the families whose definition sets it, and the editor
+    // builds its dropdown from that list. There is no separate editor font
+    // configuration to keep in step any more.
     Object.assign(CONFIG.fontDefinitions, {
         "Lakise": {editor: true, fonts: [{urls: ['./systems/hm3/fonts/Harn-Lakise-Normal.otf']}]},
         "Runic": {editor: true, fonts: [{urls: ['./systems/hm3/fonts/Harn-Runic-Normal.otf']}]},

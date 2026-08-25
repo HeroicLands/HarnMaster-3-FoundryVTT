@@ -132,7 +132,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions);
     if (game.settings.get('hm3', 'combatAudio')) {
-        AudioHelper.play({src: "sounds/drums.wav", autoplay: true, loop: false}, true);
+        foundry.audio.AudioHelper.play({src: "sounds/drums.wav", autoplay: true, loop: false}, true);
     }
 
     return chatTemplateData;
@@ -263,7 +263,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions);
     if (game.settings.get('hm3', 'combatAudio')) {
-        AudioHelper.play({src: "sounds/drums.wav", autoplay: true, loop: false}, true);
+        foundry.audio.AudioHelper.play({src: "sounds/drums.wav", autoplay: true, loop: false}, true);
     }
 
     return chatTemplateData;
@@ -838,7 +838,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions)
     if (!combatResult.outcome.atkDice && game.settings.get('hm3', 'combatAudio')) {
-        AudioHelper.play({src: "systems/hm3/audio/swoosh1.ogg", autoplay: true, loop: false}, true);
+        foundry.audio.AudioHelper.play({src: "systems/hm3/audio/swoosh1.ogg", autoplay: true, loop: false}, true);
     }
 
     return chatData;
@@ -1073,7 +1073,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
     // Create a chat message
     await ChatMessage.create(messageData, messageOptions)
     if (!combatResult.outcome.atkDice && game.settings.get('hm3', 'combatAudio')) {
-        AudioHelper.play({src: "systems/hm3/audio/shield-bash.ogg", autoplay: true, loop: false}, true);
+        foundry.audio.AudioHelper.play({src: "systems/hm3/audio/shield-bash.ogg", autoplay: true, loop: false}, true);
     }
 
     return chatData;

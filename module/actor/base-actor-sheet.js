@@ -842,7 +842,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Only process inventory ("gear") items, otherwise ignore
         if (item.type.endsWith('gear')) {
             const attr = "system.isCarried";
-            return item.update({ [attr]: !getProperty(item, attr) });
+            return item.update({ [attr]: !foundry.utils.getProperty(item, attr) });
         }
 
         return null;
@@ -861,7 +861,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // Only process inventory ("gear") items, otherwise ignore
         if (item.type.endsWith('gear')) {
             const attr = "system.isEquipped";
-            return item.update({ [attr]: !getProperty(item, attr) });
+            return item.update({ [attr]: !foundry.utils.getProperty(item, attr) });
         }
 
         return null;
