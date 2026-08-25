@@ -1,0 +1,61 @@
+name: Build
+
+# The pull request gate. Until this landed the system had no CI at all: nothing
+# checked that a change still installed, still compiled its compendium packs, or
+# still produced a loadable manifest. That was survivable while one person held
+# the whole build in their head, and stops being survivable the moment a second
+# person opens a pull request.
+
+on:
+    pull_request:
+        branches: [main]
+    push:
+        branches: [main]
+
+# A second push to the same branch supersedes the first; nothing here needs the
+# older run to finish.
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+
+jobs:
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: 24
+                  cache: npm
+
+            - name: Install dependencies
+              run: npm ci
+
+            # A localization file whose keys collide on a dotted prefix makes
+            # foundry.utils.expandObject throw, and Foundry then drops the whole
+            # translation — so this is a build failure, not a lint opinion.
+            - name: Localization
+              run: npm run lint:lang
+
+            # Compiles the styles, stages the assets, builds all four compendium
+            # packs from their committed JSON, and generates system.json. A
+            # failure here means the system would not load.
+            - name: Build
+              run: npm run build:noci
+
+            # The manifest is generated, so the thing worth asserting is that it
+            # came out loadable: the id Foundry keys everything off, and one
+            # entry per declared pack.
+            - name: Check the generated manifest
+              run: |
+                  node --input-type=module -e '
+                    import { readFileSync } from "node:fs";
+                    const m = JSON.parse(readFileSync("build/stage/system.json", "utf8"));
+                    if (m.id !== "hm3") throw new Error(`id is ${m.id}, expected hm3`);
+                    if (m.packs.length !== 4) throw new Error(`${m.packs.length} packs, expected 4`);
+                    console.log(`system.json ok: ${m.id} ${m.version}, ${m.packs.length} packs`);
+                  '

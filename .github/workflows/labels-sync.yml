@@ -1,0 +1,36 @@
+name: Sync labels
+
+# Reconcile this repository's GitHub labels to the registry in
+# .github/labels.yml. The machinery is the org-wide action; the registry stays
+# here, because it is this repository's — and it is deliberately not the same
+# set as the other repositories carry. See the header of .github/labels.yml.
+#
+# The set is closed: a label not in the registry is deleted, from the repository
+# and from every issue carrying it. A pull request touching the registry
+# therefore reports what a sync *would* change and writes nothing, so a deletion
+# is seen in review rather than after the fact.
+
+on:
+    pull_request:
+        paths: [".github/labels.yml"]
+    push:
+        branches: [main]
+        paths: [".github/labels.yml"]
+    workflow_dispatch:
+
+permissions:
+    issues: write
+
+concurrency:
+    group: labels-sync
+    cancel-in-progress: false
+
+jobs:
+    sync:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+            - uses: HeroicLands/.github/actions/labels@main
+              with:
+                  mode: ${{ github.event_name == 'pull_request' && 'check' || 'sync' }}
+                  token: ${{ secrets.GITHUB_TOKEN }}
