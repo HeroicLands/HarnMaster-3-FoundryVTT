@@ -284,7 +284,7 @@ export class DiceHM3 {
     static async sdrRoll(item) {
         const speaker = ChatMessage.getSpeaker();
 
-        let roll = await (new Roll(`1d100 + @sb`, {sb: item.system.skillBase.value})).evaluate({async: true});
+        let roll = await (new Roll(`1d100 + @sb`, {sb: item.system.skillBase.value})).evaluate();
 
         const isSuccess = roll.total > item.system.masteryLevel;
 
@@ -1200,7 +1200,7 @@ export class DiceHM3 {
         const numDice = (testData.diceNum > 0) ? testData.diceNum : 1;
         const diceSpec = numDice + diceType;
         const rollObj = new Roll(diceSpec, testData.data);
-        const roll = await rollObj.evaluate({async: true});
+        const roll = await rollObj.evaluate();
         if (!roll) {
             console.error(`Roll evaluation failed, diceSpec=${diceSpec}`)
         }
