@@ -5,23 +5,20 @@
 # that is not listed here is deleted — from the repository and from every issue
 # carrying it. Do not invent labels; extending the set is a deliberate edit here.
 #
-# This registry is deliberately NOT a copy of the one in sohl-kethira-basic.
-# That repository files `bug` and `enhancement` as GitHub issue *types* and so
-# lists neither as a label; this repository has used them as labels since 2020,
-# across 133 issues. Adopting the other registry verbatim would have deleted
-# both from every one of those issues. The registry below is a superset of
-# everything in use here, so reconciling removes only `invalid`, which nothing
-# carries.
+# `bug` and `enhancement` are deliberately absent. Under the HeroicLands issue
+# standard those are the *type* axis — a GitHub issue type, one per issue — and
+# §3 is explicit that work-shape must not also be encoded as a label. This
+# repository used them as labels from 2020 until they were migrated: every issue
+# that carried one had its issue type set first (71 Bug, 69 Feature across the
+# tracker), so reconciling moves the information rather than destroying it. The
+# 124 closed issues still carrying the old labels lose them on the next sync and
+# keep their type.
+#
+# What remains is subject matter only, which is what a label is for.
 
-# ---------------------------------------------------------------- in use here
+# ------------------------------------------------- subject matter, in use here
 
-- name: bug
-  color: "d73a4a"
-  description: Something isn't working.
 
-- name: enhancement
-  color: "a2eeef"
-  description: New feature or request.
 
 - name: compendium
   color: "672dc4"
