@@ -66,6 +66,13 @@ git diff                 # review what actually changed
 Round-tripping without editing produces no diff, so anything `git diff` shows is
 a change you made. Editing the JSON by hand is equally valid for small fixes.
 
+**Never commit the compiled packs.** The LevelDB directories Foundry actually
+reads are build output: `build:compiledb` writes them into `build/stage/packs/`,
+which is not tracked. Only the JSON under `packs/<name>/_source/` belongs in
+git. `npm run lint:packs` enforces this and CI runs it, so a pull request adding
+`.ldb` files fails — if you find yourself wanting to commit them, the build step
+you are looking for is `npm run build:local`.
+
 ## Running the system locally
 
 **The loadable system is `build/stage/`, not the repository root.** `system.json`
