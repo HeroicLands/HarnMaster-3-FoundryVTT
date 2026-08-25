@@ -290,7 +290,7 @@ export function getImagePath(name) {
 export function getAssocSkill(name, skillsItemArray, defaultSkill) {
     if (!name || !skillsItemArray || !skillsItemArray.length) return defaultSkill;
 
-    const skills = skillsItemArray.map(s => s.data.name);
+    const skills = skillsItemArray.map(s => s.name);
 
     const lcName = name.toLowerCase();
     const re = /\[([^\)]+)\]/i;
