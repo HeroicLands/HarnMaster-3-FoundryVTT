@@ -48,3 +48,7 @@ foundryconfig.json
 
 # Compiled CSS now lands in the build stage, not the repository.
 /css/
+
+# Foundry writes its compiled LevelDB here when a stage is deployed in place.
+# The compendium source is assets/packs/; this directory is build output only.
+/packs/
