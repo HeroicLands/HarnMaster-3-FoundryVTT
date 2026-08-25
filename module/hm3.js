@@ -8,6 +8,8 @@ import { HarnMasterItem } from "./item/item.js";
 import { HarnMasterItemSheet } from "./item/item-sheet.js";
 import { HM3ActiveEffectConfig } from "./hm3-active-effect-config.js";
 import { HM3 } from "./config.js";
+import { actorModels } from "./data/actor-models.js";
+import { itemModels } from "./data/item-models.js";
 import { registerSystemSettings } from "./settings.js";
 import * as migrations from "./migrations.js";
 import * as macros from "./macros.js";
@@ -50,7 +52,13 @@ Hooks.once('init', async function () {
     // Define custom ActiveEffect class
     //CONFIG.ActiveEffect.sheetClass = HM3ActiveEffectConfig;
 
-    // Define custom Document classes
+    // Define custom Document classes and their data models. The models
+    // replace template.json, which Foundry deprecated in v14 and removes in
+    // v16; `documentTypes` in the manifest declares that these subtypes exist,
+    // and these associate a schema with each.
+    CONFIG.Actor.dataModels = actorModels;
+    CONFIG.Item.dataModels = itemModels;
+
     CONFIG.Actor.documentClass = HarnMasterActor;
     CONFIG.Actor.typeLabels = {
         base: "Base",

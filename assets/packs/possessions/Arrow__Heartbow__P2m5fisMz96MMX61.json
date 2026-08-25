@@ -37,19 +37,13 @@
       "short": 150,
       "medium": 300,
       "long": 600,
-      "extreme": 1200,
-      "extreme64": 0,
-      "extreme128": 0,
-      "extreme256": 0
+      "extreme": 1200
     },
     "impact": {
       "short": 9,
       "medium": 8,
       "long": 7,
-      "extreme": 6,
-      "extreme64": 0,
-      "extreme128": 0,
-      "extreme256": 0
+      "extreme": 6
     }
   },
   "_stats": {
