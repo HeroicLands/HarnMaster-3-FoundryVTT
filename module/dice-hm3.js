@@ -84,12 +84,12 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user.id,
+            author: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            style: CONST.CHAT_MESSAGE_STYLES.ROLL,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            rolls: [roll.rollObj]
         };
 
         const messageOptions = {
@@ -218,12 +218,12 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user.id,
+            author: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            style: CONST.CHAT_MESSAGE_STYLES.ROLL,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            rolls: [roll.rollObj]
         };
 
         const messageOptions = {
@@ -311,10 +311,10 @@ export class DiceHM3 {
         const messageData = {
             speaker: speaker,
             content: html.trim(),
-            user: game.user.id,
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            author: game.user.id,
+            style: CONST.CHAT_MESSAGE_STYLES.ROLL,
             sound: CONFIG.sounds.dice,
-            roll: roll
+            rolls: [roll]
         };
 
         const messageOptions = {
@@ -380,8 +380,8 @@ export class DiceHM3 {
         const messageData = {
             speaker: speaker,
             content: html.trim(),
-            user: game.user.id,
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            author: game.user.id,
+            style: CONST.CHAT_MESSAGE_STYLES.OTHER,
             sound: CONFIG.sounds.notify
         };
 
@@ -780,12 +780,12 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user.id,
+            author: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            style: CONST.CHAT_MESSAGE_STYLES.ROLL,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            rolls: [roll.rollObj]
         };
 
         const messageOptions = {
@@ -950,12 +950,12 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user.id,
+            author: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            style: CONST.CHAT_MESSAGE_STYLES.ROLL,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            rolls: [roll.rollObj]
         };
 
         const messageOptions = {
@@ -1117,12 +1117,12 @@ export class DiceHM3 {
         const html = await renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
-            user: game.user.id,
+            author: game.user.id,
             speaker: speaker,
             content: html.trim(),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            style: CONST.CHAT_MESSAGE_STYLES.ROLL,
             sound: CONFIG.sounds.dice,
-            roll: roll.rollObj
+            rolls: [roll.rollObj]
         };
 
         const messageOptions = {

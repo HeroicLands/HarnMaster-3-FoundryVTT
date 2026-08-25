@@ -971,10 +971,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 const html = await renderTemplate(chatTemplate, chatData);
 
                 const messageData = {
-                    user: game.user.id,
+                    author: game.user.id,
                     speaker: ChatMessage.getSpeaker(),
                     content: html.trim(),
-                    type: CONST.CHAT_MESSAGE_TYPES.OTHER
+                    style: CONST.CHAT_MESSAGE_STYLES.OTHER
                 };
 
                 // Create a chat message

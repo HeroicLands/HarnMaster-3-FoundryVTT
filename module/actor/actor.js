@@ -870,12 +870,20 @@ export class HarnMasterActor extends Actor {
     }
 
     static chatListeners(html) {
-        html.on('click', '.card-buttons button', this._onChatCardAction.bind(this));
+        // `html` is the chat log's root HTMLElement, so delegate rather than
+        // binding per button: messages are appended after this runs.
+        //
+        // Hold one bound reference. renderChatLog fires on every re-render, and
+        // a fresh `.bind()` would be a new function each time -- which
+        // addEventListener cannot dedupe, so handlers would stack.
+        HarnMasterActor._chatCardHandler ??= HarnMasterActor._onChatCardAction.bind(HarnMasterActor);
+        html.addEventListener('click', HarnMasterActor._chatCardHandler);
     }
 
     static async _onChatCardAction(event) {
+        const button = event.target.closest('.card-buttons button');
+        if (!button) return null;
         event.preventDefault();
-        const button = event.currentTarget;
         button.disabled = true;
         const action = button.dataset.action;
         const weaponType = button.dataset.weaponType;

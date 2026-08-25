@@ -141,9 +141,9 @@ Hooks.once('init', async function () {
 
 });
 
-Hooks.on("renderChatMessage", (app, html, data) => {
+Hooks.on("renderChatMessageHTML", (message, html, data) => {
     // Display action buttons
-    combat.displayChatActionButtons(app, html, data);
+    combat.displayChatActionButtons(message, html, data);
 });
 Hooks.on('renderChatLog', (app, html, data) => HarnMasterActor.chatListeners(html));
 Hooks.on('renderChatPopout', (app, html, data) => HarnMasterActor.chatListeners(html));
