@@ -1,8 +1,0 @@
-*.ldb
-*.log
-CURRENT
-LOCK
-LOG*
-MANIFEST*
-#*
-#!_source

@@ -1,5 +1,5 @@
 /**
- * Extract the built LevelDB packs back into `packs/<name>/_source/`.
+ * Extract the built LevelDB packs back into `assets/packs/<name>/`.
  *
  * The inverse of `compile-packs.mjs`, and what makes the committed JSON
  * maintainable: edit a compendium inside Foundry, unpack, and commit the diff.
@@ -12,7 +12,7 @@ import path from "node:path";
 import { extractPack } from "@foundryvtt/foundryvtt-cli";
 import { loadPackConfig } from "@heroiclands/package-build/engine/pack-config";
 
-const SOURCE_ROOT = "packs";
+const SOURCE_ROOT = "assets/packs";
 
 const config = loadPackConfig();
 
@@ -25,7 +25,7 @@ for (const pack of config.packs) {
         );
     }
 
-    const dest = path.join(SOURCE_ROOT, pack.name, "_source");
+    const dest = path.join(SOURCE_ROOT, pack.name);
     fs.rmSync(dest, { recursive: true, force: true });
     fs.mkdirSync(dest, { recursive: true });
 
