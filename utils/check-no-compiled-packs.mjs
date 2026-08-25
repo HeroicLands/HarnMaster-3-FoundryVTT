@@ -2,7 +2,7 @@
  * Fail if any compiled compendium artifact is tracked in git.
  *
  * The compendium source of truth is per-document JSON under
- * `packs/<name>/_source/`. The LevelDB a Foundry world actually loads is a
+ * `assets/packs/<name>/`. The LevelDB a Foundry world actually loads is a
  * build output: `npm run build:compiledb` writes it into `build/stage/packs/`,
  * which is not tracked. None of it belongs in the repository.
  *
@@ -39,7 +39,7 @@ if (offenders.length) {
         `Compiled compendium artifacts are tracked in git (${offenders.length}):\n` +
             offenders.map((f) => `    ${f}`).join("\n") +
             `\n\nThese are build output. The compendium source is the JSON under\n` +
-            `packs/<name>/_source/; run \`npm run build:compiledb\` to produce the\n` +
+            `assets/packs/<name>/; run \`npm run build:compiledb\` to produce the\n` +
             `LevelDB into build/stage/packs/, which is not tracked. To take changes\n` +
             `you made inside Foundry back into the source, run\n` +
             `\`npm run build:unpackdb\` and commit the JSON diff.\n`,
