@@ -51,7 +51,7 @@ Attribution** check fails any pull request carrying it.
 ## Working on the compendium packs
 
 The packs are **committed JSON**, one file per document, under
-`packs/<name>/_source/`. There is no Markdown content tree in this repository.
+`assets/packs/<name>/`. There is no Markdown content tree in this repository.
 
 The comfortable loop is to edit inside Foundry and extract the result:
 
@@ -59,7 +59,7 @@ The comfortable loop is to edit inside Foundry and extract the result:
 npm run build:local      # build everything into build/stage/
 npm run deploy:dev       # install that into your Foundry data directory
 #   ... edit the compendium in Foundry, then:
-npm run build:unpackdb   # extract the packs back to packs/*/_source/
+npm run build:unpackdb   # extract the packs back to assets/packs/*/
 git diff                 # review what actually changed
 ```
 
@@ -68,7 +68,7 @@ a change you made. Editing the JSON by hand is equally valid for small fixes.
 
 **Never commit the compiled packs.** The LevelDB directories Foundry actually
 reads are build output: `build:compiledb` writes them into `build/stage/packs/`,
-which is not tracked. Only the JSON under `packs/<name>/_source/` belongs in
+which is not tracked. Only the JSON under `assets/packs/<name>/` belongs in
 git. `npm run lint:packs` enforces this and CI runs it, so a pull request adding
 `.ldb` files fails — if you find yourself wanting to commit them, the build step
 you are looking for is `npm run build:local`.
