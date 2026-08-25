@@ -19,6 +19,7 @@
         "node": ">=24.0.0"
     },
     "scripts": {
+        "prepare": "git config core.hooksPath .githooks || true",
         "clean": "package-build clean",
         "build": "npm ci && npm run build:noci",
         "build:local": "npm i && npm run build:noci",
