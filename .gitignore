@@ -45,3 +45,6 @@ nogit/
 
 # Foundry Project Creator config file
 foundryconfig.json
+
+# Compiled CSS now lands in the build stage, not the repository.
+/css/
