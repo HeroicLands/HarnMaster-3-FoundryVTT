@@ -249,7 +249,7 @@ section.highlight {
   font-size: 12px;
   visibility: hidden;
   width: 240px;
-  background-color: #d8bd24;
+  background-color: rgb(216, 189, 36);
   color: #111;
   text-align: left;
   border-radius: 6px;
@@ -269,7 +269,7 @@ section.highlight {
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: #d8bd24 transparent transparent transparent;
+  border-color: rgb(216, 189, 36) transparent transparent transparent;
 }
 
 .tooltip:hover .tooltiptext {
