@@ -18,8 +18,8 @@ stats:
 # The Foundry core range. `minimum` is what every compiled document is stamped
 # with as `_stats.coreVersion`, so moving it moves the stamp.
 compatibility:
-    minimum: "12"
-    verified: "12.331"
+    minimum: "14"
+    verified: "14.367"
 
 # The one pack list. `packs[]` in the generated `system.json` is derived from
 # it — label, type, name, the `hm3` system id and the `packs/<name>` path — so
