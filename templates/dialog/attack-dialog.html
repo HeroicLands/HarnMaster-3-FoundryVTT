@@ -1,13 +1,10 @@
-<form>
     {{#if defaultAspect}}
     <div class="form-group">
         <label for="weaponAspect">Weapon Aspect:</label>
         <select name="weaponAspect">
-            {{#select defaultAspect}}
             {{#each aspects as |value key|}}
-                <option value="{{key}}">{{key}}{{#if (gt value -1)}} ({{value}}){{/if}}</option>
+                <option value="{{key}}" {{#if (eq key ../defaultAspect)}}selected{{/if}}>{{key}}{{#if (gt value -1)}} ({{value}}){{/if}}</option>
             {{/each}}
-            {{/select}}
         </select>
     </div>
     {{/if}}
@@ -30,11 +27,9 @@
     <div class="form-group">
         <label>Range (Max Distance):</label>
         <select name="range">
-            {{#select defaultRange}}
             {{#each ranges as |value key|}}
-                <option value="{{key}}">{{key}}</option>
+                <option value="{{key}}" {{#if (eq key ../defaultRange)}}selected{{/if}}>{{key}}</option>
             {{/each}}
-            {{/select}}
         </select>
     </div>
     {{/if}}
@@ -42,11 +37,7 @@
     <div class="form-group">
         <label>Aim:</label>
         <select name="aim">
-            {{#select defaultAim}}
-            {{#each aimLocations}}
-                <option value="{{this}}">{{this}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions aimLocations selected=defaultAim}}
         </select>
     </div>
 
@@ -54,4 +45,3 @@
         <label>Additional {{type}} Modifier:</label>
         <input type="number" name="addlModifier" value="{{defaultModifier}}" />
     </div>
-</form>

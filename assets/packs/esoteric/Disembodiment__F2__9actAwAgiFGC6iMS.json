@@ -17,17 +17,14 @@
       "command": ""
     },
     "skillBase": {
-      "value": null,
+      "value": 0,
       "formula": "@aur, @aur, @wil, Hirin:1, Nadai:1",
       "isFormulaValid": true
     },
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,
     "improveFlag": false,
-    "fatigue": 2,
-    "ritual": {
-      "piety": 0
-    }
+    "fatigue": 2
   },
   "_stats": {
     "systemId": "hm3",

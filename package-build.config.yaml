@@ -18,8 +18,8 @@ stats:
 # The Foundry core range. `minimum` is what every compiled document is stamped
 # with as `_stats.coreVersion`, so moving it moves the stamp.
 compatibility:
-    minimum: "12"
-    verified: "12.331"
+    minimum: "14"
+    verified: "14.367"
 
 # The one pack list. `packs[]` in the generated `system.json` is derived from
 # it — label, type, name, the `hm3` system id and the `packs/<name>` path — so
@@ -39,8 +39,9 @@ packageBuild:
     # purpose: it is compiled straight into the stage by `build:css`, and
     # `system.json` is written into the stage by `build:system`.
     #
-    # `template.json` is not optional — it is the system's data model, and a
-    # stage without it loads as a system with no document types at all.
+    # `template.json` is gone: the data model is `module/data/`, registered on
+    # CONFIG.Actor.dataModels / CONFIG.Item.dataModels, and the subtypes are
+    # declared as `documentTypes` in the manifest above.
     assets:
         - { from: module, to: module }
         - { from: templates, to: templates }
@@ -50,7 +51,6 @@ packageBuild:
         - { from: audio, to: audio }
         - { from: ui, to: ui }
         - { from: lib, to: lib }
-        - { from: template.json, to: template.json }
         - { from: LICENSE, to: LICENSE }
         - { from: README.md, to: README.md }
         - { from: WALKTHROUGH.md, to: WALKTHROUGH.md }
@@ -81,6 +81,29 @@ packageBuild:
             - css/hm3.css
         languages:
             - { lang: en, name: English, path: lang/en.json }
+
+        # The document subtypes this system provides. These used to be implied
+        # by template.json having a key per type; that file is deprecated in
+        # v14 and removed in v16, so they are declared here and their shapes
+        # live in module/data/ as data models.
+        documentTypes:
+            Actor:
+                character: {}
+                creature: {}
+                container: {}
+            Item:
+                skill: {}
+                spell: {}
+                invocation: {}
+                psionic: {}
+                weapongear: {}
+                containergear: {}
+                missilegear: {}
+                armorgear: {}
+                miscgear: {}
+                injury: {}
+                armorlocation: {}
+                trait: {}
         packFolders:
             - name: HârnMaster 3 System
               sorting: m

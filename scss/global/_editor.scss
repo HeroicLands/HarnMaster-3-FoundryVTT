@@ -1,3 +1,8 @@
+@use "../utils/typography" as *;
+@use "../utils/colors" as *;
+@use "../utils/mixins" as *;
+@use "../utils/variables" as *;
+
 section.highlight {
     padding: 0 5px;
     background: rgba(247, 230, 2, 0.05);

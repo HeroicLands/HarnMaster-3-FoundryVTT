@@ -1,6 +1,6 @@
-<form class="{{cssClass}}" autocomplete="off">
+<div class="{{cssClass}}">
     <header class="sheet-header">
-        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+        <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}" />
         <div class="header-fields">
             <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
         </div>
@@ -8,13 +8,13 @@
 
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="properties">Properties</a>
-        <a class="item" data-tab="description">Description</a>
+        <a class="item {{#if tabs.properties.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="properties">Properties</a>
+        <a class="item {{#if tabs.description.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="description">Description</a>
     </nav>
 
     {{!-- Sheet Body --}}
     <section class="armorlocation properties sheet-body">
-        <div class="tab properties" data-group="primary" data-tab="properties">
+        <div class="tab properties {{#if tabs.properties.active}}active{{/if}}" data-group="primary" data-tab="properties">
             <fieldset>
                 <legend>Basic Armor Settings</legend>
                 <div class="grid grid-fixed-row grid-2col">
@@ -98,11 +98,9 @@
                     <div class="adv-setting" id="armorlocation-impacttype">
                         <label class="label" for="system.impactType">Location Type</label>
                         <select class="value" name="system.impactType">
-                            {{#select idata.impactType}}
-                                {{#each config.injuryLocations as |value key|}}
-                                    <option value="{{value.impactType}}">{{key}}</option>
-                                {{/each}}
-                            {{/select}}
+                            {{#each config.injuryLocations as |value key|}}
+                                <option value="{{value.impactType}}" {{#if (eq value.impactType ../idata.impactType)}}selected{{/if}}>{{key}}</option>
+                            {{/each}}
                         </select>
                     </div>
                 </div>
@@ -116,53 +114,33 @@
                 <div class="item flexrow">
                     <select class="armorlocation-effimp-item" id="armorlocation-effimp-ei1"
                         name="system.effectiveImpact.ei1" data-dtype="String">
-                        {{#select idata.effectiveImpact.ei1}}
-                            {{#each config.injuryLevels}}
-                                <option value="{{this}}">{{this}}</option>
-                            {{/each}}
-                        {{/select}}
+                        {{selectOptions config.injuryLevels selected=idata.effectiveImpact.ei1}}
                     </select>
                     <select class="armorlocation-effimp-item" id="armorlocation-effimp-ei5"
                         name="system.effectiveImpact.ei5" data-dtype="String">
-                        {{#select idata.effectiveImpact.ei5}}
-                            {{#each config.injuryLevels}}
-                                <option value="{{this}}">{{this}}</option>
-                            {{/each}}
-                        {{/select}}
+                        {{selectOptions config.injuryLevels selected=idata.effectiveImpact.ei5}}
                     </select>
                     <select class="armorlocation-effimp-item" id="armorlocation-effimp-ei9"
                         name="system.effectiveImpact.ei9" data-dtype="String">
-                        {{#select idata.effectiveImpact.ei9}}
-                            {{#each config.injuryLevels}}
-                                <option value="{{this}}">{{this}}</option>
-                            {{/each}}
-                        {{/select}}
+                        {{selectOptions config.injuryLevels selected=idata.effectiveImpact.ei9}}
                     </select>
                     <select class="armorlocation-effimp-item" id="armorlocation-effimp-ei13"
                         name="system.effectiveImpact.ei13" data-dtype="String">
-                        {{#select idata.effectiveImpact.ei13}}
-                            {{#each config.injuryLevels}}
-                                <option value="{{this}}">{{this}}</option>
-                            {{/each}}
-                        {{/select}}
+                        {{selectOptions config.injuryLevels selected=idata.effectiveImpact.ei13}}
                     </select>
                     <select class="armorlocation-effimp-item" id="armorlocation-effimp-ei17"
                         name="system.effectiveImpact.ei17" data-dtype="String">
-                        {{#select idata.effectiveImpact.ei17}}
-                            {{#each config.injuryLevels}}
-                                <option value="{{this}}">{{this}}</option>
-                            {{/each}}
-                        {{/select}}
+                        {{selectOptions config.injuryLevels selected=idata.effectiveImpact.ei17}}
                     </select>
                 </div>
             </fieldset>
         </div>
 
         {{!-- Description Tab --}}
-        <div class="tab description" id="armorlocation-desc" data-group="primary" data-tab="description">
-            {{editor idata.description target="system.description" button=true owner=owner editable=editable}}
+        <div class="tab description {{#if tabs.description.active}}active{{/if}}" id="armorlocation-desc" data-group="primary" data-tab="description">
+            {{editor idata.description target="system.description" button=true editable=editable}}
         </div>
 
     </section>
 
-</form>
+</div>

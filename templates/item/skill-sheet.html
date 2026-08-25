@@ -1,17 +1,13 @@
-<form class="{{cssClass}}" autocomplete="off">
+<div class="{{cssClass}}">
     <header class="sheet-header skill-header">
         <div class="flexrow">
-            <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+            <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}" />
             <div class="header-fields flexcol">
                 <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
                 <div class="skill-type flexrow">
                     <label class="label">Type</label>
                     <select class="value" name="system.type">
-                        {{#select idata.type}}
-                            {{#each config.skillTypes}}
-                                <option value="{{this}}">{{this}}</option>
-                            {{/each}}
-                        {{/select}}
+                        {{selectOptions config.skillTypes selected=idata.type}}
                     </select>
                 </div>
             </div>
@@ -20,17 +16,17 @@
 
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="properties">Properties</a>
-        <a class="item" data-tab="description">Description</a>
-        <a class="item" data-tab="macro">macro</a>
-        <a class="item" data-tab="effects">effects</a>
+        <a class="item {{#if tabs.properties.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="properties">Properties</a>
+        <a class="item {{#if tabs.description.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="description">Description</a>
+        <a class="item {{#if tabs.macro.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="macro">macro</a>
+        <a class="item {{#if tabs.effects.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="effects">effects</a>
     </nav>
 
     {{!-- Sheet Body --}}
     <section class="sheet-body skill-body">
 
         {{!-- Properties Tab --}}
-        <div class="tab properties" data-group="primary" data-tab="properties">
+        <div class="tab properties {{#if tabs.properties.active}}active{{/if}}" data-group="primary" data-tab="properties">
             <div class="grid grid-fixed-row grid-3col">
                 <div class="resource">
                     <label class="resource-label">Skill Base (SB)</label>
@@ -74,20 +70,16 @@
         </div>
 
         {{!-- Description Tab --}}
-        <div class="tab description" data-group="primary" data-tab="description">
-            {{editor idata.description target="system.description" button=true owner=owner editable=editable}}
+        <div class="tab description {{#if tabs.description.active}}active{{/if}}" data-group="primary" data-tab="description">
+            {{editor idata.description target="system.description" button=true editable=editable}}
         </div>
 
         {{!-- Macro Tab --}}
-        <div class="tab macro" data-group="primary" data-tab="macro">
+        <div class="tab macro {{#if tabs.macro.active}}active{{/if}}" data-group="primary" data-tab="macro">
             <div class="form-group">
                 <label>Type</label>
                 <select name="system.macros.type">
-                    {{#select idata.macros.type}}
-                    {{#each macroTypes}}
-                    <option value="{{this}}">{{this}}</option>
-                    {{/each}}
-                    {{/select}}
+                    {{selectOptions macroTypes selected=idata.macros.type}}
                 </select>
             </div>
         
@@ -98,7 +90,7 @@
         </div>
 
         {{!-- Effects Tab --}}
-        <div class="tab effects" data-group="primary" data-tab="effects">
+        <div class="tab effects {{#if tabs.effects.active}}active{{/if}}" data-group="primary" data-tab="effects">
             <ol class="effects-list">
                 <li class="effects-header flexrow">
                     <h3 class="effect-name flexrow">Effect</h3>
@@ -114,8 +106,8 @@
                         <li class="effect {{#if effect.data.disabled}}disabled{{/if}} flexrow"
                             data-effect-id="{{effect.data._id}}">
                             <div class="effect-name flexrow">
-                                <div class="effect-image" style="background-image: url('{{effect.data.icon}}')"></div>
-                                <h4>{{effect.data.label}}</h4>
+                                <div class="effect-image" style="background-image: url('{{effect.data.img}}')"></div>
+                                <h4>{{effect.data.name}}</h4>
                             </div>
                             <div class="effect-ele effect-duration">{{effect.duration.label}}</div>
                             <div class="effect-ele effect-changes">{{effect.changes}}</div>
@@ -133,4 +125,4 @@
             </ol>
         </div>
     </section>
-</form>
+</div>

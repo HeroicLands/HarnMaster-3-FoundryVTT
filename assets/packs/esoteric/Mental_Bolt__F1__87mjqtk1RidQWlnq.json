@@ -24,10 +24,7 @@
     "masteryLevel": 0,
     "effectiveMasteryLevel": 0,
     "improveFlag": false,
-    "fatigue": 1,
-    "ritual": {
-      "piety": 0
-    }
+    "fatigue": 1
   },
   "_stats": {
     "systemId": "hm3",

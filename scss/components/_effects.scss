@@ -1,178 +1,185 @@
-.effects {
-    .disabled {
-        color: #9a998f;
-      }
+@use "../utils/typography" as *;
+@use "../utils/colors" as *;
+@use "../utils/mixins" as *;
+@use "../utils/variables" as *;
+
+@mixin effects {
+    .effects {
+        .disabled {
+            color: #9a998f;
+          }
         
-    .effects-list {
-        list-style: none;
-        margin: 7px 0;
-        padding: 0;
-        overflow-y: hidden;
-
-        .effects-header {
-            margin: 2px 0;
+        .effects-list {
+            list-style: none;
+            margin: 7px 0;
             padding: 0;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.05);
-            border: 2px groove #eeede0;
-            font-weight: bold;
-            line-height: 24px;
+            overflow-y: hidden;
 
-            h3 {
-                margin: 0;
-                padding-left: 5px;
-                font-family: "Modesto Condensed", "Palatino Linotype", serif;
-                font-size: 20px;
-                font-weight: 700;
-                font-size: 16px;
+            .effects-header {
+                margin: 2px 0;
+                padding: 0;
+                align-items: center;
+                background: rgba(0, 0, 0, 0.05);
+                border: 2px groove #eeede0;
+                font-weight: bold;
+                line-height: 24px;
+
+                h3 {
+                    margin: 0;
+                    padding-left: 5px;
+                    font-family: "Modesto Condensed", "Palatino Linotype", serif;
+                    font-size: 20px;
+                    font-weight: 700;
+                    font-size: 16px;
+                }
+
+                .effect-name {
+                    color: #191813;
+                    border-right: 1px solid #c9c7b8;
+
+                    i {
+                        font-size: 12px;
+                        padding-left: 5px;
+                    }
+                }
+
+                .effect-controls {
+                    flex: 0 0 45px;
+                    text-align: right;
+                    padding-right: 5px;
+                    color: #9a998f;
+    
+                    .active {
+                        color: #4b4a44;
+                    }
+                }    
             }
 
-            .effect-name {
-                color: #191813;
-                border-right: 1px solid #c9c7b8;
+            .effect-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
 
-                i {
-                    font-size: 12px;
-                    padding-left: 5px;
+            .effect {
+                line-height: 30px;
+                padding: 0 2px;
+                border-bottom: 1px solid #c9c7b8;
+
+                .effect-image {
+                    flex: 0 0 30px;
+                    background-size: 30px;
+                    margin-right: 5px;
                 }
+
+                img {
+                    display: block;
+                }
+
+                .effect-name {
+                    cursor: pointer;
+                    max-height: 30px;
+                    overflow: hidden;
+                    border-right: 1px solid #c9c7b8;
+
+                    h4 {
+                        margin: 0;
+                        white-space: nowrap;
+                        overflow-x: hidden;
+                    }
+                }
+            }
+
+            .effect:last-child {
+                border-bottom: none;
+            }
+
+            .effect-detail {
+                font-size: 12px;
+                color: #7a7971;
+                border-right: 1px solid #c9c7b8;
+                word-break: break-word;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            .effect-ele {
+                padding-left: 5px;
+                border-right: 1px solid #c9c7b8;
+            }
+
+            .effect-duration {
+                flex: 0 0 100px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            .effect-source {
+                flex: 0 0 100px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            .effect-changes {
+                flex: 1 0 60px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
             }
 
             .effect-controls {
                 flex: 0 0 45px;
                 text-align: right;
-                padding-right: 5px;
-                color: #9a998f;
-    
+
+                .effect-control {
+                    flex: 0 0 22px;
+                    font-size: 12px;
+                    text-align: right;
+                    color: #9a998f;
+                }
+
+                .effect-equip {
+                    color: #9a998f;
+                }
+
                 .active {
                     color: #4b4a44;
                 }
-            }    
-        }
-
-        .effect-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .effect {
-            line-height: 30px;
-            padding: 0 2px;
-            border-bottom: 1px solid #c9c7b8;
-
-            .effect-image {
-                flex: 0 0 30px;
-                background-size: 30px;
-                margin-right: 5px;
             }
 
-            img {
-                display: block;
-            }
+            .effect-controls-wide {
+                flex: 0 0 65px;
+                text-align: right;
 
-            .effect-name {
-                cursor: pointer;
-                max-height: 30px;
-                overflow: hidden;
-                border-right: 1px solid #c9c7b8;
+                .effect-control {
+                    flex: 0 0 22px;
+                    font-size: 12px;
+                    text-align: right;
+                    color: #9a998f;
+                }
 
-                h4 {
-                    margin: 0;
-                    white-space: nowrap;
-                    overflow-x: hidden;
+                .effect-equip {
+                    color: #9a998f;
+                }
+
+                .active {
+                    color: #4b4a44;
                 }
             }
         }
 
-        .effect:last-child {
-            border-bottom: none;
+        input[type="text"].effects-name-filter {
+            background-image: url("../images/png/searchicon.png");
+            background-size: contain;
+            background-position: 5px -1px;
+            background-repeat: no-repeat;
+            width: 100%;
+            font-size: 15px;
+            padding: 5px 0px 5px 40px;
+            border: 2px groove #eeede0;
+            margin-top: 5px;
         }
-
-        .effect-detail {
-            font-size: 12px;
-            color: #7a7971;
-            border-right: 1px solid #c9c7b8;
-            word-break: break-word;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        .effect-ele {
-            padding-left: 5px;
-            border-right: 1px solid #c9c7b8;
-        }
-
-        .effect-duration {
-            flex: 0 0 100px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        .effect-source {
-            flex: 0 0 100px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        .effect-changes {
-            flex: 1 0 60px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        .effect-controls {
-            flex: 0 0 45px;
-            text-align: right;
-
-            .effect-control {
-                flex: 0 0 22px;
-                font-size: 12px;
-                text-align: right;
-                color: #9a998f;
-            }
-
-            .effect-equip {
-                color: #9a998f;
-            }
-
-            .active {
-                color: #4b4a44;
-            }
-        }
-
-        .effect-controls-wide {
-            flex: 0 0 65px;
-            text-align: right;
-
-            .effect-control {
-                flex: 0 0 22px;
-                font-size: 12px;
-                text-align: right;
-                color: #9a998f;
-            }
-
-            .effect-equip {
-                color: #9a998f;
-            }
-
-            .active {
-                color: #4b4a44;
-            }
-        }
-    }
-
-    input[type="text"].effects-name-filter {
-        background-image: url("../images/png/searchicon.png");
-        background-size: contain;
-        background-position: 5px -1px;
-        background-repeat: no-repeat;
-        width: 100%;
-        font-size: 15px;
-        padding: 5px 0px 5px 40px;
-        border: 2px groove #eeede0;
-        margin-top: 5px;
     }
 }

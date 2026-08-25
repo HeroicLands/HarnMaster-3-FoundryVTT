@@ -1,4 +1,3 @@
-<form>
     <div class="form-group">
         <label>Aim:</label>
         <select name="aim">
@@ -11,11 +10,7 @@
     <div class="form-group">
         <label>Location:</label>
         <select name="location">
-            {{#select location}}
-            {{#each hitLocations}}
-                <option value="{{this}}">{{this}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions hitLocations selected=location}}
         </select>
     </div>
 
@@ -40,4 +35,3 @@
         <label for="addToCharSheet">Add to Character Sheet</label>
     </div>
     {{/if}}
-</form>

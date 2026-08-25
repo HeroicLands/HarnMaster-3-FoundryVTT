@@ -4,10 +4,13 @@
  * Manage Active Effect instances through the Actor Sheet via effect control buttons.
  * @param {MouseEvent} event      The left-click event on the effect control
  * @param {Actor|Item} owner      The owning document which manages this effect
+ * @param {HTMLElement} [control] The control that was clicked. The sheets
+ *                                delegate, so `event.currentTarget` is the
+ *                                sheet root rather than the button.
  */
-export async function onManageActiveEffect(event, owner) {
+export async function onManageActiveEffect(event, owner, control) {
     event.preventDefault();
-    const a = event.currentTarget;
+    const a = control ?? event.currentTarget;
     const li = a.closest("li");
     const effect = li.dataset.effectId ? owner.effects.get(li.dataset.effectId) : null;
     switch (a.dataset.action) {
@@ -21,22 +24,24 @@ export async function onManageActiveEffect(event, owner) {
                 dialogData.combatRound = game.combat.round;
                 dialogData.combatTurn = game.combat.turn;
             }
-            const html = await renderTemplate(dlgTemplate, dialogData);
+            const html = await foundry.applications.handlebars.renderTemplate(dlgTemplate, dialogData);
     
             // Create the dialog window
-            return Dialog.prompt({
-                title: "Select Start Time",
+            return foundry.applications.api.DialogV2.prompt({
+                window: {title: "Select Start Time"},
                 content: html,
-                label: "OK",
-                callback: async (html) => {
-                    const form = html.querySelector('#active-effect-start');
-                    const fd = new FormDataExtended(form);
-                    const formdata = fd.object;
+                ok: {
+                    label: "OK",
+                    callback: async (event, button) => {
+                    const formdata = new FormDataExtended(button.form).object;
                     const startType = formdata.startType;
 
+                    // `name` and `img`, not `label` and `icon`: renamed in v11,
+                    // and `name` is required and non-blank, so the old keys did
+                    // not merely go unused — creation failed validation.
                     const aeData = {
-                        label: "New Effect",
-                        icon: "icons/svg/aura.svg",
+                        name: "New Effect",
+                        img: "icons/svg/aura.svg",
                         origin: owner.uuid
                     };
                     if (startType === 'nowGameTime') {
@@ -50,8 +55,8 @@ export async function onManageActiveEffect(event, owner) {
                         aeData['duration.turns'] = 0;
                     }
                     return ActiveEffect.create(aeData, {parent: owner});
-                },
-                options: { jQuery: false }
+                }
+                }
             });
         case "edit":
             return effect.sheet.render(true);

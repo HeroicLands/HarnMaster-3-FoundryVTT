@@ -1,14 +1,9 @@
-<form id="weapon-query">
     <p>{{prompt}}<br/></p>
 
     <div class="form-group">
         <label>Weapon:</label>
         <select name="weapon">
-            {{#select defaultWeapon}}
-            {{#each weapons}}
-                <option value="{{this}}">{{this}}</option>
-            {{/each}}
-            {{/select}}
+            {{selectOptions weapons selected=defaultWeapon}}
         </select>
     </div>
 
@@ -18,4 +13,3 @@
         <input type="number" name="addlModifier" value="{{defaultModifier}}" />
     </div>
     {{/if}}
-</form>

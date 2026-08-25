@@ -1,239 +1,246 @@
-.armor-list {
-    list-style: none;
-    margin: 7px 0;
-    padding: 0;
-    overflow-y: hidden;
+@use "../utils/typography" as *;
+@use "../utils/colors" as *;
+@use "../utils/mixins" as *;
+@use "../utils/variables" as *;
 
-    .armor-header {
-        font-weight: bold;
-    }
+@mixin gear {
+    .armor-list {
+        list-style: none;
+        margin: 7px 0;
+        padding: 0;
+        overflow-y: hidden;
 
-    .armor {
-        border-bottom: 1px solid #bbb;
-
-        .armor-image {
-            flex: 0 0 24px;
-            margin-right: 5px;
+        .armor-header {
+            font-weight: bold;
         }
 
-        img {
-            display: block;
-        }
-    }
+        .armor {
+            border-bottom: 1px solid #bbb;
 
-    .armor-name {
-        flex: 0 0 150px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-    }
+            .armor-image {
+                flex: 0 0 24px;
+                margin-right: 5px;
+            }
 
-    .armor-name-inv {
-        flex: 0 0 200px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-    }
-
-    .armor-qty {
-        flex: 0 0 40px;
-        text-align: center;
-    }
-
-    .armor-material {
-        flex: 0 0 80px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        padding-left: 3px;
-    }
-
-    .armor-quality {
-        flex: 0 0 40px;
-        text-align: center;
-    }
-
-    .armor-weight {
-        flex: 0 0 40px;
-        text-align: center;
-    }
-
-    .armor-value {
-        flex: 0 0 40px;
-        text-align: center;
-    }
-
-    .armor-notes {
-        flex: 1 0 50px;
-        padding-left: 10px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-    }
-
-    .item-controls {
-        flex: 0 0 70px;
-        text-align: right;
-
-        .item-equip {
-            color: #b5b3a4;
+            img {
+                display: block;
+            }
         }
 
-        .item-carry {
-            color: #b5b3a4;
+        .armor-name {
+            flex: 0 0 150px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
-        .active {
-            color: #4b4a44;
-        }
-    }
-}
-
-input[type="text"].gear-name-filter {
-    background-image: url("../images/png/searchicon.png");
-    background-size: contain;
-    background-position: 5px -1px;
-    background-repeat: no-repeat;
-    width: 100%;
-    font-size: 15px;
-    padding: 5px 0px 5px 40px;
-    border: 2px groove #eeede0;
-    margin-top: 5px;
-}
-
-.gear-list {
-    list-style: none;
-    margin: 7px 0;
-    padding: 0;
-    overflow-y: hidden;
-
-    .gear-header {
-        font-weight: bold;
-    }
-
-    .gear {
-        height: 30px;
-        line-height: 24px;
-        padding: 3px 0;
-        border-bottom: 1px solid #bbb;
-
-        .gear-image {
-            flex: 0 0 24px;
-            margin-right: 5px;
+        .armor-name-inv {
+            flex: 0 0 200px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
-        img {
-            display: block;
+        .armor-qty {
+            flex: 0 0 40px;
+            text-align: center;
+        }
+
+        .armor-material {
+            flex: 0 0 80px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            padding-left: 3px;
+        }
+
+        .armor-quality {
+            flex: 0 0 40px;
+            text-align: center;
+        }
+
+        .armor-weight {
+            flex: 0 0 40px;
+            text-align: center;
+        }
+
+        .armor-value {
+            flex: 0 0 40px;
+            text-align: center;
+        }
+
+        .armor-notes {
+            flex: 1 0 50px;
+            padding-left: 10px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .item-controls {
+            flex: 0 0 70px;
+            text-align: right;
+
+            .item-equip {
+                color: #b5b3a4;
+            }
+
+            .item-carry {
+                color: #b5b3a4;
+            }
+
+            .active {
+                color: #4b4a44;
+            }
         }
     }
 
-    .gear-name {
-        flex: 0 0 200px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
+    input[type="text"].gear-name-filter {
+        background-image: url("../images/png/searchicon.png");
+        background-size: contain;
+        background-position: 5px -1px;
+        background-repeat: no-repeat;
+        width: 100%;
+        font-size: 15px;
+        padding: 5px 0px 5px 40px;
+        border: 2px groove #eeede0;
+        margin-top: 5px;
     }
 
-    .gear-name-inv {
-        flex: 0 0 200px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-    }
+    .gear-list {
+        list-style: none;
+        margin: 7px 0;
+        padding: 0;
+        overflow-y: hidden;
 
-    .gear-type {
-        flex: 0 0 80px;
-        text-align: center;
-    }
-
-    .gear-qty {
-        flex: 0 0 40px;
-        text-align: center;
-    }
-
-    .gear-weight {
-        flex: 0 0 40px;
-        text-align: center;
-    }
-
-    .gear-value {
-        flex: 0 0 40px;
-        text-align: center;
-    }
-
-    .gear-capacity {
-        flex: 0 0 140px;
-        text-align: right;
-        padding-right: 10px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-    }
-
-    .overcapacity {
-        color: red;
-        font-weight: bold;
-    }
-
-    .gear-notes {
-        flex: 1 0 60px;
-        padding-left: 10px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-    }
-
-    .item-controls {
-        flex: 0 0 55px;
-        text-align: right;
-        .item-equip {
-            color: #b5b3a4;
+        .gear-header {
+            font-weight: bold;
         }
 
-        .item-carry {
-            color: #b5b3a4;
+        .gear {
+            height: 30px;
+            line-height: 24px;
+            padding: 3px 0;
+            border-bottom: 1px solid #bbb;
+
+            .gear-image {
+                flex: 0 0 24px;
+                margin-right: 5px;
+            }
+
+            img {
+                display: block;
+            }
         }
 
-        .active {
-            color: #4b4a44;
+        .gear-name {
+            flex: 0 0 200px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .gear-name-inv {
+            flex: 0 0 200px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .gear-type {
+            flex: 0 0 80px;
+            text-align: center;
+        }
+
+        .gear-qty {
+            flex: 0 0 40px;
+            text-align: center;
+        }
+
+        .gear-weight {
+            flex: 0 0 40px;
+            text-align: center;
+        }
+
+        .gear-value {
+            flex: 0 0 40px;
+            text-align: center;
+        }
+
+        .gear-capacity {
+            flex: 0 0 140px;
+            text-align: right;
+            padding-right: 10px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .overcapacity {
+            color: red;
+            font-weight: bold;
+        }
+
+        .gear-notes {
+            flex: 1 0 60px;
+            padding-left: 10px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .item-controls {
+            flex: 0 0 55px;
+            text-align: right;
+            .item-equip {
+                color: #b5b3a4;
+            }
+
+            .item-carry {
+                color: #b5b3a4;
+            }
+
+            .active {
+                color: #4b4a44;
+            }
         }
     }
-}
 
-.armorgear-location {
-    height: 31px;
-    align-items: center;
+    .armorgear-location {
+        height: 31px;
+        align-items: center;
 
-    label {
-        flex: 0 0 60px;
-        font-weight: bold;
-        text-transform: uppercase;
-        padding-right: 5px;
-    }
-
-    select {
-        flex: 0 0 60px;
-    }
-
-    .armorgear-location-add {
-        flex: 0 0 45px;
-        font-weight: bold;
-        padding: 2px 0 0 5px;
-    }
-}
-
-.armorgear-protection {
-    .armorgear-protection-item {
-        .label {
+        label {
+            flex: 0 0 60px;
             font-weight: bold;
             text-transform: uppercase;
+            padding-right: 5px;
+        }
+
+        select {
+            flex: 0 0 60px;
+        }
+
+        .armorgear-location-add {
+            flex: 0 0 45px;
+            font-weight: bold;
+            padding: 2px 0 0 5px;
         }
     }
-}
-.armor-locations-list {
-    margin-top: 10px;
 
-    .armor-location {
-        display: block;
+    .armorgear-protection {
+        .armorgear-protection-item {
+            .label {
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+        }
+    }
+    .armor-locations-list {
+        margin-top: 10px;
+
+        .armor-location {
+            display: block;
+        }
     }
 }

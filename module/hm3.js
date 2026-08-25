@@ -8,6 +8,8 @@ import { HarnMasterItem } from "./item/item.js";
 import { HarnMasterItemSheet } from "./item/item-sheet.js";
 import { HM3ActiveEffectConfig } from "./hm3-active-effect-config.js";
 import { HM3 } from "./config.js";
+import { actorModels } from "./data/actor-models.js";
+import { itemModels } from "./data/item-models.js";
 import { registerSystemSettings } from "./settings.js";
 import * as migrations from "./migrations.js";
 import * as macros from "./macros.js";
@@ -50,7 +52,13 @@ Hooks.once('init', async function () {
     // Define custom ActiveEffect class
     //CONFIG.ActiveEffect.sheetClass = HM3ActiveEffectConfig;
 
-    // Define custom Document classes
+    // Define custom Document classes and their data models. The models
+    // replace template.json, which Foundry deprecated in v14 and removes in
+    // v16; `documentTypes` in the manifest declares that these subtypes exist,
+    // and these associate a schema with each.
+    CONFIG.Actor.dataModels = actorModels;
+    CONFIG.Item.dataModels = itemModels;
+
     CONFIG.Actor.documentClass = HarnMasterActor;
     CONFIG.Actor.typeLabels = {
         base: "Base",
@@ -75,15 +83,25 @@ Hooks.once('init', async function () {
         trait: "Trait"    
     };
     CONFIG.Combat.documentClass = HarnMasterCombat;
-    CONFIG.TinyMCE.style_formats[0].items.push({
-        title: 'Highlight',
-        block: 'section',
-        classes: 'highlight',
-        wrapper: true
-    })
 
-    // Register sheet application classes
-    Actors.unregisterSheet("core", ActorSheet);
+    // Register the "Highlight" block with the ProseMirror editor. TinyMCE was
+    // removed in Foundry v14, taking CONFIG.TinyMCE with it;
+    // CONFIG.TextEditor.inserts is the replacement extension point, and
+    // <selection></selection> reproduces what the old `wrapper: true` did.
+    CONFIG.TextEditor.inserts.push({
+        action: "highlight",
+        title: "HM3.Editor.Highlight",
+        html: '<section class="highlight"><selection></selection></section>'
+    });
+
+    // Register sheet application classes.
+    //
+    // There is no `Actors.unregisterSheet("core", ActorSheet)` any more: v14
+    // registers no core default Actor or Item sheet at all, so the call was a
+    // no-op looking for a registration that no longer exists.
+    const {Actors, Items} = foundry.documents.collections;
+    const {DocumentSheetConfig} = foundry.applications.apps;
+
     Actors.registerSheet("hm3", HarnMasterCharacterSheet, {
         types: ["character"],
         makeDefault: true,
@@ -100,13 +118,12 @@ Hooks.once('init', async function () {
         label: "Default HarnMaster Container Sheet"
     });
 
-    DocumentSheetConfig.unregisterSheet(ActiveEffect, "core", ActiveEffectConfig);
+    DocumentSheetConfig.unregisterSheet(ActiveEffect, "core", foundry.applications.sheets.ActiveEffectConfig);
     DocumentSheetConfig.registerSheet(ActiveEffect, "hm3", HM3ActiveEffectConfig, {
         makeDefault: true,
         label: "Default HarnMaster Active Effect Sheet"
     });
 
-    Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("hm3", HarnMasterItemSheet, { makeDefault: true });
 
     // If you need to add Handlebars helpers, here are a few useful examples:
@@ -124,19 +141,11 @@ Hooks.once('init', async function () {
         return str.toLowerCase();
     });
 
-    // Add a font selector dropdown to the TineMCE editor
-    //CONFIG.TinyMCE.toolbar = "styleselect forecolor backcolor bullist numlist image table hr link removeformat code fontselect fontsizeselect save";
-    //CONFIG.TinyMCE.toolbar = "styles bullist numlist image table hr link removeformat code fontselect save";
-    // Register the Hârnic fonts with Foundry and TinyMCE
-    // These are the default fonts for browsers
-    let defaultFonts = "Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Signika=Signika,sans-serif;Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats"
-    // These are the fonts we add
-    let extraFonts = "Martel=Martel;Roboto=Roboto;Lakise=Lakise;Runic=Runic;Lankorian Blackhand=Lankorian Blackhand";
-    // Configure the TinyMCE font drop-down (note: Monk's Enhanced Journal will overwrite this)
-    CONFIG.TinyMCE.font_formats = (CONFIG.TinyMCE.font_formats?CONFIG.TinyMCE.font_formats:defaultFonts) + ";"+extraFonts;
-    // Register the extra fonts within Foundry itsel (e.g. Text drawing tool)
-//    let fontFamilies = extraFonts.split(";").map(f => f.split("=")[0]).filter(f => f.length);
-//    fontFamilies.forEach(f => CONFIG.fontFamilies.push(f));
+    // Register the Harnic fonts with Foundry. `editor: true` is what puts a
+    // family in the ProseMirror font menu: FontConfig.getAvailableFonts()
+    // collects exactly the families whose definition sets it, and the editor
+    // builds its dropdown from that list. There is no separate editor font
+    // configuration to keep in step any more.
     Object.assign(CONFIG.fontDefinitions, {
         "Lakise": {editor: true, fonts: [{urls: ['./systems/hm3/fonts/Harn-Lakise-Normal.otf']}]},
         "Runic": {editor: true, fonts: [{urls: ['./systems/hm3/fonts/Harn-Runic-Normal.otf']}]},
@@ -145,9 +154,9 @@ Hooks.once('init', async function () {
 
 });
 
-Hooks.on("renderChatMessage", (app, html, data) => {
+Hooks.on("renderChatMessageHTML", (message, html, data) => {
     // Display action buttons
-    combat.displayChatActionButtons(app, html, data);
+    combat.displayChatActionButtons(message, html, data);
 });
 Hooks.on('renderChatLog', (app, html, data) => HarnMasterActor.chatListeners(html));
 Hooks.on('renderChatPopout', (app, html, data) => HarnMasterActor.chatListeners(html));
@@ -208,10 +217,9 @@ Hooks.on('preCreateCombatant', (combat, combatant, options, id) => {
 });
 
 Hooks.on('renderSceneConfig', (app, html, data) => {
-    const scene = app.object;
-    if (app.renderTOTMScene) return;
-    app.renderTOTMScene = true;
-    
+    const scene = app.document;
+    if (html.querySelector('#hm3-totm')) return;
+
     let isTotm = scene.getFlag('hm3', 'isTotm');
     if (typeof isTotm === 'undefined') {
         if (!scene.compendium) {
@@ -228,35 +236,28 @@ Hooks.on('renderSceneConfig', (app, html, data) => {
     </div>
     `;
 
-    const totmFind = html.find("input[name = 'gridAlpha']");
-    const formGroup = totmFind.closest(".form-group");
-    formGroup.after(totmHtml);
-});
+    const alpha = html.querySelector('[name="grid.alpha"]');
+    const formGroup = alpha?.closest('.form-group');
+    if (!formGroup) return;
+    formGroup.insertAdjacentHTML('afterend', totmHtml);
 
-Hooks.on('closeSceneConfig', (app, html, data) => {
-    const scene = app.object;
-    app.renderTOTMScene = false;
-    if (!scene.compendium) {
-        scene.setFlag('hm3', 'isTotm', html.find("input[name='hm3Totm']").is(":checked"));
-    }
+    html.querySelector('#hm3-totm')?.addEventListener('change', ev => {
+        if (!scene.compendium) scene.setFlag('hm3', 'isTotm', ev.target.checked);
+    });
 });
 
 async function welcomeDialog() {
     const dlgTemplate = 'systems/hm3/templates/dialog/welcome.html';
-    const html = await renderTemplate(dlgTemplate, {});
+    const html = await foundry.applications.handlebars.renderTemplate(dlgTemplate, {});
 
     // Create the dialog window
-    return Dialog.prompt({
-        title: 'Welcome!',
+    return foundry.applications.api.DialogV2.prompt({
+        window: {title: 'Welcome!'},
         content: html,
-        label: 'OK',
-        callback: html => {
-            const form = html.querySelector("#welcome");
-            const fd = new FormDataExtended(form);
-            const data = fd.object;
-            return data.showOnStartup;
-        },
-        options: { jQuery: false }
+        ok: {
+            label: 'OK',
+            callback: (event, button) => new FormDataExtended(button.form).object.showOnStartup
+        }
     });
 }
 

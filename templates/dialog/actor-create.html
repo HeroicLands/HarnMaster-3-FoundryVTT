@@ -1,4 +1,3 @@
-<form id="document-create actor-create" autocomplete="off">
     <div class="form-group">
         <label>{{localize "Name"}}</label>
         <div class="form-fields">
@@ -22,12 +21,10 @@
         <label>{{ localize "DOCUMENT.Folder" }}</label>
         <div class="form-fields">
             <select name="folder">
-                {{#select folder}}
                 <option value=""></option>
                 {{#each folders}}
-                <option value="{{ this.id }}">{{ this.name }}</option>
+                <option value="{{ this.id }}" {{#if (eq this.id ../folder)}}selected{{/if}}>{{ this.name }}</option>
                 {{/each}}
-                {{/select}}
             </select>
         </div>
     </div>
@@ -37,4 +34,3 @@
         <label class="init-checkbox">Initialize default skills &amp; locations</label>
         <input type="checkbox" name="initDefaults" checked />
     </div>
-</form>
