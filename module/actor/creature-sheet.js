@@ -6,28 +6,23 @@ import { HarnMasterBaseActorSheet } from "./base-actor-sheet.js";
  */
 export class HarnMasterCreatureSheet extends HarnMasterBaseActorSheet {
 
-  /** @override */
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ["hm3", "sheet", "actor", "creature"],
-      width: 780,
-      height: 640,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "facade" }]
-    });
-  }
+    /**
+     * ApplicationV2 merges DEFAULT_OPTIONS up the prototype chain, so this only
+     * contributes what it adds to the base sheet's.
+     * @override
+     */
+    static DEFAULT_OPTIONS = {
+        classes: ["creature"],
+        position: { width: 780, height: 640 }
+    };
 
-  /* -------------------------------------------- */
-
-  /**
-   * Get the correct HTML template path to use for rendering this particular sheet
-   * @type {String}
-   */
-  get template()
-  {
-    if (!game.user.isGM && this.actor.limited) {
-      return "systems/hm3/templates/actor/creature-limited.html";
-    } else {
-      return "systems/hm3/templates/actor/creature-sheet.html";
-    }
-  }
+    /**
+     * The base sheet's `_configureRenderParts` chooses between these according
+     * to whether the viewer only has limited permission.
+     * @override
+     */
+    static TEMPLATES = {
+        full: "systems/hm3/templates/actor/creature-sheet.html",
+        limited: "systems/hm3/templates/actor/creature-limited.html"
+    };
 }

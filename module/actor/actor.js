@@ -50,7 +50,7 @@ export class HarnMasterActor extends Actor {
         const type = data.type || defaultType;
 
         // Render the document creation form
-        const html = await renderTemplate(`templates/sidebar/document-create.html`, {
+        const html = await foundry.applications.handlebars.renderTemplate(`templates/sidebar/document-create.html`, {
             folders,
             name: data.name || "",
             defaultName: this.implementation.defaultName({type, parent, pack}),
@@ -69,19 +69,21 @@ export class HarnMasterActor extends Actor {
         });
 
         // Render the confirmation dialog window
-        return Dialog.prompt({
-            title,
+        return foundry.applications.api.DialogV2.prompt({
+            window: {title: title},
             content: html,
-            label: title,
-            render: html => {
+            render: (event, dialog) => {
                 if ( !this.hasTypeData ) return;
-                html[0].querySelector('[name="type"]').addEventListener("change", e => {
-                    html[0].querySelector('[name="name"]').placeholder = this.implementation.defaultName(
+                dialog.element.querySelector('[name="type"]').addEventListener("change", e => {
+                    dialog.element.querySelector('[name="name"]').placeholder = this.implementation.defaultName(
                         {type: e.target.value, parent, pack});
                 });
             },
-            callback: html => {
-                const form = html[0].querySelector("form");
+            rejectClose: false,
+            ok: {
+                label: title,
+                callback: (event, button) => {
+                const form = button.form;
                 const fd = new FormDataExtended(form);
                 foundry.utils.mergeObject(data, fd.object, {inplace: true});
                 if (!data.folder) delete data["folder"];
@@ -91,9 +93,8 @@ export class HarnMasterActor extends Actor {
                 if (!data.initDefaults) createOptions.skipDefaults = true;
                 delete data["initDefaults"];
                 return this.create(data, createOptions);
-            },
-            rejectClose: false,
-            options
+            }
+            }
         });
     }
 

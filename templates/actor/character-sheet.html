@@ -1,8 +1,8 @@
-<form class="{{cssClass}} sheet flexcol" autocomplete="off">
+<div class="{{cssClass}} sheet flexcol">
     {{!-- Sheet Header --}}
     <header class="sheet-header sheet-header-character">
         <div class="flexrow">
-            <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+            <img class="profile-img" src="{{actor.img}}" data-action="editImage" data-edit="img" title="{{actor.name}}" />
             <div class="flexcol header-fields">
                 <div class="flexrow name-attribute">
                     <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" />
@@ -44,32 +44,32 @@
 
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="facade">Fa&#231;ade</a>
-        <a class="item" data-tab="profile">Profile</a>
-        <a class="item" data-tab="skills">Skills</a>
-        <a class="item" data-tab="combat">Combat</a>
-        <a class="item" data-tab="esoteric">Esoterics</a>
-        <a class="item" data-tab="inventory">Gear</a>
-        <a class="item" data-tab="macro">Macro</a>
-        <a class="item" data-tab="effects">Effects</a>
+        <a class="item {{#if tabs.facade.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="facade">Fa&#231;ade</a>
+        <a class="item {{#if tabs.profile.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="profile">Profile</a>
+        <a class="item {{#if tabs.skills.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="skills">Skills</a>
+        <a class="item {{#if tabs.combat.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="combat">Combat</a>
+        <a class="item {{#if tabs.esoteric.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="esoteric">Esoterics</a>
+        <a class="item {{#if tabs.inventory.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="inventory">Gear</a>
+        <a class="item {{#if tabs.macro.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="macro">Macro</a>
+        <a class="item {{#if tabs.effects.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="effects">Effects</a>
     </nav>
 
     {{!-- Sheet Body --}}
     <section class="sheet-body">
 
         {{!-- Facade Tab --}}
-        <div class="tab facade" data-group="primary" data-tab="facade">
+        <div class="tab facade {{#if tabs.facade.active}}active{{/if}}" data-group="primary" data-tab="facade">
             <div class="flexrow">
-                <img class="facade-image" src="{{adata.bioImage}}" data-edit="system.bioImage" title="{{actor.name}}"
+                <img class="facade-image" src="{{adata.bioImage}}" data-action="editImage" data-edit="system.bioImage" title="{{actor.name}}"
                     height="300" width="200" />
                 <div class="facade-description">
-                    {{editor adata.description target="system.description" button=true owner=owner editable=editable}}
+                    {{editor adata.description target="system.description" button=true editable=editable}}
                 </div>
             </div>
         </div>
 
         {{!-- Profile Tab --}}
-        <div class="tab profile" data-group="primary" data-tab="profile">
+        <div class="tab profile {{#if tabs.profile.active}}active{{/if}}" data-group="primary" data-tab="profile">
             <div class="flexcol">
                 <ul class="flexrow ability-scores">
                     <li class="ability" data-ability="strength">
@@ -405,7 +405,7 @@
                             data-journal-entry="Sheet - Profile Tab"><i
                                 class="far fa-question-circle"></i></a></h3>
                         <div class="description">
-                            {{editor adata.biography target="system.biography" button=true owner=owner editable=editable}}
+                            {{editor adata.biography target="system.biography" button=true editable=editable}}
                         </div>
                     </div>
                 </div>
@@ -413,7 +413,7 @@
         </div>
 
         {{!-- Skills Tab --}}
-        <div class="tab skills items" data-group="primary" data-tab="skills">
+        <div class="tab skills items {{#if tabs.skills.active}}active{{/if}}" data-group="primary" data-tab="skills">
             <div class="flexrow">
                 <input class="skill-name-filter" type="text" name="system.skillNameFilter"
                     placeholder="Filter skills by name..." data-dtype="String" />
@@ -686,7 +686,7 @@
         </div>
 
         {{!-- Combat Tab --}}
-        <div class="tab combat items" data-group="primary" data-tab="combat">
+        <div class="tab combat items {{#if tabs.combat.active}}active{{/if}}" data-group="primary" data-tab="combat">
             <div class="items-list">
                 <div class="items-header flexrow">
                     <h3 class="item-name">Combat Statistics<a class="more-info"
@@ -1002,7 +1002,7 @@
         </div>
 
         {{!-- Magic/Religion Tab --}}
-        <div class="tab esoteric items" data-group="primary" data-tab="esoteric">
+        <div class="tab esoteric items {{#if tabs.esoteric.active}}active{{/if}}" data-group="primary" data-tab="esoteric">
             <!-- Magic Spells -->
             <ol class="items-list spells-list">
                 <li class="items-header spell flexrow">
@@ -1134,7 +1134,7 @@
         </div>
 
         {{!-- Inventory Tab --}}
-        <div class="tab inventory items" data-group="primary" data-tab="inventory">
+        <div class="tab inventory items {{#if tabs.inventory.active}}active{{/if}}" data-group="primary" data-tab="inventory">
             <div class="flexrow">
                 <ol class="weight flexcol">
                     <li class="weight-header flexrow">
@@ -1218,7 +1218,7 @@
         </div>
 
         {{!-- Macro Tab --}}
-        <div class="tab macro" data-group="primary" data-tab="macro">
+        <div class="tab macro {{#if tabs.macro.active}}active{{/if}}" data-group="primary" data-tab="macro">
             <div class="form-group">
                 <label>Type</label>
                 <select name="system.macros.type">
@@ -1233,7 +1233,7 @@
         </div>
 
         {{!-- Effects Tab --}}
-        <div class="tab effects" data-group="primary" data-tab="effects">
+        <div class="tab effects {{#if tabs.effects.active}}active{{/if}}" data-group="primary" data-tab="effects">
             <div class="flexrow">
                 <input class="effects-name-filter" type="text" name="system.effectsNameFilter"
                     placeholder="Filter effects by name..." data-dtype="String" />
@@ -1271,4 +1271,4 @@
             </ol>
         </div>
     </section>
-</form>
+</div>

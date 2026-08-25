@@ -5,16 +5,99 @@ import * as utility from '../utility.js';
 import * as macros from '../macros.js';
 import { onManageActiveEffect } from '../effect.js';
 
+const {HandlebarsApplicationMixin} = foundry.applications.api;
+const {ActorSheetV2} = foundry.applications.sheets;
+
 /**
- * Extend the basic ActorSheet with some common capabilities
- * @extends {ActorSheet}
+ * Extend the basic ActorSheetV2 with some common capabilities.
+ *
+ * Concrete sheets (character, creature, container) supply their own
+ * `DEFAULT_OPTIONS` and `TEMPLATES`; everything else lives here.
+ * @extends {ActorSheetV2}
  */
-export class HarnMasterBaseActorSheet extends ActorSheet {
+export class HarnMasterBaseActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
+
+    /**
+     * ApplicationV2 merges `DEFAULT_OPTIONS` up the prototype chain, so a
+     * subclass contributes only what it adds.
+     *
+     * `submitOnChange` / `closeOnSubmit` reproduce the AppV1 sheet defaults —
+     * fields save as they are edited rather than on an explicit submit.
+     */
+    static DEFAULT_OPTIONS = {
+        classes: ["hm3", "sheet", "actor"],
+        window: {resizable: true},
+        form: {submitOnChange: true, closeOnSubmit: false}
+    };
+
+    /**
+     * The tab strip shared by every actor sheet. AppV2 owns tab state: the nav
+     * anchors carry `data-action="tab"`, and `_prepareContext` hands the
+     * prepared descriptors to the template as `tabs`.
+     */
+    static TABS = {
+        primary: {
+            initial: "facade",
+            tabs: [
+                {id: "facade", label: "Fa\u00e7ade"},
+                {id: "profile", label: "Profile"},
+                {id: "skills", label: "Skills"},
+                {id: "combat", label: "Combat"},
+                {id: "esoteric", label: "Esoterics"},
+                {id: "inventory", label: "Gear"},
+                {id: "macro", label: "Macro"},
+                {id: "effects", label: "Effects"}
+            ]
+        }
+    };
+
+    /**
+     * The full and limited templates for this sheet, supplied by the subclass.
+     * @type {{full: string, limited: string}}
+     */
+    static TEMPLATES = {full: "", limited: ""};
+
+    /**
+     * Choose the template at render time. AppV1 did this with a `get template()`
+     * that swapped in the limited view; `PARTS` is static, so the equivalent
+     * hook is this one.
+     * @override
+     */
+    _configureRenderParts(options) {
+        const templates = this.constructor.TEMPLATES;
+        const limited = !game.user.isGM && this.document.limited;
+        return {sheet: {template: limited ? templates.limited : templates.full, root: true}};
+    }
+
+    /**
+     * A drag source of `.item-list .item`, which is what the AppV1 ActorSheet
+     * used and what these templates are marked up for. ActorSheetV2 defaults to
+     * `.draggable`, which appears nowhere in them, so without this override
+     * nothing on the sheet can be dragged.
+     * @override
+     */
+    get _dragDrop() {
+        return this.#dragDrop ??= new foundry.applications.ux.DragDrop.implementation({
+            dragSelector: ".item-list .item",
+            permissions: {
+                dragstart: this._canDragStart.bind(this),
+                drop: this._canDragDrop.bind(this)
+            },
+            callbacks: {
+                dragstart: this._onDragStart.bind(this),
+                dragover: this._onDragOver.bind(this),
+                drop: this._onDrop.bind(this)
+            }
+        });
+    }
+
+    #dragDrop = null;
 
     /** @override */
-    getData() {
-        let isOwner = this.document.isOwner;
-        const data = {
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options);
+        const isOwner = this.document.isOwner;
+        const data = Object.assign(context, {
             owner: isOwner,
             limited: this.document.limited,
             options: this.options,
@@ -24,7 +107,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             isCreature: this.document.type === "creature",
             isContainer: this.document.type === "container",
             config: CONFIG.HM3
-        }
+        });
 
         data.customSunSign = game.settings.get('hm3', 'customSunSign');
         data.actor = foundry.utils.deepClone(this.actor);
@@ -92,7 +175,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             effect._getSourceName().then(() => {
                 data.effects[effect.id] = {
                     'id': effect.id,
-                    'label': effect.label,
+                    'label': effect.name,
                     'sourceName': effect.sourceName,
                     'duration': utility.aeDuration(effect),
                     'source': effect,
@@ -105,16 +188,19 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         return data;
     }
 
-    /** @override */
-    _onSortItem(event, itemData) {
+    /**
+     * @override
+     * AppV2 hands over the resolved Item document; AppV1 passed its data object.
+     */
+    _onSortItem(event, item) {
 
         // TODO - for now, don't allow sorting for Synthetic Actors
         if (this.actor.isToken) return;
 
-        if (!itemData.type.endsWith('gear')) return super._onSortItem(event, itemData);
+        if (!item.type.endsWith('gear')) return super._onSortItem(event, item);
 
         // Get the drag source and its siblings
-        const source = this.actor.items.get(itemData._id);
+        const source = this.actor.items.get(item.id);
         const siblings = this.actor.items.filter(i => {
             return (i.type.endsWith('gear') && 
                 (i.id !== source.id));
@@ -129,7 +215,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         if (target && !target.type.endsWith('gear')) return;
 
         // Perform the sort
-        const sortUpdates = SortingHelpers.performIntegerSort(source, { target: target, siblings });
+        const sortUpdates = foundry.utils.performIntegerSort(source, { target: target, siblings });
         const updateData = sortUpdates.map(u => {
             const update = u.update;
             update._id = u.target._id;
@@ -140,25 +226,27 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         return this.actor.updateEmbeddedDocuments("Item", updateData);
     }
 
-    /** @override */
-    async _onDropItem(event, data) {
+    /**
+     * @override
+     * AppV2 resolves the drop for us and hands over the Item document, where
+     * AppV1 passed raw drop data for the sheet to resolve itself.
+     */
+    async _onDropItem(event, droppedItem) {
         if (!this.actor.isOwner) return false;
-
-        const droppedItem = await Item.fromDropData(data);
 
         // Check if coming from a compendium pack
         if (droppedItem.pack) {
-            return super._onDropItem(event, data)
+            return super._onDropItem(event, droppedItem)
         }
 
         // Skills, spells, etc. (non-gear)
         if (!droppedItem.type.endsWith("gear")) {
-            return super._onDropItem(event, data);
+            return this._onDropItemCreate(droppedItem.toObject());
         }
 
         // Gear coming from world items list
         if (!droppedItem.parent) {
-            return super._onDropItem(event, data);
+            return super._onDropItem(event, droppedItem);
         }
 
         // At this point we know the item is some sort of gear, and coming from an actor
@@ -179,7 +267,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 }
             }
 
-            return super._onDropItem(event, data);
+            return super._onDropItem(event, droppedItem);
         }
 
         // At this point we know this dropped item is Gear coming from an actor,
@@ -212,7 +300,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             throw Error(`Error accessing actor where container is coming from, move aborted`);
         }
 
-        let itData = item.toObject;
+        let itData = item.toObject();
         delete itData._id;
         const containerResult = await Item.create(itData, {parent: this.actor});
         if (!containerResult) {
@@ -223,7 +311,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         // move all items into new container
         let failure = false;
         for (let it of item.parent.items.values()) {
-            if (!failure && it.system.container === data.id) {
+            if (!failure && it.system.container === item.id) {
                 itData = it.toObject();
                 delete itData._id;
                 itData.system.container = containerResult.id;
@@ -242,7 +330,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         // delete old container
-        await Item.deleteDocuments([data._id], {parent: item.parent});
+        await Item.deleteDocuments([item.id], {parent: item.parent});
         return containerResult;
     }
 
@@ -254,7 +342,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         }
 
         // Render modal dialog
-        let dlgTemplate = "systems/hmk/templates/dialog/item-qty.html";
+        let dlgTemplate = "systems/hm3/templates/dialog/item-qty.html";
         let dialogData = {
             itemName: item.name,
             sourceName: item.parent.name,
@@ -262,26 +350,25 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             maxItems: item.system.quantity,
         };
 
-        const dlghtml = await renderTemplate(dlgTemplate, dialogData);
+        const dlghtml = await foundry.applications.handlebars.renderTemplate(dlgTemplate, dialogData);
 
         // Create the dialog window
-        return Dialog.prompt({
-            title: "Move Items",
+        return foundry.applications.api.DialogV2.prompt({
+            window: {title: "Move Items"},
             content: dlghtml,
-            label: "OK",
-            callback: async (html) => {
-                const form = html.querySelector('#items-to-move');
-                const fd = new FormDataExtended(form);
-                const formdata = fd.toObject();
-                let formQtyToMove = parseInt(formdata.itemstomove);
+            ok: {
+                label: "OK",
+                callback: async (event, button) => {
+                    const formdata = new FormDataExtended(button.form).object;
+                    const formQtyToMove = parseInt(formdata.itemstomove);
 
-                if (formQtyToMove <= 0) {
-                    return false;
-                } else {
-                    return await this._moveItems(item, formQtyToMove);
+                    if (formQtyToMove <= 0) {
+                        return false;
+                    } else {
+                        return await this._moveItems(item, formQtyToMove);
+                    }
                 }
-            },
-            options: { jQuery: false }
+            }
         });
     }
 
@@ -323,7 +410,13 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         return result;
     }
 
-    /** @override */
+    /**
+     * Create a non-gear item dropped onto this actor, merging it into an
+     * existing item of the same type and name where there is one.
+     *
+     * AppV1 called this from its own `_onDropItem`; AppV2 has no such hook, so
+     * `_onDropItem` above calls it directly.
+     */
     async _onDropItemCreate(itemData) {
         const actor = this.actor;
         if (!actor.isOwner) return false;
@@ -349,276 +442,165 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             return Item.create(itemData, {parent: this.actor});
         }
 
-        return super._onDropItemCreate(itemData);
+        return Item.create(itemData, {parent: this.actor});
     }
 
 
+    /**
+     * Controls in these templates are identified by CSS class, not by
+     * `data-action` — that attribute already carries HM3's own meaning on the
+     * effect controls. So rather than rewrite 281 elements across 13 templates,
+     * the sheet delegates from its root and dispatches through this table.
+     *
+     * Each handler is called with `(event, target)`, where `target` is the
+     * matched control — the delegated listener's `currentTarget` is the sheet
+     * root, so handlers cannot read it themselves.
+     *
+     * @returns {Record<string, (event: PointerEvent, target: HTMLElement) => any>}
+     * @protected
+     */
+    _clickHandlers() {
+        const actor = this.actor;
+        const itemOf = target => actor.items.get(target.closest(".item")?.dataset.itemId);
+        const fastForward = ev => ev.shiftKey || ev.altKey || ev.ctrlKey;
+
+        /**
+         * Resolve the token to attack from. A synthetic actor has one; a linked
+         * actor needs exactly one token on the canvas to be unambiguous.
+         */
+        const attackToken = () => {
+            let token = actor.token;
+            if (token) return token;
+            const tokens = actor.getActiveTokens(true);
+            if (tokens.length === 0) {
+                ui.notifications.warn(`There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`);
+                return null;
+            } else if (tokens.length > 1) {
+                ui.notifications.warn(`There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`);
+                return null;
+            }
+            return tokens[0];
+        };
+
+        return {
+            ".item-create": (ev, target) => this._onItemCreate(ev, target),
+            ".item-edit": (ev, target) => itemOf(target)?.sheet.render(true),
+            ".item-delete": (ev, target) => this._onItemDelete(ev, target),
+            ".item-dumpdesc": (ev, target) => this._onDumpEsotericDescription(ev, target),
+            ".effect-control": (ev, target) => onManageActiveEffect(ev, this.document, target),
+
+            ".skill-roll": (ev, target) => macros.skillRoll(itemOf(target)?.uuid, fastForward(ev), actor),
+            ".spell-roll": (ev, target) => macros.castSpellRoll(itemOf(target)?.uuid, fastForward(ev), actor),
+            ".invocation-roll": (ev, target) => macros.invokeRitualRoll(itemOf(target)?.uuid, fastForward(ev), actor),
+            ".psionic-roll": (ev, target) => macros.usePsionicRoll(itemOf(target)?.uuid, fastForward(ev), actor),
+
+            ".ability-d6-roll": (ev, target) => macros.testAbilityD6Roll(target.dataset.ability, fastForward(ev), actor),
+            ".ability-d100-roll": (ev, target) => macros.testAbilityD100Roll(target.dataset.ability, fastForward(ev), actor),
+
+            ".weapon-damage-roll": (ev, target) => macros.weaponDamageRoll(itemOf(target)?.uuid, target.dataset.aspect, actor),
+            ".missile-damage-roll": (ev, target) => macros.missileDamageRoll(itemOf(target)?.uuid, target.dataset.range, actor),
+
+            ".melee-weapon-attack": (ev, target) => {
+                const token = attackToken();
+                if (token) macros.weaponAttack(itemOf(target)?.uuid, false, token);
+            },
+            ".missile-weapon-attack": (ev, target) => {
+                const token = attackToken();
+                if (token) macros.missileAttack(itemOf(target)?.uuid, false, token);
+            },
+
+            ".weapon-attack-roll": (ev, target) => macros.weaponAttackRoll(itemOf(target)?.uuid, fastForward(ev), actor),
+            ".weapon-defend-roll": (ev, target) => macros.weaponDefendRoll(itemOf(target)?.uuid, fastForward(ev), actor),
+            ".missile-attack-roll": (ev, target) => macros.missileAttackRoll(itemOf(target)?.uuid, actor),
+
+            ".injury-roll": () => macros.injuryRoll(actor),
+            ".healing-roll": (ev, target) => macros.healingRoll(itemOf(target)?.uuid, fastForward(ev), actor),
+            ".dodge-roll": ev => macros.dodgeRoll(fastForward(ev), actor),
+            ".shock-roll": ev => macros.shockRoll(fastForward(ev), actor),
+            ".stumble-roll": ev => macros.stumbleRoll(fastForward(ev), actor),
+            ".fumble-roll": ev => macros.fumbleRoll(fastForward(ev), actor),
+            ".damage-roll": () => macros.genericDamageRoll(actor),
+
+            ".item-carry": (ev, target) => this._onToggleCarry(ev, target),
+            ".item-equip": (ev, target) => this._onToggleEquip(ev, target),
+            ".item-improve": (ev, target) => this._onToggleImprove(ev, target),
+            ".more-info": (ev, target) => this._onMoreInfo(ev, target)
+        };
+    }
+
+    /**
+     * The name filters, keyed by the class of the input that drives them: the
+     * rows to filter, and the attribute holding each row's name.
+     * @type {Record<string, {rows: string, attr: string}>}
+     */
+    static FILTERS = {
+        ".skill-name-filter": {rows: ".skill-item", attr: "data-item-name"},
+        ".gear-name-filter": {rows: ".gear-item", attr: "data-item-name"},
+        ".effects-name-filter": {rows: ".effect", attr: "data-effect-name"}
+    };
+
     /** @override */
-    activateListeners(html) {
-        super.activateListeners(html);
+    async _onRender(context, options) {
+        await super._onRender(context, options);
 
         // Everything below here is only needed if the sheet is editable
-        if (!this.options.editable) return;
+        if (!this.isEditable) return;
 
-        // Add Inventory Item
-        html.find('.item-create').click(this._onItemCreate.bind(this));
+        // Hold one bound reference per instance. _onRender runs on every render
+        // and `this.element` persists, so a fresh `.bind()` each time would
+        // stack handlers rather than replace them.
+        this.#onClick ??= this.#dispatchClick.bind(this);
+        this.#onKeyup ??= this.#dispatchKeyup.bind(this);
+        this.element.addEventListener("click", this.#onClick);
+        this.element.addEventListener("keyup", this.#onKeyup);
+    }
 
-        // Update Inventory Item
-        html.find('.item-edit').click(ev => {
-            const li = $(ev.currentTarget).parents(".item");
-            const item = this.actor.items.get(li.data("itemId"));
-            item.sheet.render(true);
-        });
+    #onClick = null;
+    #onKeyup = null;
 
-        // Delete Inventory Item
-        html.find('.item-delete').click(this._onItemDelete.bind(this));
+    /**
+     * Route a click to the first handler whose selector matches an ancestor of
+     * the clicked node.
+     * @param {PointerEvent} event
+     */
+    #dispatchClick(event) {
+        // Select the whole value when entering a text field, as before.
+        const text = event.target.closest("input[type='text']");
+        if (text) text.select();
 
-        // Dump Esoteric Description to Chat
-        html.find('.item-dumpdesc').click(this._onDumpEsotericDescription.bind(this));
+        const handlers = this._clickHandlers();
+        for (const [selector, handler] of Object.entries(handlers)) {
+            const target = event.target.closest(selector);
+            if (!target) continue;
+            event.preventDefault();
+            return handler(event, target);
+        }
+        return null;
+    }
 
-        // Active Effect management
-        html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.document));
-
-        // Ensure all text is selected when entering text input field
-        html.on("click", "input[type='text']", ev => {
-            ev.currentTarget.select();
-        });
-
-        // Filter on name for Skills
-        html.on("keyup", ".skill-name-filter", ev => {
-            this.skillNameFilter = $(ev.currentTarget).val();
-            const lcSkillNameFilter = this.skillNameFilter.toLowerCase();
-            let skills = html.find('.skill-item');
-            for (let skill of skills) {
-                const skillName = skill.getAttribute('data-item-name');
-                if (lcSkillNameFilter) {
-                    if (skillName.toLowerCase().includes(lcSkillNameFilter)) {
-                        $(skill).show()
-                    } else {
-                        $(skill).hide()
-                    }
-                } else {
-                    $(skill).show();
-                }
+    /**
+     * Apply a name filter as it is typed.
+     * @param {KeyboardEvent} event
+     */
+    #dispatchKeyup(event) {
+        for (const [selector, {rows, attr}] of Object.entries(this.constructor.FILTERS)) {
+            const input = event.target.closest(selector);
+            if (!input) continue;
+            const filter = (input.value || "").toLowerCase();
+            for (const row of this.element.querySelectorAll(rows)) {
+                const name = (row.getAttribute(attr) || "").toLowerCase();
+                row.style.display = !filter || name.includes(filter) ? "" : "none";
             }
-        });
-
-        // Filter on name for gear
-        html.on("keyup", ".gear-name-filter", ev => {
-            this.gearNameFilter = $(ev.currentTarget).val();
-            const lcGearNameFilter = this.gearNameFilter.toLowerCase();
-            let gearItems = html.find('.gear-item');
-            for (let gear of gearItems) {
-                const gearName = gear.getAttribute('data-item-name');
-                if (lcGearNameFilter) {
-                    if (gearName.toLowerCase().includes(lcGearNameFilter)) {
-                        $(gear).show()
-                    } else {
-                        $(gear).hide()
-                    }
-                } else {
-                    $(gear).show();
-                }
-            }
-        });
-
-        // Filter on name for effects
-        html.on("keyup", ".effects-name-filter", ev => {
-            this.effectsNameFilter = $(ev.currentTarget).val();
-            const lcEffectsNameFilter = this.effectsNameFilter.toLowerCase();
-            let effectItems = html.find('.effect');
-            for (let effect of effectItems) {
-                const effectName = effect.getAttribute('data-effect-name');
-                if (lcEffectsNameFilter) {
-                    if (effectName.toLowerCase().includes(lcEffectsNameFilter)) {
-                        $(effect).show()
-                    } else {
-                        $(effect).hide()
-                    }
-                } else {
-                    $(effect).show();
-                }
-            }
-        });
-
-        // Standard 1d100 Skill Roll
-        html.find('.skill-roll').click(ev => {
-            const li = $(ev.currentTarget).parents(".item");
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const item = this.actor.items.get(li.data("itemId"));
-            macros.skillRoll(item?.uuid, fastforward, this.actor);
-        });
-
-        // Standard 1d100 Spell Casting Roll
-        html.find('.spell-roll').click(ev => {
-            const li = $(ev.currentTarget).parents(".item");
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const item = this.actor.items.get(li.data("itemId"));
-            macros.castSpellRoll(item?.uuid, fastforward, this.actor);
-        });
-
-        // Standard 1d100 Ritual Invocation Roll
-        html.find('.invocation-roll').click(ev => {
-            const li = $(ev.currentTarget).parents(".item");
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const item = this.actor.items.get(li.data("itemId"));
-            macros.invokeRitualRoll(item?.uuid, fastforward, this.actor);
-        });
-
-        // Standard 1d100 Psionic Talent Roll
-        html.find('.psionic-roll').click(ev => {
-            const li = $(ev.currentTarget).parents(".item");
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const item = this.actor.items.get(li.data("itemId"));
-            macros.usePsionicRoll(item?.uuid, fastforward, this.actor);
-        });
-
-        // d6 Ability Score Roll
-        html.find('.ability-d6-roll').click(ev => {
-            const ability = ev.currentTarget.dataset.ability;
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            macros.testAbilityD6Roll(ability, fastforward, this.actor)
-        });
-
-        // d100 Ability Score Roll
-        html.find('.ability-d100-roll').click(ev => {
-            const ability = ev.currentTarget.dataset.ability;
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            macros.testAbilityD100Roll(ability, fastforward, this.actor)
-        });
-
-        // Weapon Damage Roll
-        html.find('.weapon-damage-roll').click(ev => {
-            const li = $(ev.currentTarget).parents(".item");
-            const aspect = ev.currentTarget.dataset.aspect;
-            const item = this.actor.items.get(li.data("itemId"));
-            macros.weaponDamageRoll(item?.uuid, aspect, this.actor);
-        });
-
-        // Missile Damage Roll
-        html.find('.missile-damage-roll').click(ev => {
-            const li = $(ev.currentTarget).parents(".item");
-            const range = ev.currentTarget.dataset.range;
-            const item = this.actor.items.get(li.data("itemId"));
-            macros.missileDamageRoll(item?.uuid, range, this.actor);
-        });
-
-        // Melee Weapon Attack
-        html.find('.melee-weapon-attack').click(ev => {
-            // If we are a synthetic actor, token will be set
-            let token = this.actor.token;
-            if (!token) {
-                // We are not a synthetic actor, so see if there is exactly one linked actor on the canvas
-                const tokens = this.actor.getActiveTokens(true);
-                if (tokens.length == 0) {
-                    ui.notifications.warn(`There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`);
-                    return null;
-                } else if (tokens.length > 1) {
-                    ui.notifications.warn(`There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`);
-                    return null;
-                }
-                token = tokens[0];
-            }
-
-            const li = $(ev.currentTarget).parents(".item");
-            const item = this.actor.items.get(li.data("itemId"));
-            macros.weaponAttack(item?.uuid, false, token);
-        });
-
-        // Missile Weapon Attack
-        html.find('.missile-weapon-attack').click(ev => {
-            // If we are a synthetic actor, token will be set
-            let token = this.actor.token;
-            if (!token) {
-                // We are not a synthetic actor, so see if there is exactly one linked actor on the canvas
-                const tokens = this.actor.getActiveTokens(true);
-                if (tokens.length == 0) {
-                    ui.notifications.warn(`There are no tokens linked to this actor on the canvas, double-click on a specific token on the canvas.`);
-                    return null;
-                } else if (tokens.length > 1) {
-                    ui.notifications.warn(`There are ${tokens.length} tokens linked to this actor on the canvas, so the attacking token can't be identified.`);
-                    return null;
-                }
-                token = tokens[0];
-            }
-
-            const li = $(ev.currentTarget).parents(".item");
-            const item = this.actor.items.get(li.data("itemId"));
-            macros.missileAttack(item?.uuid, false, token);
-        });
-
-        // Weapon Attack Roll
-        html.find('.weapon-attack-roll').click(ev => {
-            const li = $(ev.currentTarget).parents(".item");
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const item = this.actor.items.get(li.data("itemId"));
-            macros.weaponAttackRoll(item?.uuid, fastforward, this.actor);
-        });
-
-        // Weapon Defend Roll
-        html.find('.weapon-defend-roll').click(ev => {
-            const li = $(ev.currentTarget).parents(".item");
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const item = this.actor.items.get(li.data("itemId"));
-            macros.weaponDefendRoll(item?.uuid, fastforward, this.actor);
-        });
-
-        // Missile Attack Roll
-        html.find('.missile-attack-roll').click(ev => {
-            const li = $(ev.currentTarget).parents(".item");
-            const item = this.actor.items.get(li.data("itemId"));
-            macros.missileAttackRoll(item?.uuid, this.actor);
-        });
-
-        // Injury Roll
-        html.find('.injury-roll').click(ev => macros.injuryRoll(this.actor));
-
-        // Healing Roll
-        html.find('.healing-roll').click(ev => {
-            const li = $(ev.currentTarget).parents(".item");
-            const fastforward = ev.shiftKey || ev.altKey || ev.ctrlKey;
-            const item = this.actor.items.get(li.data("itemId"));
-            macros.healingRoll(item?.uuid, fastforward, this.actor);
-            //const ifff = new ImportFFF();
-            //ifff.importFromJSON('test.json');
-        });
-
-        // Dodge Roll
-        html.find('.dodge-roll').click(ev => macros.dodgeRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
-
-        // Shock Roll
-        html.find('.shock-roll').click(ev => macros.shockRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
-
-        // Stumble Roll
-        html.find('.stumble-roll').click(ev => macros.stumbleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
-
-        // Fumble Roll
-        html.find('.fumble-roll').click(ev => macros.fumbleRoll(ev.shiftKey || ev.altKey || ev.ctrlKey, this.actor));
-
-        // Generic Damage Roll
-        html.find('.damage-roll').click(ev => macros.genericDamageRoll(this.actor));
-
-        // Toggle carry state
-        html.find('.item-carry').click(this._onToggleCarry.bind(this));
-
-        // Toggle equip state
-        html.find('.item-equip').click(this._onToggleEquip.bind(this));
-
-        // Toggle improve state
-        html.find('.item-improve').click(this._onToggleImprove.bind(this));
-
-        // More Info
-        html.find('.more-info').click(this._onMoreInfo.bind(this));
+            return;
+        }
     }
 
     /* -------------------------------------------- */
 
-    async _onItemDelete(event) {
+    async _onItemDelete(event, target) {
         event.preventDefault();
-        const header = event.currentTarget;
-        const data = foundry.utils.deepClone(header.dataset);
-        const li = $(header).parents(".item");
-        const itemId = li.data("itemId");
+        const data = foundry.utils.deepClone(target.dataset);
+        const itemId = target.closest(".item")?.dataset.itemId;
         if (itemId) {
             const item = this.actor.items.get(itemId);
             if (!item) {
@@ -636,29 +618,25 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             }
 
             // Create the dialog window
-            let agree = false;
-            await Dialog.confirm({
-                title: title,
-                content: content,
-                yes: () => agree = true
+            const agree = await foundry.applications.api.DialogV2.confirm({
+                window: {title},
+                content: content
             });
 
             if (agree) {
                 const deleteItems = [];
 
                 // Add all items in the container to the delete list
-                if (item.type === 'containeritem') {
+                if (item.type === 'containergear') {
                     this.actor.items.forEach(it => {
-                        if (item.type.endsWith('gear') && it.systemn.container === itemId) deleteItems.push(it.id);
+                        if (it.type.endsWith('gear') && it.system.container === itemId) deleteItems.push(it.id);
                     });
                 }
 
                 deleteItems.push(itemId);  // ensure we delete the container last
 
-                for (let it of deleteItems) {
-                    await Item.deleteDocuments([it], {parent: this.actor});
-                    li.slideUp(200, () => this.render(false));
-                }
+                await Item.deleteDocuments(deleteItems, {parent: this.actor});
+                this.render(false);
             }
         }
     }
@@ -722,11 +700,10 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         return;
     }
 
-    async _onItemCreate(event) {
+    async _onItemCreate(event, target) {
         event.preventDefault();
-        const header = event.currentTarget;
         // Grab any data associated with this control.
-        const dataset = foundry.utils.deepClone(header.dataset);
+        const dataset = foundry.utils.deepClone(target.dataset);
 
         let extraList = [];
         let extraLabel = null;
@@ -782,17 +759,16 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             extraLabel: extraLabel,
         };
 
-        const dlghtml = await renderTemplate(dlgTemplate, dialogData);
+        const dlghtml = await foundry.applications.handlebars.renderTemplate(dlgTemplate, dialogData);
 
         // Create the dialog window
-        return Dialog.prompt({
-            title: dialogData.title,
+        return foundry.applications.api.DialogV2.prompt({
+            window: {title: dialogData.title},
             content: dlghtml,
+            ok: {
             label: "Create",
-            callback: async (html) => {
-                const form = html.querySelector('#create-item');
-                const fd = new FormDataExtended(form);
-                const formdata = fd.object;
+            callback: async (event, button) => {
+                const formdata = new FormDataExtended(button.form).object;
                 let itemName = formdata.name;
                 let extraValue = formdata.extra_value;
 
@@ -824,8 +800,8 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
                 item.sheet.render(true);
 
                 return result;
-            },
-            options: { jQuery: false }
+            }
+            }
         });
     }
 
@@ -834,9 +810,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
      * @param {Event} event   The triggering click event
      * @private
      */
-    _onToggleCarry(event) {
+    _onToggleCarry(event, target) {
         event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
+        const itemId = target.closest(".item").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
         // Only process inventory ("gear") items, otherwise ignore
@@ -853,9 +829,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
      * @param {Event} event   The triggering click event
      * @private
      */
-    _onToggleEquip(event) {
+    _onToggleEquip(event, target) {
         event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
+        const itemId = target.closest(".item").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
         // Only process inventory ("gear") items, otherwise ignore
@@ -872,9 +848,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
      * @param {Event} event   The triggering click event
      * @private
      */
-    _onToggleImprove(event) {
+    _onToggleImprove(event, target) {
         event.preventDefault();
-        const itemId = event.currentTarget.closest(".item").dataset.itemId;
+        const itemId = target.closest(".item").dataset.itemId;
         const item = this.actor.items.get(itemId);
 
         // Only process skills and psionics, otherwise ignore
@@ -889,9 +865,9 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
         return null;
     }
 
-    async _onMoreInfo(event) {
+    async _onMoreInfo(event, target) {
         event.preventDefault();
-        const journalEntry = event.currentTarget.dataset.journalEntry;
+        const journalEntry = target.dataset.journalEntry;
 
         const helpJournal = await game.packs.find(p => p.collection === `hm3.system-help`).getDocuments();
         const article = helpJournal.find(i => i.name === journalEntry);
@@ -900,44 +876,37 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
             console.error(`HM3 | Can't find journal entry with name "${journalEntry}".`);
             return null;
         }
-        article.sheet.render(true, {editable: false});
+        article.sheet.render({force: true});
         return null;
     }
 
     _improveToggleDialog(item) {
         const dlghtml = '<p>Do you want to perform a Skill Development Roll (SDR), or just disable the flag?</p>'
 
-        // Create the dialog window
-        return new Promise(resolve => {
-            new Dialog({
-                title: 'Skill Development Toggle',
-                content: dlghtml.trim(),
-                buttons: {
-                    performSDR: {
-                        label: "Perform SDR",
-                        callback: async (html) => {
-                            return await HarnMasterActor.skillDevRoll(item);
-                        }
-                    },
-                    disableFlag: {
-                        label: "Disable Flag",
-                        callback: async (html) => {
-                            return item.update({ "system.improveFlag": false });
-                        }
-                    }
+        // Create the dialog window. DialogV2.wait resolves to the pressed
+        // button's callback value, or null if the dialog was dismissed.
+        return foundry.applications.api.DialogV2.wait({
+            window: {title: 'Skill Development Toggle'},
+            content: dlghtml.trim(),
+            buttons: [
+                {
+                    action: "performSDR",
+                    label: "Perform SDR",
+                    default: true,
+                    callback: async () => HarnMasterActor.skillDevRoll(item)
                 },
-                default: "performSDR",
-                close: () => resolve(false)
-            }).render(true)
+                {
+                    action: "disableFlag",
+                    label: "Disable Flag",
+                    callback: async () => item.update({ "system.improveFlag": false })
+                }
+            ]
         });
-
     }
 
-    async _onDumpEsotericDescription(event) {
+    async _onDumpEsotericDescription(event, target) {
         event.preventDefault();
-        const header = event.currentTarget;
-        const li = $(header).parents(".item");
-        const itemId = li.data("itemId");
+        const itemId = target.closest(".item")?.dataset.itemId;
 
         if (itemId) {
             const item = this.actor.items.get(itemId);
@@ -968,7 +937,7 @@ export class HarnMasterBaseActorSheet extends ActorSheet {
 
                 const chatTemplate = 'systems/hm3/templates/chat/esoteric-desc-card.html';
 
-                const html = await renderTemplate(chatTemplate, chatData);
+                const html = await foundry.applications.handlebars.renderTemplate(chatTemplate, chatData);
 
                 const messageData = {
                     author: game.user.id,

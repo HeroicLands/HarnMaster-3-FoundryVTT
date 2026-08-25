@@ -118,7 +118,7 @@ export async function missileAttack(attackToken, defendToken, missileItem) {
         visibleActorId: defendToken.actor.id
     };
 
-    const html = await renderTemplate(chatTemplate, chatTemplateData);
+    const html = await foundry.applications.handlebars.renderTemplate(chatTemplate, chatTemplateData);
 
     const messageData = {
         author: game.user.id,
@@ -249,7 +249,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem=null) {
         visibleActorId: defendToken.actor.id
     };
 
-    const html = await renderTemplate(chatTemplate, chatTemplateData);
+    const html = await foundry.applications.handlebars.renderTemplate(chatTemplate, chatTemplateData);
 
     const messageData = {
         author: game.user.id,
@@ -294,19 +294,21 @@ async function selectWeaponDialog(options) {
     }
     dialogOptions.prompt = options.prompt ? options.prompt : 'Please select your weapon';
     
-    const dlghtml = await renderTemplate(queryWeaponDialog, dialogOptions);
+    const dlghtml = await foundry.applications.handlebars.renderTemplate(queryWeaponDialog, dialogOptions);
 
     // Request weapon name
-    return Dialog.prompt({
-        title: dialogOptions.title,
+    return foundry.applications.api.DialogV2.prompt({
+        window: {title: dialogOptions.title},
         content: dlghtml.trim(),
-        label: "OK",
-        callback: html => {
-            const form = html[0].querySelector("form");
+        ok: {
+            label: "OK",
+            callback: (event, button) => {
+            const form = button.form;
             const formAddlModifier = form.addlModifier ? parseInt(form.addlModifier.value) : 0;
             const formWeapon = form.weapon.value;
 
             return {weapon: formWeapon, addlModifier: formAddlModifier};
+        }
         }
     });
 
@@ -413,15 +415,16 @@ async function attackDialog(options) {
     dialogOptions.title = `${options.attackerName} vs. ${options.defenderName} ${options.type} with ${options.weapon.name}`;
 
     const attackDialogTemplate = "systems/hm3/templates/dialog/attack-dialog.html";
-    const dlghtml = await renderTemplate(attackDialogTemplate, dialogOptions);
+    const dlghtml = await foundry.applications.handlebars.renderTemplate(attackDialogTemplate, dialogOptions);
 
     // Request weapon details
-    return Dialog.prompt({
-        title: dialogOptions.title,
+    return foundry.applications.api.DialogV2.prompt({
+        window: {title: dialogOptions.title},
         content: dlghtml.trim(),
-        label: options.type,
-        callback: html => {
-            const form = html[0].querySelector("form");
+        ok: {
+            label: options.type,
+            callback: (event, button) => {
+            const form = button.form;
             const formRange = form.range ? form.range.value : null;
 
             const addlModifier = (form.addlModifier ? parseInt(form.addlModifier.value) : 0) +
@@ -457,6 +460,7 @@ async function attackDialog(options) {
                 result.impactMod = dialogOptions.aspects[result.aspect] || 0;
             }
             return result;
+        }
         }
     });
 }
@@ -672,7 +676,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     /*-----------------------------------------------------
      *    Attack Chat
      *----------------------------------------------------*/
-    let html = await renderTemplate(chatTemplate, atkChatData);
+    let html = await foundry.applications.handlebars.renderTemplate(chatTemplate, atkChatData);
 
     let messageData = {
         author: game.user.id,
@@ -695,7 +699,7 @@ export async function meleeCounterstrikeResume(atkToken, defToken, atkWeaponName
     /*-----------------------------------------------------
      *    Counterstrike Chat
      *----------------------------------------------------*/
-    html = await renderTemplate(chatTemplate, csChatData);
+    html = await foundry.applications.handlebars.renderTemplate(chatTemplate, csChatData);
 
     messageData = {
         author: game.user.id,
@@ -818,7 +822,7 @@ export async function dodgeResume(atkToken, defToken, type, weaponName, effAML, 
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
 
-    const html = await renderTemplate(chatTemplate, chatData);
+    const html = await foundry.applications.handlebars.renderTemplate(chatTemplate, chatData);
 
     let messageData = {
         author: game.user.id,
@@ -1053,7 +1057,7 @@ export async function blockResume(atkToken, defToken, type, weaponName, effAML, 
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
 
-    const html = await renderTemplate(chatTemplate, chatData);
+    const html = await foundry.applications.handlebars.renderTemplate(chatTemplate, chatData);
 
     let messageData = {
         author: game.user.id,
@@ -1133,7 +1137,7 @@ export async function checkWeaponBreak(atkWeapon, defWeapon) {
     chatData.actorId = atkWeapon.parent;
     chatData.title = "Attack Weapon Break Check";
 
-    let html = await renderTemplate(chatTemplate, chatData);
+    let html = await foundry.applications.handlebars.renderTemplate(chatTemplate, chatData);
 
     messageData.content = html.trim();
     messageData.speaker = ChatMessage.getSpeaker({token: defToken.document});
@@ -1153,7 +1157,7 @@ export async function checkWeaponBreak(atkWeapon, defWeapon) {
     chatData.actorId = defWeapon.parent;
     chatData.title = "Defend Weapon Break Check";
 
-    html = await renderTemplate(chatTemplate, chatData);
+    html = await foundry.applications.handlebars.renderTemplate(chatTemplate, chatData);
 
     messageData.content = html.trim();
     messageData.speaker = ChatMessage.getSpeaker({token: defToken.document});
@@ -1249,7 +1253,7 @@ export async function ignoreResume(atkToken, defToken, type, weaponName, effAML,
 
     let chatTemplate = "systems/hm3/templates/chat/attack-result-card.html";
 
-    const html = await renderTemplate(chatTemplate, chatData);
+    const html = await foundry.applications.handlebars.renderTemplate(chatTemplate, chatData);
 
     let messageData = {
         author: game.user.id,

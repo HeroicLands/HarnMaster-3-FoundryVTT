@@ -94,8 +94,14 @@ Hooks.once('init', async function () {
         html: '<section class="highlight"><selection></selection></section>'
     });
 
-    // Register sheet application classes
-    Actors.unregisterSheet("core", ActorSheet);
+    // Register sheet application classes.
+    //
+    // There is no `Actors.unregisterSheet("core", ActorSheet)` any more: v14
+    // registers no core default Actor or Item sheet at all, so the call was a
+    // no-op looking for a registration that no longer exists.
+    const {Actors, Items} = foundry.documents.collections;
+    const {DocumentSheetConfig} = foundry.applications.apps;
+
     Actors.registerSheet("hm3", HarnMasterCharacterSheet, {
         types: ["character"],
         makeDefault: true,
@@ -112,13 +118,12 @@ Hooks.once('init', async function () {
         label: "Default HarnMaster Container Sheet"
     });
 
-    DocumentSheetConfig.unregisterSheet(ActiveEffect, "core", ActiveEffectConfig);
+    DocumentSheetConfig.unregisterSheet(ActiveEffect, "core", foundry.applications.sheets.ActiveEffectConfig);
     DocumentSheetConfig.registerSheet(ActiveEffect, "hm3", HM3ActiveEffectConfig, {
         makeDefault: true,
         label: "Default HarnMaster Active Effect Sheet"
     });
 
-    Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("hm3", HarnMasterItemSheet, { makeDefault: true });
 
     // If you need to add Handlebars helpers, here are a few useful examples:
@@ -212,10 +217,9 @@ Hooks.on('preCreateCombatant', (combat, combatant, options, id) => {
 });
 
 Hooks.on('renderSceneConfig', (app, html, data) => {
-    const scene = app.object;
-    if (app.renderTOTMScene) return;
-    app.renderTOTMScene = true;
-    
+    const scene = app.document;
+    if (html.querySelector('#hm3-totm')) return;
+
     let isTotm = scene.getFlag('hm3', 'isTotm');
     if (typeof isTotm === 'undefined') {
         if (!scene.compendium) {
@@ -232,35 +236,28 @@ Hooks.on('renderSceneConfig', (app, html, data) => {
     </div>
     `;
 
-    const totmFind = html.find("input[name = 'gridAlpha']");
-    const formGroup = totmFind.closest(".form-group");
-    formGroup.after(totmHtml);
-});
+    const alpha = html.querySelector('[name="grid.alpha"]');
+    const formGroup = alpha?.closest('.form-group');
+    if (!formGroup) return;
+    formGroup.insertAdjacentHTML('afterend', totmHtml);
 
-Hooks.on('closeSceneConfig', (app, html, data) => {
-    const scene = app.object;
-    app.renderTOTMScene = false;
-    if (!scene.compendium) {
-        scene.setFlag('hm3', 'isTotm', html.find("input[name='hm3Totm']").is(":checked"));
-    }
+    html.querySelector('#hm3-totm')?.addEventListener('change', ev => {
+        if (!scene.compendium) scene.setFlag('hm3', 'isTotm', ev.target.checked);
+    });
 });
 
 async function welcomeDialog() {
     const dlgTemplate = 'systems/hm3/templates/dialog/welcome.html';
-    const html = await renderTemplate(dlgTemplate, {});
+    const html = await foundry.applications.handlebars.renderTemplate(dlgTemplate, {});
 
     // Create the dialog window
-    return Dialog.prompt({
-        title: 'Welcome!',
+    return foundry.applications.api.DialogV2.prompt({
+        window: {title: 'Welcome!'},
         content: html,
-        label: 'OK',
-        callback: html => {
-            const form = html.querySelector("#welcome");
-            const fd = new FormDataExtended(form);
-            const data = fd.object;
-            return data.showOnStartup;
-        },
-        options: { jQuery: false }
+        ok: {
+            label: 'OK',
+            callback: (event, button) => new FormDataExtended(button.form).object.showOnStartup
+        }
     });
 }
 

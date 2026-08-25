@@ -1,0 +1,45 @@
+// ApplicationV2 chrome.
+//
+// Under AppV1 the sheet template's own `<form class="sheet flexcol">` was the
+// direct flex parent of the header, the tab strip and the body, and Foundry
+// sized it. AppV2 owns the form itself and renders each part inside a
+// `.window-content`, so that wrapper is now a plain `<div>` one level further
+// down — and without a height to fill, a column flex container collapses to its
+// content and the tab body stops scrolling.
+//
+// These rules re-establish the chain the layout has always assumed. They are
+// deliberately narrow: `.hm3` scopes them to this system's sheets, so nothing
+// here changes any other application.
+
+.application.hm3 {
+    .window-content {
+        display: flex;
+        flex-direction: column;
+        // The parts render straight into here, so it has to pass its height on
+        // rather than pad it away.
+        padding: 0;
+        overflow: hidden;
+    }
+
+    // The former <form> wrapper.
+    > .window-content > div {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        padding: 8px;
+    }
+
+    // Core hides `.tab:not(.active)`; an active tab has to be able to grow and
+    // scroll within the body rather than push the sheet open.
+    .sheet-body {
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+
+        > .tab.active {
+            height: 100%;
+            overflow-y: auto;
+        }
+    }
+}

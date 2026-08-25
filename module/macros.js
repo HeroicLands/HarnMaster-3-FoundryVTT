@@ -92,73 +92,60 @@ function askWeaponMacro(weaponUuid, slot, img) {
     }
 
     // Create the dialog window
-    return new Promise(resolve => {
-        new Dialog({
-            title: 'Select Weapon Macro',
-            content: dlghtml.trim(),
-            buttons: {
-                enhAttackButton: {
-                    label: "Automated Combat",
-                    callback: async (html) => {
-                        return await applyMacro(`${item.name} Automated Combat`, `await game.hm3.macros.weaponAttack("${weaponUuid}");`, slot, img, {"hm3.itemMacro": false});
-                    }
-                },
-                attackButton: {
-                    label: "Attack",
-                    callback: async (html) => {
-                        return await applyMacro(`${actorName}${item.name} Attack Roll`, `await game.hm3.macros.weaponAttackRoll("${weaponUuid}");`, slot, img, {"hm3.itemMacro": false});
-                    }
-                },
-                defendButton: {
-                    label: "Defend",
-                    callback: async (html) => {
-                        return await applyMacro(`${actorName}${item.name} Defend Roll`, `await game.hm3.macros.weaponDefendRoll("${weaponUuid}");`, slot, img, {"hm3.itemMacro": false});
-                    }
-                },
-                damageButton: {
-                    label: "Damage",
-                    callback: async (html) => {
-                        return await applyMacro(`${actorName}${item.name} Damage Roll`, `await game.hm3.macros.weaponDamageRoll("${weaponUuid}");`, slot, img, {"hm3.itemMacro": false});
-                    }
-                }
+    return foundry.applications.api.DialogV2.wait({
+        window: {title: 'Select Weapon Macro'},
+        content: dlghtml.trim(),
+        buttons: [
+            {
+                action: "enhAttackButton",
+                label: "Automated Combat",
+                default: true,
+                callback: async () => applyMacro(`${item.name} Automated Combat`, `await game.hm3.macros.weaponAttack("${weaponUuid}");`, slot, img, {"hm3.itemMacro": false})
             },
-            default: "enhAttackButton",
-            close: () => resolve(false)
-        }).render(true)
+            {
+                action: "attackButton",
+                label: "Attack",
+                callback: async () => applyMacro(`${actorName}${item.name} Attack Roll`, `await game.hm3.macros.weaponAttackRoll("${weaponUuid}");`, slot, img, {"hm3.itemMacro": false})
+            },
+            {
+                action: "defendButton",
+                label: "Defend",
+                callback: async () => applyMacro(`${actorName}${item.name} Defend Roll`, `await game.hm3.macros.weaponDefendRoll("${weaponUuid}");`, slot, img, {"hm3.itemMacro": false})
+            },
+            {
+                action: "damageButton",
+                label: "Damage",
+                callback: async () => applyMacro(`${actorName}${item.name} Damage Roll`, `await game.hm3.macros.weaponDamageRoll("${weaponUuid}");`, slot, img, {"hm3.itemMacro": false})
+            }
+        ]
     });
 }
 
-function askMissileMacro(name, slot, img, actorSuffix) {
+function askMissileMacro(name, slot, img, actorSuffix = "", actorName = "") {
     const dlghtml = '<p>Select the type of missile macro to create:</p>'
-    
+
     // Create the dialog window
-    return new Promise(resolve => {
-        new Dialog({
-            title: 'Select Missile Macro',
-            content: dlghtml.trim(),
-            buttons: {
-                enhAttackButton: {
-                    label: "Automated Combat",
-                    callback: async (html) => {
-                        return await applyMacro(`${name} Automated Combat`, `game.hm3.macros.missileAttack("${name}");`, slot, img, {"hm3.itemMacro": false});
-                    }
-                },
-                attackButton: {
-                    label: "Attack",
-                    callback: async (html) => {
-                        return await applyMacro(`${actorName}'s ${name} Attack Roll`, `game.hm3.macros.missileAttackRoll("${name}"${actorSuffix});`, slot, img, {"hm3.itemMacro": false});
-                    }
-                },
-                damageButton: {
-                    label: "Damage",
-                    callback: async (html) => {
-                        return await applyMacro(`${actorName}'s ${name} Damage Roll`, `game.hm3.macros.missileDamageRoll("${name}"${actorSuffix});`, slot, img, {"hm3.itemMacro": false});
-                    }
-                }
+    return foundry.applications.api.DialogV2.wait({
+        window: {title: 'Select Missile Macro'},
+        content: dlghtml.trim(),
+        buttons: [
+            {
+                action: "enhAttackButton",
+                label: "Automated Combat",
+                default: true,
+                callback: async () => applyMacro(`${name} Automated Combat`, `game.hm3.macros.missileAttack("${name}");`, slot, img, {"hm3.itemMacro": false})
             },
-            default: "enhAttackButton",
-            close: () => resolve(false)
-        }).render(true)
+            {
+                action: "attackButton",
+                label: "Attack",
+                callback: async () => applyMacro(`${actorName}${name} Attack Roll`, `game.hm3.macros.missileAttackRoll("${name}"${actorSuffix});`, slot, img, {"hm3.itemMacro": false})
+            },
+            {
+                action: "damageButton",
+                label: "Damage",
+                callback: async () => applyMacro(`${actorName}${name} Damage Roll`, `game.hm3.macros.missileDamageRoll("${name}"${actorSuffix});`, slot, img, {"hm3.itemMacro": false})
+            }
+        ]
     });
 }
 

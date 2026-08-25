@@ -1,9 +1,9 @@
-<form class="{{cssClass}} sheet flexcol" autocomplete="off">
+<div class="{{cssClass}} sheet flexcol">
 
     {{!-- Sheet Header --}}
     <header class="sheet-header sheet-header-character">
         <div class="flexrow">
-            <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
+            <img class="profile-img" src="{{actor.img}}" data-action="editImage" data-edit="img" title="{{actor.name}}" height="100" width="100" />
             <div class="flexcol header-fields">
                 <div class="flexrow name-attribute">
                     <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
@@ -28,25 +28,25 @@
 
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="facade">Fa&#231;ade</a>
-        <a class="item" data-tab="inventory">Contents</a>
+        <a class="item {{#if tabs.facade.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="facade">Fa&#231;ade</a>
+        <a class="item {{#if tabs.inventory.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="inventory">Contents</a>
     </nav>
 
     {{!-- Sheet Body --}}
     <section class="sheet-body">
 
         {{!-- Facade Tab --}}
-        <div class="tab facade" data-group="primary" data-tab="facade">
+        <div class="tab facade {{#if tabs.facade.active}}active{{/if}}" data-group="primary" data-tab="facade">
             <div class="flexrow">
-                <img class="facade-image" src="{{adata.bioImage}}" data-edit="system.bioImage" title="{{actor.name}}" height="300" width="200" />
+                <img class="facade-image" src="{{adata.bioImage}}" data-action="editImage" data-edit="system.bioImage" title="{{actor.name}}" height="300" width="200" />
                 <div class="facade-description">
-                    {{editor adata.description target="system.description" button=true owner=owner editable=editable}}
+                    {{editor adata.description target="system.description" button=true editable=editable}}
                 </div>
             </div>
         </div>
 
         {{!-- Contents Tab --}}
-        <div class="tab inventory items" data-group="primary" data-tab="inventory">
+        <div class="tab inventory items {{#if tabs.inventory.active}}active{{/if}}" data-group="primary" data-tab="inventory">
             <div class="flexrow">
                 <ol class="weight flexcol">
                     <li class="weight-header flexrow">
@@ -130,4 +130,4 @@
         </div>
     </section>
 
-</form>
+</div>

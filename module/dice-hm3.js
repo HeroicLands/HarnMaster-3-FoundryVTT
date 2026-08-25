@@ -81,7 +81,7 @@ export class DiceHM3 {
             roll: roll
         };
 
-        const html = await renderTemplate(chatTemplate, chatTemplateData);
+        const html = await foundry.applications.handlebars.renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
             author: game.user.id,
@@ -118,15 +118,16 @@ export class DiceHM3 {
             target: dialogOptions.target,
             modifier: dialogOptions.modifier
         };
-        const html = await renderTemplate(dlgTemplate, dialogData);
+        const html = await foundry.applications.handlebars.renderTemplate(dlgTemplate, dialogData);
         
         // Create the dialog window
-        return Dialog.prompt({
-            title: dialogOptions.label,
+        return foundry.applications.api.DialogV2.prompt({
+            window: {title: dialogOptions.label},
             content: html.trim(),
-            label: "Roll",
-            callback: html => {
-                const formModifier = html[0].querySelector("form").modifier.value;
+            ok: {
+                label: "Roll",
+                callback: (event, button) => {
+                const formModifier = button.form.modifier.value;
                 return DiceHM3.rollTest({
                     type: dialogOptions.type,
                     target: dialogOptions.target,
@@ -135,6 +136,7 @@ export class DiceHM3 {
                     diceNum: 1,
                     modifier: formModifier
                 });
+            }
             }
         });
     }
@@ -215,7 +217,7 @@ export class DiceHM3 {
             roll: roll
         };
 
-        const html = await renderTemplate(chatTemplate, chatTemplateData);
+        const html = await foundry.applications.handlebars.renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
             author: game.user.id,
@@ -252,15 +254,16 @@ export class DiceHM3 {
             target: dialogOptions.target,
             modifier: dialogOptions.modifier
         };
-        const html = await renderTemplate(dlgTemplate, dialogData);
+        const html = await foundry.applications.handlebars.renderTemplate(dlgTemplate, dialogData);
         
         // Create the dialog window
-        return Dialog.prompt({
-            title: dialogOptions.label,
+        return foundry.applications.api.DialogV2.prompt({
+            window: {title: dialogOptions.label},
             content: html.trim(),
-            label: "Roll",
-            callback: html => {
-                const formModifier = html[0].querySelector("form").modifier.value;
+            ok: {
+                label: "Roll",
+                callback: (event, button) => {
+                const formModifier = button.form.modifier.value;
                 return DiceHM3.rollTest({
                     type: dialogOptions.type,
                     target: dialogOptions.target,
@@ -269,6 +272,7 @@ export class DiceHM3 {
                     diceNum: dialogOptions.numdice,
                     modifier: formModifier
                 });
+            }
             }
         });
     }
@@ -306,7 +310,7 @@ export class DiceHM3 {
             chatTemplateData.notes = `Since this is a specialized skill of ${specMatch[1]}, ML will be increased by 2`
         }
 
-        const html = await renderTemplate(chatTemplate, chatTemplateData);
+        const html = await foundry.applications.handlebars.renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
             speaker: speaker,
@@ -375,7 +379,7 @@ export class DiceHM3 {
             visibleActorId: rollData.actor.id
         }, result);
 
-        const html = await renderTemplate(chatTemplate, chatTemplateData);
+        const html = await foundry.applications.handlebars.renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
             speaker: speaker,
@@ -482,15 +486,16 @@ export class DiceHM3 {
             hitLocations: dialogOptions.hitLocations
         };
 
-        const html = await renderTemplate(dlgTemplate, dialogData);
+        const html = await foundry.applications.handlebars.renderTemplate(dlgTemplate, dialogData);
 
         // Create the dialog window
-        return Dialog.prompt({
-            title: dialogOptions.label,
+        return foundry.applications.api.DialogV2.prompt({
+            window: {title: dialogOptions.label},
             content: html.trim(),
-            label: "Determine Injury",
-            callback: html => {
-                const form = html[0].querySelector("form");
+            ok: {
+                label: "Determine Injury",
+                callback: (event, button) => {
+                const form = button.form;
                 const formLocation = form.location.value;
                 const formImpact = form.impact.value;
                 const formAspect = form.aspect.value;
@@ -499,6 +504,7 @@ export class DiceHM3 {
                     form.addToCharSheet.checked : recordInjury === 'enable';
                 return DiceHM3._calcInjury(formLocation, formImpact, formAspect, 
                     formAddToCharSheet, formAim, dialogOptions);
+            }
             }
         });
     }
@@ -777,7 +783,7 @@ export class DiceHM3 {
             notes: renderedNotes,
             roll: roll
         };
-        const html = await renderTemplate(chatTemplate, chatTemplateData);
+        const html = await foundry.applications.handlebars.renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
             author: game.user.id,
@@ -865,15 +871,16 @@ export class DiceHM3 {
             weaponAspects: dialogOptions.weaponAspects,
             addlWeaponImpact: 0
         };
-        const html = await renderTemplate(dlgTemplate, dialogData);
+        const html = await foundry.applications.handlebars.renderTemplate(dlgTemplate, dialogData);
         
         // Create the dialog window
-        return Dialog.prompt({
-            title: dialogOptions.label,
+        return foundry.applications.api.DialogV2.prompt({
+            window: {title: dialogOptions.label},
             content: html.trim(),
-            label: "Roll",
-            callback: async html => {
-                const form = html[0].querySelector("form");
+            ok: {
+                label: "Roll",
+                callback: async (event, button) => {
+                const form = button.form;
                 const formAddlWeaponImpact = Number(form.addlWeaponImpact.value);
                 const formDamageDice = Number(form.damageDice.value);
                 const formWeaponAspect = form.weaponAspect.value;
@@ -893,6 +900,7 @@ export class DiceHM3 {
                     rollObj: roll.rollObj
                 }
                 return result;
+            }
             }
         });
     }
@@ -947,7 +955,7 @@ export class DiceHM3 {
             notes: renderedNotes,
             roll: roll
         };
-        const html = await renderTemplate(chatTemplate, chatTemplateData);
+        const html = await foundry.applications.handlebars.renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
             author: game.user.id,
@@ -991,16 +999,17 @@ export class DiceHM3 {
         dialogData.rangeExceedsExtreme = false;
         dialogData.defaultRange = extremeDesc;
 
-        const html = await renderTemplate(dlgTemplate, dialogData);
+        const html = await foundry.applications.handlebars.renderTemplate(dlgTemplate, dialogData);
         const title = `${dialogOptions.name} Attack`;
 
         // Create the dialog window
-        return Dialog.prompt({
-            title: dialogOptions.label,
+        return foundry.applications.api.DialogV2.prompt({
+            window: {title: dialogOptions.label},
             content: html.trim(),
-            label: "Roll",
-            callback: async html => {
-                const form = html[0].querySelector("form");
+            ok: {
+                label: "Roll",
+                callback: async (event, button) => {
+                const form = button.form;
                 const formAddlModifier = Number(form.addlModifier.value);
                 let formRange = form.range.value;
                 let rangeModifier;
@@ -1040,6 +1049,7 @@ export class DiceHM3 {
                     rollObj: roll.rollObj
                 }
                 return result;
+            }
             }
         });
     }
@@ -1114,7 +1124,7 @@ export class DiceHM3 {
             notes: renderedNotes,
             roll: roll
         };
-        const html = await renderTemplate(chatTemplate, chatTemplateData);
+        const html = await foundry.applications.handlebars.renderTemplate(chatTemplate, chatTemplateData);
 
         const messageData = {
             author: game.user.id,
@@ -1144,17 +1154,18 @@ export class DiceHM3 {
             ranges: dialogOptions.ranges,
             defaultRange: dialogOptions.defaultRange
         };
-        const html = await renderTemplate(dlgTemplate, dialogData);
+        const html = await foundry.applications.handlebars.renderTemplate(dlgTemplate, dialogData);
         
         const title = `${dialogOptions.name} Missile Damage`;
 
         // Create the dialog window
-        return Dialog.prompt({
-            title: dialogOptions.label,
+        return foundry.applications.api.DialogV2.prompt({
+            window: {title: dialogOptions.label},
             content: html.trim(),
-            label: "Roll",
-            callback: async html => {
-                const form = html[0].querySelector("form");
+            ok: {
+                label: "Roll",
+                callback: async (event, button) => {
+                const form = button.form;
                 const formAddlImpact = Number(form.addlImpact.value);
                 const formDamageDice = Number(form.damageDice.value);
                 const formRange = form.range.value;
@@ -1174,6 +1185,7 @@ export class DiceHM3 {
                     rollObj: roll.rollObj
                 }
                 return result;
+            }
             }
         });
     }
