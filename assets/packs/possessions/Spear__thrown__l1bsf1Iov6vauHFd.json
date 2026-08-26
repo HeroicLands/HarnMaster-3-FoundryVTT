@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "duLWIXl94Pr8bL5B",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "spearthrown"
+    }
   },
   "system": {
     "notes": "",

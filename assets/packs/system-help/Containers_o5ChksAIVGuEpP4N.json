@@ -4,7 +4,11 @@
     "default": 0,
     "kpJv1acyf3Ez8dBj": 3
   },
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "containers"
+    }
+  },
   "content": "<p>Container actors represent generally stationary collections of items. They can be treasure chests, piles of refuse, or a shopkeep's inventory. If you create a container, perhaps call it \"Party Belongings\" or similar and grant ownership access level to all the players, then it can be an easy way for PCs to swap items with each other.</p>\n<ul>\n<li>@JournalEntry[Sheet - Header]</li>\n<li>@JournalEntry[Sheet - Fa&ccedil;ade Tab] - Describe the outward appearance of this container.</li>\n<li>@JournalEntry[Sheet - Contents Tab] - a restricted version of the normal Gear Tab which only allows physical items</li>\n</ul>\n<p>&nbsp;</p>\n<p>Top: @JournalEntry[00 Welcome]</p>\n<p>&nbsp;</p>",
   "img": "systems/hm3/images/icons/svg/book.svg",
   "_id": "o5ChksAIVGuEpP4N",

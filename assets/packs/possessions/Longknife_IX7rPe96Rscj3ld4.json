@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "IkaCS1bAhDecPeQd",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "longknife"
+    }
   },
   "system": {
     "notes": "Sindarin weapon",

@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "tDpiTQntA3rYW1PE",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "medium"
+    }
   },
   "system": {
     "notes": "F1 15-SI minutes",

@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "ehEs3IXsjATxYb8d",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "sarajin"
+    }
   },
   "system": {
     "notes": "",

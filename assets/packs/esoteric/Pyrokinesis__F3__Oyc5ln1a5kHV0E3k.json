@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "tDpiTQntA3rYW1PE",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "pyrokinesis"
+    }
   },
   "system": {
     "notes": "15-SI secs",

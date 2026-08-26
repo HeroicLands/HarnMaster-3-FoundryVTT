@@ -5,7 +5,11 @@
   "_id": "2JX6jkRSgMm48QyW",
   "sorting": "a",
   "sort": -100000,
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "lyahvi"
+    }
+  },
   "_stats": {
     "systemId": "hm3",
     "systemVersion": "1.4.6",

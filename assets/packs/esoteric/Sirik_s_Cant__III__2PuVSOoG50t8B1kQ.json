@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "dILaYsjczUReYHlC",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "sirikscant"
+    }
   },
   "system": {
     "notes": "",

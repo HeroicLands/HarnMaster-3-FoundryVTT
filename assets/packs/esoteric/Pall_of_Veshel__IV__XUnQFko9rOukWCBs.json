@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "gtGO9IFu3Gtp6l3r",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "pallofveshel"
+    }
   },
   "system": {
     "notes": "",

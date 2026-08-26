@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "jOppWJPOPMwgDYFG",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "agrikawe"
+    }
   },
   "system": {
     "notes": "",

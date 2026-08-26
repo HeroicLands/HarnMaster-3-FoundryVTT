@@ -5,7 +5,11 @@
   "_id": "3TYjKHsSaszxaXv2",
   "sorting": "a",
   "sort": -87500,
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "savorya"
+    }
+  },
   "_stats": {
     "systemId": "hm3",
     "systemVersion": "1.4.6",

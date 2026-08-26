@@ -5,7 +5,11 @@
   "_id": "jOppWJPOPMwgDYFG",
   "sorting": "a",
   "sort": 100000,
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "agrik"
+    }
+  },
   "_stats": {
     "systemId": "hm3",
     "systemVersion": "1.4.6",

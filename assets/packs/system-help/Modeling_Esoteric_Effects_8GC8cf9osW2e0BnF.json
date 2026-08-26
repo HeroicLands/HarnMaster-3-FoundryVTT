@@ -4,7 +4,11 @@
     "default": 0,
     "kpJv1acyf3Ez8dBj": 3
   },
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "modelingesotericeffects"
+    }
+  },
   "content": "<p>There are many situations in which the use of Spells, Invocations, Psionics, or Artifacts needs to create an effect. There are multiple ways this can be done; you should use your imagination and the tools available to you to model them as you see fit. The following are some examples.</p>\n<h2>Magic Armor</h2>\n<p>To model armor that is magical and can absorb more damage, simply increase the damage absorption above what is normal for that piece of armor.&nbsp; For example, a kurbul breastplate artifact may absorb damage as if it were plate.</p>\n<h2>Magic Shield</h2>\n<p>If the shield is an all-around shield that can absorb damage, you can model this as an additional piece of armor with zero weight but affecting all body parts, that is equipped when the spell is active, and unequipped otherwise.</p>\n<p>If the sheid is a literal shield that pulls in attacks like a magnet, this can be modeled as an Effect that increases Melee DML.&nbsp; When the shield is equpped, also enable the Effect, and when the shield is unequipped, disable the effect.</p>\n<h2>Magic Weapon</h2>\n<p>If the weapon is attuned to the user, and egos are in alignment, the weapon can be modeled with an increase in the weapon's attack modifier.&nbsp; Similarly, if the weapon is in opposition or cursed, a negative modifier can be applied.</p>\n<h2>Health Potions/Ointments</h2>\n<p>Certain remedies help deaden the pain of injuries, allowing the character to remain effective longer.&nbsp; These can be modeled as an Effect that reduces Injury Level (perhaps multiplies IL by 0.5) for the duration of the effect.</p>\n<p>&nbsp;</p>",
   "img": "systems/hm3/images/icons/svg/book.svg",
   "_id": "8GC8cf9osW2e0BnF",

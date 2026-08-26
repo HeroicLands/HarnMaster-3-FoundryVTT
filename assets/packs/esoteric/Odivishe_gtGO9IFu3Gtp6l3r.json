@@ -5,7 +5,11 @@
   "_id": "gtGO9IFu3Gtp6l3r",
   "sorting": "a",
   "sort": -75000,
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "odivishe"
+    }
+  },
   "_stats": {
     "systemId": "hm3",
     "systemVersion": "1.4.6",

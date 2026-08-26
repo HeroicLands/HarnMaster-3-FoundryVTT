@@ -4,7 +4,11 @@
     "default": 0,
     "kpJv1acyf3Ez8dBj": 3
   },
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "creatures"
+    }
+  },
   "content": "<p>Creatures represent actors which do not generally use tools/wear armor. Creature actors lack morality and comeliness attributes. Their melee weapons are typically attached to their bodies, and their hide is their armor. This is a simpler character sheet that doesn't offer the default hit locations of a humanoid, but where the GM must enter the hit location table manually. The GM should input the armor protection values directly on the hit locations instead of via the gear tab.</p>\n<p>Creatures also have a Shock Index. This is meant as a gross indicator for the \"health\" of the creature, and is described in @JournalEntry[Shock Index].</p>\n<p>Creatures will often have multiple instances of their token in a scene at one time, and therefore most creature actors will not have their token linked to their actor sheet. This will allow injuries to be tracked individually for each token, and every new token added to a scene will start with no injuries.&nbsp;</p>\n<p>Examples of Creature actors are bears, dragons, bats, deer, etc. Most entries in the Bestiary.</p>\n<p>Note that one field only available for creatures is the \"Load Rating\" (LR), as described in the HarnMaster rules, Combat 21. This represents the base load a creature can carry before any encumbrance rules apply. It is specified in the Profile tab for creatures.</p>\n<ul>\n<ul>\n<li>@JournalEntry[Sheet - Header]</li>\n<li>@JournalEntry[Sheet - Fa&ccedil;ade Tab]</li>\n<li>@JournalEntry[Sheet - Profile Tab]</li>\n<li>@JournalEntry[Sheet - Skills Tab]</li>\n<li>@JournalEntry[Sheet - Combat Tab]</li>\n<li>@JournalEntry[Sheet - Esoterics Tab]</li>\n<li>@JournalEntry[Sheet - Gear Tab]</li>\n<li>@JournalEntry[Sheet - Effect Tab]</li>\n</ul>\n</ul>\n<p>&nbsp;</p>\n<p>Top: @JournalEntry[00 Welcome]</p>\n<p>&nbsp;</p>",
   "img": "systems/hm3/images/icons/svg/book.svg",
   "_id": "tZXHR20rgc5BBm0Z",

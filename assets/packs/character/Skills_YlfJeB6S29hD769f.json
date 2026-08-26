@@ -6,7 +6,11 @@
   "_id": "YlfJeB6S29hD769f",
   "sort": 0,
   "color": null,
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "skills"
+    }
+  },
   "_stats": {
     "systemId": "hm3",
     "systemVersion": "1.4.6",

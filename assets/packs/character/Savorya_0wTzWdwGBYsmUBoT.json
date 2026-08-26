@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "zQdlAO8iJ9sy3s9l",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "savorya"
+    }
   },
   "system": {
     "notes": "",

@@ -5,7 +5,11 @@
   "_id": "J8M3FXoJSUHr5EYi",
   "sorting": "a",
   "sort": -150000,
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "naveh"
+    }
+  },
   "_stats": {
     "systemId": "hm3",
     "systemVersion": "1.4.6",

@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "2JX6jkRSgMm48QyW",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "beamofnolar"
+    }
   },
   "system": {
     "notes": "",

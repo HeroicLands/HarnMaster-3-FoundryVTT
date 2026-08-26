@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "tDpiTQntA3rYW1PE",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "prescience"
+    }
   },
   "system": {
     "notes": "15-SI Hours",

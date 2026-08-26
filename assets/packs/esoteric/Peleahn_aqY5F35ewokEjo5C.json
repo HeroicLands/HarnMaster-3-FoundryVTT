@@ -5,7 +5,11 @@
   "_id": "aqY5F35ewokEjo5C",
   "sorting": "a",
   "sort": -62500,
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "peleahn"
+    }
+  },
   "_stats": {
     "systemId": "hm3",
     "systemVersion": "1.4.6",

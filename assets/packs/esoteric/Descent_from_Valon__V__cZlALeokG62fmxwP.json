@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "vgrw7aVTemgPWZxh",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "descentfromvalon"
+    }
   },
   "system": {
     "notes": "",

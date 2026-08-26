@@ -5,7 +5,11 @@
   "_id": "cKpd7e8LEPwE5H2E",
   "sorting": "a",
   "sort": -100000,
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "larani"
+    }
+  },
   "_stats": {
     "systemId": "hm3",
     "systemVersion": "1.4.6",

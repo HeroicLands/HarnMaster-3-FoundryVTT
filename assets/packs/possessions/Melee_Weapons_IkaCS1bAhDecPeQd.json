@@ -5,7 +5,11 @@
   "_id": "IkaCS1bAhDecPeQd",
   "sorting": "a",
   "sort": 200000,
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "meleeweapons"
+    }
+  },
   "_stats": {
     "systemId": "hm3",
     "systemVersion": "1.4.6",
