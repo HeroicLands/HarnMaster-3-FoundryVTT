@@ -902,7 +902,7 @@
             <div class="form-group">
                 <label>Type</label>
                 <select name="system.macros.type">
-                    {{selectOptions macroTypes selected=adata.macros.type}}
+                    {{selectOptions (toChoices macroTypes) selected=adata.macros.type}}
                 </select>
             </div>
         

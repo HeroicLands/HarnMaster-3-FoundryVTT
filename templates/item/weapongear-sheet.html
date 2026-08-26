@@ -81,7 +81,7 @@
                     <label class="resource-label" for="system.assocSkill">Associated Skill</label>
                     {{#if hasCombatSkills}}
                         <select class="resource-value" name="system.assocSkill" data-dtype="String">
-                            {{selectOptions combatSkills selected=idata.assocSkill}}
+                            {{selectOptions (toChoices combatSkills) selected=idata.assocSkill}}
                         </select>
                     {{else}}
                         <input type="text" name="system.assocSkill" value="{{idata.assocSkill}}" data-dtype="String" />

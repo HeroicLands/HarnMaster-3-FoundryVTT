@@ -1,0 +1,87 @@
+{
+  "_id": "hm3e2eMeganGeda1",
+  "name": "Mêgan of Geda",
+  "type": "character",
+  "system": {
+    "bioImage": "systems/hm3/images/svg/knight-silhouette.svg",
+    "species": "Human",
+    "fatigue": 0,
+    "sunsign": "Tai",
+    "move": {
+      "base": 0
+    },
+    "shockIndex": {
+      "max": 100,
+      "value": 100
+    },
+    "description": "",
+    "biography": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "abilities": {
+      "strength": {
+        "base": 9
+      },
+      "stamina": {
+        "base": 10
+      },
+      "dexterity": {
+        "base": 14
+      },
+      "agility": {
+        "base": 13
+      },
+      "intelligence": {
+        "base": 15
+      },
+      "aura": {
+        "base": 16
+      },
+      "will": {
+        "base": 12
+      },
+      "eyesight": {
+        "base": 14
+      },
+      "hearing": {
+        "base": 11
+      },
+      "smell": {
+        "base": 10
+      },
+      "voice": {
+        "base": 13
+      },
+      "comeliness": {
+        "base": 14
+      },
+      "morality": {
+        "base": 11
+      }
+    },
+    "gender": "Female",
+    "occupation": "Shek-Pvar"
+  },
+  "_key": "!actors!hm3e2eMeganGeda1",
+  "img": "systems/hm3/images/svg/knight-silhouette.svg",
+  "items": [],
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "prototypeToken": {
+    "name": "Mêgan of Geda",
+    "displayName": 20,
+    "actorLink": true,
+    "width": 1,
+    "height": 1,
+    "texture": {
+      "src": "systems/hm3/images/svg/knight-silhouette.svg"
+    }
+  }
+}

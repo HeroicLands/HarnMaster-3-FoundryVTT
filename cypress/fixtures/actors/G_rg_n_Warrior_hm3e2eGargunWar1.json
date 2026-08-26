@@ -1,0 +1,86 @@
+{
+  "_id": "hm3e2eGargunWar1",
+  "name": "Gârgún Warrior",
+  "type": "creature",
+  "system": {
+    "bioImage": "systems/hm3/images/svg/knight-silhouette.svg",
+    "species": "Gârgún",
+    "fatigue": 0,
+    "sunsign": "",
+    "move": {
+      "base": 0
+    },
+    "shockIndex": {
+      "max": 100,
+      "value": 100
+    },
+    "description": "",
+    "biography": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "abilities": {
+      "strength": {
+        "base": 14
+      },
+      "stamina": {
+        "base": 16
+      },
+      "dexterity": {
+        "base": 10
+      },
+      "agility": {
+        "base": 11
+      },
+      "intelligence": {
+        "base": 5
+      },
+      "aura": {
+        "base": 4
+      },
+      "will": {
+        "base": 10
+      },
+      "eyesight": {
+        "base": 10
+      },
+      "hearing": {
+        "base": 12
+      },
+      "smell": {
+        "base": 14
+      },
+      "voice": {
+        "base": 6
+      },
+      "comeliness": {
+        "base": 3
+      },
+      "morality": {
+        "base": 6
+      }
+    },
+    "loadRating": 20
+  },
+  "_key": "!actors!hm3e2eGargunWar1",
+  "img": "systems/hm3/images/svg/knight-silhouette.svg",
+  "items": [],
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "prototypeToken": {
+    "name": "Gârgún Warrior",
+    "displayName": 20,
+    "actorLink": true,
+    "width": 1,
+    "height": 1,
+    "texture": {
+      "src": "systems/hm3/images/svg/knight-silhouette.svg"
+    }
+  }
+}
