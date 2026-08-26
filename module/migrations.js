@@ -300,9 +300,10 @@ export const migrateActorData = function (actor) {
  */
 function cleanActorData(actorData) {
 
-  // Scrub system data
-  const model = game.model.Actor[actorData.type];
-  actorData.system = filterObject(actorData.system, model);
+  // Scrub system data against the type's schema. This was `game.model`, the
+  // template.json registry, which no longer carries the fields.
+  const model = CONFIG.Actor.dataModels[actorData.type]?.schema.getInitialValue({});
+  if (model) actorData.system = filterObject(actorData.system, model);
 
   // Scrub system flags
   const allowedFlags = CONFIG.HM3.allowedActorFlags.reduce((obj, f) => {

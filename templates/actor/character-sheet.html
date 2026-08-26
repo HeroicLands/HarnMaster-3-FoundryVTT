@@ -317,7 +317,7 @@
                             <input class="value" type="text" name="system.sunsign" value="{{adata.sunsign}}" data-dtype="String" />
                             {{else}}
                             <select class="value" name="system.sunsign" data-dtype="String">
-                                {{selectOptions config.sunsigns selected=adata.sunsign}}
+                                {{selectOptions (toChoices config.sunsigns) selected=adata.sunsign}}
                             </select>
                             {{/if}}
                         </div>
@@ -1222,7 +1222,7 @@
             <div class="form-group">
                 <label>Type</label>
                 <select name="system.macros.type">
-                    {{selectOptions macroTypes selected=adata.macros.type}}
+                    {{selectOptions (toChoices macroTypes) selected=adata.macros.type}}
                 </select>
             </div>
         

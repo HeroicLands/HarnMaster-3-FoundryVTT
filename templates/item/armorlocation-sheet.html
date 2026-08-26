@@ -114,23 +114,23 @@
                 <div class="item flexrow">
                     <select class="armorlocation-effimp-item" id="armorlocation-effimp-ei1"
                         name="system.effectiveImpact.ei1" data-dtype="String">
-                        {{selectOptions config.injuryLevels selected=idata.effectiveImpact.ei1}}
+                        {{selectOptions (toChoices config.injuryLevels) selected=idata.effectiveImpact.ei1}}
                     </select>
                     <select class="armorlocation-effimp-item" id="armorlocation-effimp-ei5"
                         name="system.effectiveImpact.ei5" data-dtype="String">
-                        {{selectOptions config.injuryLevels selected=idata.effectiveImpact.ei5}}
+                        {{selectOptions (toChoices config.injuryLevels) selected=idata.effectiveImpact.ei5}}
                     </select>
                     <select class="armorlocation-effimp-item" id="armorlocation-effimp-ei9"
                         name="system.effectiveImpact.ei9" data-dtype="String">
-                        {{selectOptions config.injuryLevels selected=idata.effectiveImpact.ei9}}
+                        {{selectOptions (toChoices config.injuryLevels) selected=idata.effectiveImpact.ei9}}
                     </select>
                     <select class="armorlocation-effimp-item" id="armorlocation-effimp-ei13"
                         name="system.effectiveImpact.ei13" data-dtype="String">
-                        {{selectOptions config.injuryLevels selected=idata.effectiveImpact.ei13}}
+                        {{selectOptions (toChoices config.injuryLevels) selected=idata.effectiveImpact.ei13}}
                     </select>
                     <select class="armorlocation-effimp-item" id="armorlocation-effimp-ei17"
                         name="system.effectiveImpact.ei17" data-dtype="String">
-                        {{selectOptions config.injuryLevels selected=idata.effectiveImpact.ei17}}
+                        {{selectOptions (toChoices config.injuryLevels) selected=idata.effectiveImpact.ei17}}
                     </select>
                 </div>
             </fieldset>

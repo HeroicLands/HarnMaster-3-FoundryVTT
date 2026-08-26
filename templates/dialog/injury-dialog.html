@@ -10,7 +10,7 @@
     <div class="form-group">
         <label>Location:</label>
         <select name="location">
-            {{selectOptions hitLocations selected=location}}
+            {{selectOptions (toChoices hitLocations) selected=location}}
         </select>
     </div>
 

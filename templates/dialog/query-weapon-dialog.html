@@ -3,7 +3,7 @@
     <div class="form-group">
         <label>Weapon:</label>
         <select name="weapon">
-            {{selectOptions weapons selected=defaultWeapon}}
+            {{selectOptions (toChoices weapons) selected=defaultWeapon}}
         </select>
     </div>
 

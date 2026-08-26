@@ -177,7 +177,8 @@ export class HarnMasterActor extends Actor {
      * @returns an armorlocation ItemData
      */
     static _setupLocation(locName, templateName) {
-        const armorLocationData = foundry.utils.deepClone(game.model.Item.armorlocation);
+        // The schema's defaults, which is what `game.model` used to hold.
+        const armorLocationData = CONFIG.Item.dataModels.armorlocation.schema.getInitialValue({});
         foundry.utils.mergeObject(armorLocationData, HM3.injuryLocations[templateName])
         return { name: locName, type: 'armorlocation', system: armorLocationData };
     }

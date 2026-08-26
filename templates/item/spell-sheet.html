@@ -24,7 +24,7 @@
                     <label class="resource-label" for="system.convocation">Convocation</label>
                     {{#if hasMagicSkills}}
                         <select class="resource-value" name="system.convocation" data-dtype="String">
-                            {{selectOptions convocations selected=idata.convocation}}
+                            {{selectOptions (toChoices convocations) selected=idata.convocation}}
                         </select>
                     {{else}}
                         <input type="text" name="system.convocation" value="{{idata.convocation}}" data-dtype="String" />
@@ -55,7 +55,7 @@
             <div class="form-group">
                 <label>Type</label>
                 <select name="system.macros.type">
-                    {{selectOptions macroTypes selected=idata.macros.type}}
+                    {{selectOptions (toChoices macroTypes) selected=idata.macros.type}}
                 </select>
             </div>
         

@@ -345,15 +345,14 @@ export async function testAbilityD6Roll(ability, noDialog = false, myActor=null)
         return null;
     }
 
-    let abilities;
-    if (actorInfo.actor.type === 'character') {
-        abilities = Object.keys(game.model.Actor.character.abilities);
-    } else if (actorInfo.actor.type === 'creature') {
-        abilities = Object.keys(game.model.Actor.creature.abilities);
-    } else {
+    // Read the ability names off the actor itself. They used to come from
+    // `game.model`, the template.json registry, which is empty now that the
+    // system declares data models instead.
+    if (!actorInfo.actor.system.abilities) {
         ui.notifications.warn(`${actorInfo.name} does not have ability scores.`);
         return null;
     }
+    const abilities = Object.keys(actorInfo.actor.system.abilities);
     if (!ability || !abilities.includes(ability)) return null;
 
 
@@ -392,15 +391,14 @@ export async function testAbilityD100Roll(ability, noDialog = false, myActor = n
         return null;
     }
 
-    let abilities;
-    if (actorInfo.actor.type === 'character') {
-        abilities = Object.keys(game.model.Actor.character.abilities);
-    } else if (actorInfo.actor.type === 'creature') {
-        abilities = Object.keys(game.model.Actor.creature.abilities);
-    } else {
+    // Read the ability names off the actor itself. They used to come from
+    // `game.model`, the template.json registry, which is empty now that the
+    // system declares data models instead.
+    if (!actorInfo.actor.system.abilities) {
         ui.notifications.warn(`${actorInfo.actor.name} does not have ability scores.`);
         return null;
     }
+    const abilities = Object.keys(actorInfo.actor.system.abilities);
     if (!ability || !abilities.includes(ability)) return null;
 
     const stdRollData = {
