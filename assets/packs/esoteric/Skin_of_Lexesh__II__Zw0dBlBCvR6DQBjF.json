@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "aqY5F35ewokEjo5C",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "skinoflexesh"
+    }
   },
   "system": {
     "notes": "",

@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "3TYjKHsSaszxaXv2",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "jerilaszone"
+    }
   },
   "system": {
     "notes": "",

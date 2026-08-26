@@ -5,7 +5,11 @@
   "_id": "Q1GdIqZAQz4oVhEd",
   "sorting": "a",
   "sort": -400000,
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "saveknor"
+    }
+  },
   "_stats": {
     "systemId": "hm3",
     "systemVersion": "1.4.6",

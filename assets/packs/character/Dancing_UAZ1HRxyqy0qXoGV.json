@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "fDhSQkzzr3ZpdSmk",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "dancing"
+    }
   },
   "system": {
     "notes": "",

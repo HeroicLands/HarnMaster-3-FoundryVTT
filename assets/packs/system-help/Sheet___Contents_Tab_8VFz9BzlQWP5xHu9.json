@@ -4,7 +4,11 @@
     "default": 0,
     "kpJv1acyf3Ez8dBj": 3
   },
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "sheetcontentstab"
+    }
+  },
   "content": "<p>The Contents tab, only available on Container actors, provides a list of physical items (\"Gear\") that are contained within the container.</p>\n<p>&nbsp;</p>\n<p>Top: @JournalEntry[00 Welcome]</p>\n<p>&nbsp;</p>",
   "img": "systems/hm3/images/icons/svg/book.svg",
   "_id": "8VFz9BzlQWP5xHu9",

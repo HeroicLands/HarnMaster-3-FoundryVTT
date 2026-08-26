@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "4u6Psw2rEtLt9ZMS",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "myvriaskiss"
+    }
   },
   "system": {
     "notes": "",

@@ -5,7 +5,11 @@
   "_id": "Ij5fwgmSug2RjFKu",
   "sorting": "a",
   "sort": -100000,
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "craftslore"
+    }
+  },
   "_stats": {
     "systemId": "hm3",
     "systemVersion": "1.4.6",

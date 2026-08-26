@@ -4,7 +4,11 @@
     "default": 0,
     "kpJv1acyf3Ez8dBj": 3
   },
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "shockindex"
+    }
+  },
   "content": "<p>HarnMaster specifically does not include the concept of \"hit points\", or an indication of remaining health. You can track how much injury you have taken, but there is no specific, definite indication of how \"healthy\" you are. The Shock Index provides this information.</p>\n<p>The Shock Index indicates the probability that you will make your next shock roll.&nbsp; Since the shock roll determines whether you become incapable of action (fall unconcious or go into shock), it represents a total disability of the character.&nbsp; By tracking the likelihood of succeeding in the shock roll, the shock index allows you to gague the general overall \"health\" of the character or creature.</p>\n<p>The shock index is shown on the character sheet in the upper right hand corner, just below the universal and physical pentalties. It can also be shown on the character token on the canvas, so it is conveniently visible during combat.</p>",
   "img": "systems/hm3/images/icons/svg/book.svg",
   "_id": "Nt2jkVeqMGk8p2Ur",

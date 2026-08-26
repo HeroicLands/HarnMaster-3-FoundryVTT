@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "c3CaJqCvMmvbwM1T",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "handofiliam"
+    }
   },
   "system": {
     "notes": "",

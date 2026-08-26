@@ -4,7 +4,11 @@
     "default": 0,
     "kpJv1acyf3Ez8dBj": 3
   },
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "sheetfacadetab"
+    }
+  },
   "content": "<p><img src=\"systems/hm3/images/help/facade-and-header-tab.jpg\" alt=\"Facade and Header Tab\" width=\"624\" height=\"469\" /></p>\n<p>The Fa&ccedil;ade tab contains the publicly visible information about the character or creature.&nbsp; You can think of this as the information that would be avaialble to a casual observer.&nbsp; The tab contains a picture as well as descriptive text.</p>\n<p>When considering what text or picture to include, consider what information a casual observer would be able to discerne.&nbsp; Gross physical characteristics, obvious physical or behavioral traits, and any other aspects of the character or creature are appropriate.&nbsp; Depending on the character, some of the information in this public description may be misleading or even false.</p>\n<p>If a player has only limited access to the character or creature, then this Fa&ccedil;ade tab will be the only tab visible to them.</p>\n<p>Descriptions of biographical information, personality, character history, or other private information belong on the @JournalEntry[6HtyeakXK8cSTXvO]{Sheet - Profile Tab}</p>",
   "img": "systems/hm3/images/icons/svg/book.svg",
   "_id": "0ZQF74bH8D3iwoDc",

@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "jOppWJPOPMwgDYFG",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "emynscut"
+    }
   },
   "system": {
     "notes": "",

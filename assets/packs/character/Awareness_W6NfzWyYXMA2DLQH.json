@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "J0xwQtSGnFyerX7W",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "awareness"
+    }
   },
   "system": {
     "notes": "",

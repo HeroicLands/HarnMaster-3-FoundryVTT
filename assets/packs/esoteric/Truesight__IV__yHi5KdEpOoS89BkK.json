@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "olFsheWfuwIH41Tk",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "ilvirtruesight"
+    }
   },
   "system": {
     "notes": "",

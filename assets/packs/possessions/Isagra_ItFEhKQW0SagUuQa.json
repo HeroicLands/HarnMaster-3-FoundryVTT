@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "IkaCS1bAhDecPeQd",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "isagra"
+    }
   },
   "system": {
     "notes": "",

@@ -5,7 +5,11 @@
   "_id": "zQdlAO8iJ9sy3s9l",
   "sorting": "a",
   "sort": -200000,
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "magic"
+    }
+  },
   "_stats": {
     "systemId": "hm3",
     "systemVersion": "1.4.6",

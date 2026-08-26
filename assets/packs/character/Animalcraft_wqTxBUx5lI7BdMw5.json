@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "Ij5fwgmSug2RjFKu",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "animalcraft"
+    }
   },
   "system": {
     "notes": "",

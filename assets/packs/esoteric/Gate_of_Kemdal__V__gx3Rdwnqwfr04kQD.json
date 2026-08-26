@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "g3J9Eik2awfBs91a",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "gateofkemdal"
+    }
   },
   "system": {
     "notes": "",

@@ -4,7 +4,11 @@
     "default": 0,
     "kpJv1acyf3Ez8dBj": 3
   },
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "characters"
+    }
+  },
   "content": "<p>Characters represent oftentimes humanoid tool-wielding actors in your game. Examples of Character actors are PCs, Human and Non-Human NPCs, Gargun, some Ivastu,&nbsp; Ilme, and Amorvin.</p>\n<p>Character actors have the most complex character sheet which includes sections for ritual and magic as well as calculations for physical penalty.</p>\n<p>The character sheet contains fields to record the race, gender, occupation, and move rate (measured in feet) for the character. The base movement rate is the actor's agility times five. The effective movement rate is the base movement rate minus five times the actor's physical penalty.&nbsp;</p>\n<p>Characters also have a Shock Index. This is meant as a gross indicator for the \"health\" of the character, and is described in @JournalEntry[Shock Index].</p>\n<p>The following articles provide details on various parts of the character sheet:</p>\n<ul>\n<li>@JournalEntry[Sheet - Header]</li>\n<li>@JournalEntry[Sheet - Fa&ccedil;ade Tab]</li>\n<li>@JournalEntry[Sheet - Profile Tab]</li>\n<li>@JournalEntry[Sheet - Skills Tab]</li>\n<li>@JournalEntry[Sheet - Combat Tab]</li>\n<li>@JournalEntry[Sheet - Esoterics Tab]</li>\n<li>@JournalEntry[Sheet - Gear Tab]</li>\n<li>@JournalEntry[Sheet - Effect Tab]</li>\n</ul>\n<p>&nbsp;</p>\n<p>Top: @JournalEntry[00 Welcome]</p>\n<p>&nbsp;</p>",
   "img": "systems/hm3/images/icons/svg/book.svg",
   "_id": "BvmWEdDHSifdaM0z",

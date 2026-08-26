@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "gTMPd6VAWFd8nfM2",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "suerljisdefense"
+    }
   },
   "system": {
     "notes": "",

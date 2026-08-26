@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "vEue0eMD5ey8uFXc",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "yaelscalm"
+    }
   },
   "system": {
     "notes": "",

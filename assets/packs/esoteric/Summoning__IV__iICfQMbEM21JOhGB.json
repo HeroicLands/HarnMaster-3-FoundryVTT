@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "cKpd7e8LEPwE5H2E",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "laranisummoning"
+    }
   },
   "system": {
     "notes": "",

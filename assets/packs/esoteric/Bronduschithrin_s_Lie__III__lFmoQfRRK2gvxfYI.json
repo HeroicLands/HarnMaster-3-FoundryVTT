@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "Q1GdIqZAQz4oVhEd",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "bronduschithrinslie"
+    }
   },
   "system": {
     "notes": "",

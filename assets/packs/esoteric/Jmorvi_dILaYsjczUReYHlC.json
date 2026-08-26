@@ -5,7 +5,11 @@
   "_id": "dILaYsjczUReYHlC",
   "sorting": "a",
   "sort": 0,
-  "flags": {},
+  "flags": {
+    "sohl": {
+      "shortcode": "jmorvi"
+    }
+  },
   "_stats": {
     "systemId": "hm3",
     "systemVersion": "1.4.6",

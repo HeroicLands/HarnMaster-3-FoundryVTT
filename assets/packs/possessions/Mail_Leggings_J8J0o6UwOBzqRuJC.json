@@ -6,7 +6,10 @@
   "effects": [],
   "folder": "JD5aWyIFHJQTSkqB",
   "flags": {
-    "core": {}
+    "core": {},
+    "sohl": {
+      "shortcode": "mailleggings"
+    }
   },
   "system": {
     "notes": "",
