@@ -62,6 +62,39 @@ packageBuild:
     deploy:
         envPrefix: HM3
 
+    # The end-to-end harness: a disposable Foundry world, seeded from scratch,
+    # with Cypress driving a real browser against it.
+    #
+    # Almost nothing is stated here because almost nothing is this repository's
+    # to state. The world id and the Gamemaster derive from the package id
+    # (`hm3-e2e`, `Gamemaster` / `hm3-e2e`), the port is the conventional one
+    # for the `test` stage, and the Foundry build is `compatibility.minimum`
+    # above — the floor is the claim the suite exists to defend, so the claim
+    # and the evidence for it are one number. `npm run e2e:sweep -- <build>`
+    # runs the full suite against a build this repository does not pin.
+    e2e:
+        # The one thing the harness does not own: what runs against the world.
+        suite:
+            run: [npx, cypress, run]
+            open: [npx, cypress, open]
+
+        # What the fast loop can rebuild, in the order it must be built. The
+        # asset pass empties the stage, so it goes first; `system` writes the
+        # manifest, which Foundry reads once at world launch, so producing it
+        # means the container is recreated rather than merely restarted.
+        build:
+            assets: build:assets
+            css: build:css
+            db: build:compiledb
+            system: { script: build:system, recreate: true }
+
+        # The actors from Part 0 of the manual test plan, compiled into the
+        # seeded world so every spec starts from the same known state. Their
+        # gear and skills are not seeded: adding those is what the drag-and-drop
+        # specs exercise, and baking them in would skip the code under test.
+        documents:
+            actors: cypress/fixtures/actors
+
     # Emitted as declared. The identity, the four release addresses, the
     # version, the compatibility range and the pack list are derived instead,
     # and are refused if also declared here.

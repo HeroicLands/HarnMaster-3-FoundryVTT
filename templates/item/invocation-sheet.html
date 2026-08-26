@@ -24,7 +24,7 @@
                     <label class="resource-label" for="system.diety">Diety</label>
                     {{#if hasRitualSkills}}
                         <select class="resource-value" name="system.diety" data-dtype="String">
-                            {{selectOptions dieties selected=idata.diety}}
+                            {{selectOptions (toChoices dieties) selected=idata.diety}}
                         </select>
                     {{else}}
                         <input type="text" name="system.diety" value="{{idata.diety}}" data-dtype="String" />
@@ -55,7 +55,7 @@
             <div class="form-group">
                 <label>Type</label>
                 <select name="system.macros.type">
-                    {{selectOptions macroTypes selected=idata.macros.type}}
+                    {{selectOptions (toChoices macroTypes) selected=idata.macros.type}}
                 </select>
             </div>
         

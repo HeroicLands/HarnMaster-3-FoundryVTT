@@ -37,7 +37,7 @@
     <div class="form-group">
         <label>Aim:</label>
         <select name="aim">
-            {{selectOptions aimLocations selected=defaultAim}}
+            {{selectOptions (toChoices aimLocations) selected=defaultAim}}
         </select>
     </div>
 

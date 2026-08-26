@@ -7,7 +7,7 @@
                 <div class="skill-type flexrow">
                     <label class="label">Type</label>
                     <select class="value" name="system.type">
-                        {{selectOptions config.skillTypes selected=idata.type}}
+                        {{selectOptions (toChoices config.skillTypes) selected=idata.type}}
                     </select>
                 </div>
             </div>
@@ -79,7 +79,7 @@
             <div class="form-group">
                 <label>Type</label>
                 <select name="system.macros.type">
-                    {{selectOptions macroTypes selected=idata.macros.type}}
+                    {{selectOptions (toChoices macroTypes) selected=idata.macros.type}}
                 </select>
             </div>
         

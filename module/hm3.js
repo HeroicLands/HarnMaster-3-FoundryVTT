@@ -141,6 +141,16 @@ Hooks.once('init', async function () {
         return str.toLowerCase();
     });
 
+    // `selectOptions` reads an array entry that is not an object as
+    // `{value: index, label: entry}`, so a plain list of strings renders
+    // `<option value="0">Craft</option>` and the stored value never matches.
+    // Reading it as an object gives value === label, which is what the
+    // `{{#select}}` blocks these replaced always produced.
+    Handlebars.registerHelper('toChoices', function (list) {
+        if (Array.isArray(list)) return Object.fromEntries(list.map(v => [v, v]));
+        return list ?? {};
+    });
+
     // Register the Harnic fonts with Foundry. `editor: true` is what puts a
     // family in the ProseMirror font menu: FontConfig.getAvailableFonts()
     // collects exactly the families whose definition sets it, and the editor
