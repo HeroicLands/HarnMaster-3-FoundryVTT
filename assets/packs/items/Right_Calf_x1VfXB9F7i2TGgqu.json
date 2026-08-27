@@ -1,0 +1,52 @@
+{
+  "_id": "x1VfXB9F7i2TGgqu",
+  "name": "Right Calf",
+  "type": "armorlocation",
+  "img": "icons/svg/item-bag.svg",
+  "effects": [],
+  "folder": "clZ7CX2Ai8QyzZj0",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "rcalf"
+    }
+  },
+  "system": {
+    "layers": "",
+    "armorQuality": 0,
+    "blunt": 0,
+    "edged": 0,
+    "piercing": 0,
+    "fire": 0,
+    "isFumble": false,
+    "isStumble": true,
+    "isAmputate": true,
+    "impactType": "calf",
+    "effectiveImpact": {
+      "ei1": "M1",
+      "ei5": "M1",
+      "ei9": "S2",
+      "ei13": "S3",
+      "ei17": "G4"
+    },
+    "probWeight": {
+      "high": 0,
+      "mid": 30,
+      "low": 70
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284843915,
+    "modifiedTime": 1689285072071,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!x1VfXB9F7i2TGgqu"
+}

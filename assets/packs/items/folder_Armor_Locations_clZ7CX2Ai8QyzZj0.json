@@ -1,0 +1,23 @@
+{
+  "name": "Armor Locations",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "clZ7CX2Ai8QyzZj0",
+  "sort": 0,
+  "color": null,
+  "flags": {
+    "sohl": {
+      "shortcode": "armorlocations"
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284843915,
+    "modifiedTime": 1689285072071,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "_key": "!folders!clZ7CX2Ai8QyzZj0"
+}
