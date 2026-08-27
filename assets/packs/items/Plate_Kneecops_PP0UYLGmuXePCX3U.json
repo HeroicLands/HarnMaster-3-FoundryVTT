@@ -1,0 +1,59 @@
+{
+  "_id": "PP0UYLGmuXePCX3U",
+  "name": "Plate Kneecops",
+  "type": "armorgear",
+  "img": "systems/hm3/images/icons/svg/knee-pad.svg",
+  "effects": [],
+  "folder": "M4nHcUWOatfVGuh3",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "PlKncp"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "HM3 Combat 4",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 75,
+    "weight": 2.4,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "material": "Plate",
+    "armorQuality": 0,
+    "locations": [],
+    "protection": {
+      "blunt": 6,
+      "edged": 10,
+      "piercing": 6,
+      "fire": 2
+    },
+    "size": 6
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284239471,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!PP0UYLGmuXePCX3U"
+}

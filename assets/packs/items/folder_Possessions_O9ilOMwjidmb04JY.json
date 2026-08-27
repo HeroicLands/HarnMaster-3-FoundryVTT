@@ -1,0 +1,19 @@
+{
+  "name": "Possessions",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "O9ilOMwjidmb04JY",
+  "sort": 0,
+  "color": "#8B4513",
+  "flags": {},
+  "_stats": {
+    "systemId": "sohl",
+    "systemVersion": "0.8.2",
+    "coreVersion": "14.359",
+    "createdTime": 0,
+    "modifiedTime": 0,
+    "lastModifiedBy": "sohlbuilder00000"
+  },
+  "_key": "!folders!O9ilOMwjidmb04JY"
+}

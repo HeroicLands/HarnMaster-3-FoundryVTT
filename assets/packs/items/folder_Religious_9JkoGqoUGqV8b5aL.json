@@ -1,0 +1,19 @@
+{
+  "name": "Religious",
+  "sorting": "a",
+  "folder": "xJuw3RXTfrjeQbG8",
+  "type": "Item",
+  "_id": "9JkoGqoUGqV8b5aL",
+  "sort": 0,
+  "color": "#483D8B",
+  "flags": {},
+  "_stats": {
+    "systemId": "sohl",
+    "systemVersion": "0.8.2",
+    "coreVersion": "14.359",
+    "createdTime": 0,
+    "modifiedTime": 0,
+    "lastModifiedBy": "sohlbuilder00000"
+  },
+  "_key": "!folders!9JkoGqoUGqV8b5aL"
+}

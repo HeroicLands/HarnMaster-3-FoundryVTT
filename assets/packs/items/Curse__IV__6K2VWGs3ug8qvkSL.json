@@ -1,0 +1,40 @@
+{
+  "_id": "6K2VWGs3ug8qvkSL",
+  "name": "Curse (IV)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/halea.png",
+  "effects": [],
+  "folder": "hzwJfR7iGfz06Arg",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "haleacurse"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Prayer/Verbal Declaration</td></tr><tr><td><b>Range:</b> RML yards+</td><td><b>Duration:</b> One skill roll (MS), Indefinite (CS)</td></tr></table><p>An attempt to invoke the displeasure of the cleric’s deity upon one named victim. Curses cannot kill nor be randomly directed.  A curse is usually a short, simple declaration.</p><table><tr><td style='width: 3em;'>CS</td><td>The victim suffers a substantial curse, such as a disfigurement or mental problem (which lasts until removed by a Blessing). The Medical/Psyche tables (Character 9/11) can help inspire effects.</td></tr><tr><td style='width: 3em;'>MS</td><td>The victim sustains a special penalty on the next skill roll (GM discretion).</td></tr><tr><td style='width: 3em;'>CF</td><td>The curse rebounds on the curser.</td></tr></table>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Halea",
+    "circle": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!6K2VWGs3ug8qvkSL"
+}

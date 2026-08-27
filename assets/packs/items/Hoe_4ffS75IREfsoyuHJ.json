@@ -1,0 +1,49 @@
+{
+  "_id": "4ffS75IREfsoyuHJ",
+  "name": "Hoe",
+  "type": "miscgear",
+  "img": "icons/svg/item-bag.svg",
+  "effects": [],
+  "folder": "GJ2ThqP1YvWPaRbI",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "hoe"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "Prices & Weights",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 3,
+    "weight": 4,
+    "isCarried": true,
+    "isEquipped": false,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689285101425,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!4ffS75IREfsoyuHJ"
+}

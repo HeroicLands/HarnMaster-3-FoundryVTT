@@ -1,0 +1,49 @@
+{
+  "_id": "MsOw3ivq5FqcC7Ac",
+  "name": "Bolt of linen, emelrene",
+  "type": "miscgear",
+  "img": "systems/hm3/images/icons/svg/miscgear.svg",
+  "effects": [],
+  "folder": "0JqxkW5hHZ8XVILm",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "boltoflinenemelrene"
+    }
+  },
+  "system": {
+    "notes": "48 sq. yd.",
+    "description": "",
+    "source": "Prices & Weights",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 1152,
+    "weight": 18,
+    "isCarried": true,
+    "isEquipped": false,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689285101425,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!MsOw3ivq5FqcC7Ac"
+}

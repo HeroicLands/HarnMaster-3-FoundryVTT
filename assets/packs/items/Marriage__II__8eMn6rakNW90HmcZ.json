@@ -1,0 +1,40 @@
+{
+  "_id": "8eMn6rakNW90HmcZ",
+  "name": "Marriage (II)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/halea.png",
+  "effects": [],
+  "folder": "hzwJfR7iGfz06Arg",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "haleamarriage"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> Variable+</td><td><b>Ritual:</b> Prayer/Chant</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> The Ceremony</td></tr></table><p>A marriage ceremony which typically lasts 10-60 minutes.  Both the groom and bride must be of the same religion, or one spouse must be baptized in the other’s faith before marriage.  The ceremony blesses and awards 3d6 piety to each spouse, from the deity with success, or from the cleric with failure.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Halea",
+    "circle": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!8eMn6rakNW90HmcZ"
+}

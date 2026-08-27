@@ -1,0 +1,40 @@
+{
+  "_id": "T7W6VTXe8pzcFCYu",
+  "name": "Consecration (V)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/halea.png",
+  "effects": [],
+  "folder": "hzwJfR7iGfz06Arg",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "haleaconsecration"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Prayer/Suitable Object.</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> Indefinite (MS); Permanent (CS).</td></tr></table><p>A ritual to sanctify an object or place. Each consecration type requires a special expenditure of Piety which does NOT increase the Invocation EML. Indefinite consecrations are removed by another consecration, but with a special penalty of −50 if the invoker is an adherent of another deity. Permanent consecrations can never be removed, except by physical destruction of the object.</p><p><b>Holy Water [10pp]:</b> consecrated water, used in several invocations. Three churches use other substances: Agrikans use ash; Haleans use perfumes; Morgathians use human blood. Charges 2d6.</p><p><b>Holy Tome [30pp]:</b> a sacred written work which may grant the reader an increase to Ritual ML. These tomes are rated from 1–12, this being the number of Skill Development Rolls they give the reader. Persons whose morality is inappropriate to a deity sustain a curse by reading a holy tome (or even by opening its cover).</p><p><b>Holy Artifact [variable pp]:</b> a consecrated artifact, typically a staff, rod, ring, amulet, belt buckle, brooch, etc. They generally fall into one of two major types:</p><ul><li>Artifact that grants the bearer a bonus of 5-20 when calling for Divine Intervention.</li><li>Artifact that stores a known invocation for instant activation on command. Cleric determines the number of charges to install – each charge costs Circle × 5pp. Hence, storing three charges of a Circle V invocation cost 3× (5×5 pp) = 75pp.</li></li><p>Use of an artifact generally requires some sort of triggering or activation. Most often, this is done by speaking (or thinking of) a particular key word or phrase. Holy Artifacts are safe to invoke only by pious adherents of the deity. Other use may cause a “misfire” with unpredictable results.</p><p><b>Holy Place/50pp (+1pp/sq yard):</b> sanctifying a site to the deity, such as a temple, graveyard, site of a martyrdom, etc.  The location may already have been sanctified to another deity.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Halea",
+    "circle": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!T7W6VTXe8pzcFCYu"
+}

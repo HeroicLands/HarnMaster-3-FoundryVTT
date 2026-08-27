@@ -81,6 +81,6 @@ jobs:
                     import { readFileSync } from "node:fs";
                     const m = JSON.parse(readFileSync("build/stage/system.json", "utf8"));
                     if (m.id !== "hm3") throw new Error(`id is ${m.id}, expected hm3`);
-                    if (m.packs.length !== 4) throw new Error(`${m.packs.length} packs, expected 4`);
+                    if (m.packs.length !== 2) throw new Error(`${m.packs.length} packs, expected 2`);
                     console.log(`system.json ok: ${m.id} ${m.version}, ${m.packs.length} packs`);
                   '

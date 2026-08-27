@@ -1,0 +1,61 @@
+{
+  "_id": "QcWGQH2wCbeu2Nn1",
+  "name": "Leather Loincloth",
+  "type": "armorgear",
+  "img": "systems/hm3/images/icons/svg/armor.svg",
+  "effects": [],
+  "folder": "gaC79vNjSo6VO6Ym",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "LtLoin"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 15,
+    "weight": 2.8,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "material": "Leather",
+    "armorQuality": 0,
+    "locations": [
+      "Groin"
+    ],
+    "protection": {
+      "blunt": 2,
+      "edged": 4,
+      "piercing": 3,
+      "fire": 3
+    },
+    "size": 6
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689285101425,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!QcWGQH2wCbeu2Nn1"
+}

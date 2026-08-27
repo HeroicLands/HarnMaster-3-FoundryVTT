@@ -1,0 +1,66 @@
+{
+  "_id": "OfAc4yKUgnOrMgBY",
+  "name": "Stone (Staff Sling)",
+  "type": "missilegear",
+  "img": "systems/hm3/images/icons/svg/stones.svg",
+  "effects": [],
+  "folder": "ADQPHjgKsdWsJhyy",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "StfSton"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "HM3 Combat 16",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 0,
+    "weight": 0.1,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "assocSkill": "Sling",
+    "weaponQuality": 0,
+    "attackMasteryLevel": 0,
+    "weaponAspect": "Blunt",
+    "attackModifier": 0,
+    "range": {
+      "short": 125,
+      "medium": 250,
+      "long": 500,
+      "extreme": 1000
+    },
+    "impact": {
+      "short": 5,
+      "medium": 4,
+      "long": 3,
+      "extreme": 3
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284251300,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!OfAc4yKUgnOrMgBY"
+}

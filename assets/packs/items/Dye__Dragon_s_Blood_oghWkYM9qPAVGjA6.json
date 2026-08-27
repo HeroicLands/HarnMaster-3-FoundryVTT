@@ -1,0 +1,49 @@
+{
+  "_id": "oghWkYM9qPAVGjA6",
+  "name": "Dye, Dragon’s Blood",
+  "type": "miscgear",
+  "img": "systems/hm3/images/icons/svg/miscgear.svg",
+  "effects": [],
+  "folder": "7r8WTAO2Ac8SF9tf",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "dyedrgn"
+    }
+  },
+  "system": {
+    "notes": "per oz.",
+    "description": "",
+    "source": "Prices & Weights",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 170,
+    "weight": 0.0625,
+    "isCarried": true,
+    "isEquipped": false,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689285101425,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!oghWkYM9qPAVGjA6"
+}

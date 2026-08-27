@@ -1,0 +1,63 @@
+{
+  "_id": "fkApGWlaIXNctSH7",
+  "name": "Ring Vest",
+  "type": "armorgear",
+  "img": "systems/hm3/images/icons/svg/armor-vest.svg",
+  "effects": [],
+  "folder": "M4nHcUWOatfVGuh3",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "RnVest"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "HM3 Combat 4",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 196,
+    "weight": 11.2,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "material": "Ring",
+    "armorQuality": 0,
+    "locations": [
+      "Shoulder",
+      "Thorax",
+      "Abdomen"
+    ],
+    "protection": {
+      "blunt": 3,
+      "edged": 6,
+      "piercing": 4,
+      "fire": 3
+    },
+    "size": 6
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284239471,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!fkApGWlaIXNctSH7"
+}

@@ -1,0 +1,49 @@
+{
+  "_id": "c5lO1CSxA3cewcXg",
+  "name": "Stone, Marble",
+  "type": "miscgear",
+  "img": "systems/hm3/images/icons/svg/stones.svg",
+  "effects": [],
+  "folder": "7HORJHbbizVSds9r",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "stonemarbl"
+    }
+  },
+  "system": {
+    "notes": "8 cu. ft.",
+    "description": "",
+    "source": "Prices & Weights",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 3,
+    "weight": 400,
+    "isCarried": true,
+    "isEquipped": false,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689285101425,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!c5lO1CSxA3cewcXg"
+}

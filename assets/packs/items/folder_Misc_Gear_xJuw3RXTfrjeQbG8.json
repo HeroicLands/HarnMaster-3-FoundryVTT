@@ -1,0 +1,19 @@
+{
+  "name": "Misc_Gear",
+  "sorting": "a",
+  "folder": "O9ilOMwjidmb04JY",
+  "type": "Item",
+  "_id": "xJuw3RXTfrjeQbG8",
+  "sort": 0,
+  "color": "#6B8E23",
+  "flags": {},
+  "_stats": {
+    "systemId": "sohl",
+    "systemVersion": "0.8.2",
+    "coreVersion": "14.359",
+    "createdTime": 0,
+    "modifiedTime": 0,
+    "lastModifiedBy": "sohlbuilder00000"
+  },
+  "_key": "!folders!xJuw3RXTfrjeQbG8"
+}

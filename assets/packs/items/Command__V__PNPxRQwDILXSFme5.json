@@ -1,0 +1,40 @@
+{
+  "_id": "PNPxRQwDILXSFme5",
+  "name": "Command (V)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/halea.png",
+  "effects": [],
+  "folder": "hzwJfR7iGfz06Arg",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "haleacommand"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI seconds+</td><td><b>Ritual:</b> Prayer/Gesture</td></tr><tr><td><b>Range:</b> RML feet+</td><td><b>Duration:</b> One Command</td></tr></table><p>The ability to control/banish all divine servants within Range.</p><p>Clerics can command only the servants of their own deity, but those of other deities may be banished.</p><p>&nbsp;</p><table><tr><td style='width: 3em;'>CS</td><td>Any servant may be banished. Servants of the cleric’s deity may be commanded to perform one minor task (GM discretion).</td></tr><tr><td style='width: 3em;'>MS</td><td>Hostile servants of the cleric’s deity may be banished. Servants of other deities are not driven off, but will feel uncomfortable and, if not well-motivated to remain, probably leave anyway. Friendly servants may be commanded to perform one simple task.</td></tr><tr><td style='width: 3em;'>CF</td><td>The servant becomes hostile, or berserk if already hostile.</td></tr></table>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Halea",
+    "circle": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!PNPxRQwDILXSFme5"
+}

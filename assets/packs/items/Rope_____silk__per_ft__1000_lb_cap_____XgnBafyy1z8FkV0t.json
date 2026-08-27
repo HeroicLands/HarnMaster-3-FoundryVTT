@@ -1,0 +1,49 @@
+{
+  "_id": "XgnBafyy1z8FkV0t",
+  "name": "Rope, ½” silk, per ft (1000 lb cap. *)",
+  "type": "miscgear",
+  "img": "systems/hm3/images/icons/svg/miscgear.svg",
+  "effects": [],
+  "folder": "FSPVI1eObGEpMVck",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "ropesilkperft1000lbcap"
+    }
+  },
+  "system": {
+    "notes": "per ft., 1000 lb. capacity",
+    "description": "Safe capacities for worn & knotted (but not rotted) ropes under shock.  New ropes can handle twice capacity.  If exceeded, multiply capacity by d4 *d100 to determine actual break point.  Ropes more than 50’ in length are rare.",
+    "source": "Prices & Weights",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 32,
+    "weight": 0.08,
+    "isCarried": true,
+    "isEquipped": false,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689285101425,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!XgnBafyy1z8FkV0t"
+}

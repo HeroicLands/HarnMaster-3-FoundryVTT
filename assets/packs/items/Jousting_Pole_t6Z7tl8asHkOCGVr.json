@@ -1,0 +1,59 @@
+{
+  "_id": "t6Z7tl8asHkOCGVr",
+  "name": "Jousting Pole",
+  "type": "weapongear",
+  "img": "systems/hm3/images/icons/svg/lance.svg",
+  "effects": [],
+  "folder": "HXiYHvG6igI3Wlmm",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "JPole"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "HM3 Combat 3",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 40,
+    "weight": 8,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "assocSkill": "Polearm",
+    "weaponQuality": 8,
+    "attackMasteryLevel": 0,
+    "attack": 25,
+    "defense": 5,
+    "attackModifier": -25,
+    "blunt": 3,
+    "edged": -1,
+    "piercing": 0,
+    "defenseMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284245830,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!t6Z7tl8asHkOCGVr"
+}
