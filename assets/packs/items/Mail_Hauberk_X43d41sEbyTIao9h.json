@@ -1,0 +1,69 @@
+{
+  "_id": "X43d41sEbyTIao9h",
+  "name": "Mail Hauberk",
+  "type": "armorgear",
+  "img": "systems/hm3/images/icons/svg/chain-mail.svg",
+  "effects": [],
+  "folder": "M4nHcUWOatfVGuh3",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "MHbk"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "HM3 Combat 4",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 990,
+    "weight": 33,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "material": "Mail",
+    "armorQuality": 0,
+    "locations": [
+      "Forearm",
+      "Elbow",
+      "Upper Arm",
+      "Shoulder",
+      "Thorax",
+      "Abdomen",
+      "Hip",
+      "Groin",
+      "Thigh"
+    ],
+    "protection": {
+      "blunt": 2,
+      "edged": 8,
+      "piercing": 5,
+      "fire": 1
+    },
+    "size": 6
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284239471,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!X43d41sEbyTIao9h"
+}

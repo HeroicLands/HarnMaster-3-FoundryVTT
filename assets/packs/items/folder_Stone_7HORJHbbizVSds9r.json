@@ -1,0 +1,19 @@
+{
+  "name": "Stone",
+  "sorting": "a",
+  "folder": "xJuw3RXTfrjeQbG8",
+  "type": "Item",
+  "_id": "7HORJHbbizVSds9r",
+  "sort": 0,
+  "color": "#95A5A6",
+  "flags": {},
+  "_stats": {
+    "systemId": "sohl",
+    "systemVersion": "0.8.2",
+    "coreVersion": "14.359",
+    "createdTime": 0,
+    "modifiedTime": 0,
+    "lastModifiedBy": "sohlbuilder00000"
+  },
+  "_key": "!folders!7HORJHbbizVSds9r"
+}

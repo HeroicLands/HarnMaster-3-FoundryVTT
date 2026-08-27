@@ -29,9 +29,7 @@ compatibility:
 # generator does not emit it, so Foundry's defaults apply. This was a conscious
 # trade rather than an oversight.
 packs:
-    - { name: character, label: Character, type: Item }
-    - { name: possessions, label: Possessions, type: Item }
-    - { name: esoteric, label: Esoteric, type: Item }
+    - { name: items, label: Items, type: Item }
     - { name: system-help, label: System Help, type: JournalEntry }
 
 packageBuild:

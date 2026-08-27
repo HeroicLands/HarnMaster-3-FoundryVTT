@@ -1,0 +1,49 @@
+{
+  "_id": "3naV66FJzcZWyMVt",
+  "name": "Copper",
+  "type": "miscgear",
+  "img": "systems/hm3/images/icons/svg/miscgear.svg",
+  "effects": [],
+  "folder": "0JqxkW5hHZ8XVILm",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "copper"
+    }
+  },
+  "system": {
+    "notes": "per lb.",
+    "description": "",
+    "source": "Prices & Weights",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 2,
+    "weight": 1,
+    "isCarried": true,
+    "isEquipped": false,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689285101425,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!3naV66FJzcZWyMVt"
+}

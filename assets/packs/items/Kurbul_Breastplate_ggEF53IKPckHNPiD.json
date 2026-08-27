@@ -1,0 +1,62 @@
+{
+  "_id": "ggEF53IKPckHNPiD",
+  "name": "Kurbul Breastplate",
+  "type": "armorgear",
+  "img": "systems/hm3/images/icons/svg/breastplate.svg",
+  "effects": [],
+  "folder": "M4nHcUWOatfVGuh3",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "KBrst"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "HM3 Combat 4",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 60,
+    "weight": 3,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "material": "Kurbul",
+    "armorQuality": 0,
+    "locations": [
+      "Thorax",
+      "Abdomen"
+    ],
+    "protection": {
+      "blunt": 4,
+      "edged": 5,
+      "piercing": 4,
+      "fire": 3
+    },
+    "size": 6
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284239471,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!ggEF53IKPckHNPiD"
+}

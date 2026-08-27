@@ -1,0 +1,19 @@
+{
+  "name": "Jewelry",
+  "sorting": "a",
+  "folder": "qhgjZ2XB83LXoBSv",
+  "type": "Item",
+  "_id": "3YyFU1QkTs2yFq5t",
+  "sort": 0,
+  "color": "#FFD700",
+  "flags": {},
+  "_stats": {
+    "systemId": "sohl",
+    "systemVersion": "0.8.2",
+    "coreVersion": "14.359",
+    "createdTime": 0,
+    "modifiedTime": 0,
+    "lastModifiedBy": "sohlbuilder00000"
+  },
+  "_key": "!folders!3YyFU1QkTs2yFq5t"
+}

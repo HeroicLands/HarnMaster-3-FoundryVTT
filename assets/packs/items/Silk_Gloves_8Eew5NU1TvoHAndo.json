@@ -1,0 +1,61 @@
+{
+  "_id": "8Eew5NU1TvoHAndo",
+  "name": "Silk Gloves",
+  "type": "armorgear",
+  "img": "systems/hm3/images/icons/svg/gloves.svg",
+  "effects": [],
+  "folder": "gaC79vNjSo6VO6Ym",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "SlkGlv"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 46,
+    "weight": 0.3,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "material": "Cloth",
+    "armorQuality": 0,
+    "locations": [
+      "Hand"
+    ],
+    "protection": {
+      "blunt": 1,
+      "edged": 1,
+      "piercing": 1,
+      "fire": 1
+    },
+    "size": 6
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689285101425,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!8Eew5NU1TvoHAndo"
+}

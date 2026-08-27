@@ -1,0 +1,49 @@
+{
+  "_id": "6m4ONqyzsTlW1ayd",
+  "name": "Loom",
+  "type": "miscgear",
+  "img": "systems/hm3/images/icons/svg/miscgear.svg",
+  "effects": [],
+  "folder": "GJ2ThqP1YvWPaRbI",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "loom"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "Prices & Weights",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 26,
+    "weight": 43,
+    "isCarried": true,
+    "isEquipped": false,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689285101425,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!6m4ONqyzsTlW1ayd"
+}

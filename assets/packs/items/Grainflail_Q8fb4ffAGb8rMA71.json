@@ -1,0 +1,59 @@
+{
+  "_id": "Q8fb4ffAGb8rMA71",
+  "name": "Grainflail",
+  "type": "weapongear",
+  "img": "systems/hm3/images/icons/svg/nunchaku.svg",
+  "effects": [],
+  "folder": "HXiYHvG6igI3Wlmm",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "GrnFl"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "HM3 Combat 3",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 12,
+    "weight": 2,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "assocSkill": "Flail",
+    "weaponQuality": 9,
+    "attackMasteryLevel": 0,
+    "attack": 20,
+    "defense": 5,
+    "attackModifier": 0,
+    "blunt": 5,
+    "edged": -1,
+    "piercing": -1,
+    "defenseMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284245830,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!Q8fb4ffAGb8rMA71"
+}

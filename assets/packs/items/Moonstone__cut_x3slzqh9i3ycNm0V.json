@@ -1,0 +1,49 @@
+{
+  "_id": "x3slzqh9i3ycNm0V",
+  "name": "Moonstone, cut",
+  "type": "miscgear",
+  "img": "systems/hm3/images/icons/svg/miscgear.svg",
+  "effects": [],
+  "folder": "3YyFU1QkTs2yFq5t",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "moonstonec"
+    }
+  },
+  "system": {
+    "notes": "per ct.",
+    "description": "typical weights range 2d6 carats",
+    "source": "Prices & Weights",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 30,
+    "weight": 0.0004,
+    "isCarried": true,
+    "isEquipped": false,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689285101425,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!x3slzqh9i3ycNm0V"
+}

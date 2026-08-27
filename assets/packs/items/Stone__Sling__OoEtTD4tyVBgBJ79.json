@@ -1,0 +1,66 @@
+{
+  "_id": "OoEtTD4tyVBgBJ79",
+  "name": "Stone (Sling)",
+  "type": "missilegear",
+  "img": "systems/hm3/images/icons/svg/stones.svg",
+  "effects": [],
+  "folder": "HXiYHvG6igI3Wlmm",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "SSton"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "HM3 Combat 16",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 0,
+    "weight": 0.1,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "assocSkill": "Sling",
+    "weaponQuality": 0,
+    "attackMasteryLevel": 0,
+    "weaponAspect": "Blunt",
+    "attackModifier": 0,
+    "range": {
+      "short": 75,
+      "medium": 150,
+      "long": 300,
+      "extreme": 600
+    },
+    "impact": {
+      "short": 4,
+      "medium": 3,
+      "long": 2,
+      "extreme": 2
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284251300,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!OoEtTD4tyVBgBJ79"
+}

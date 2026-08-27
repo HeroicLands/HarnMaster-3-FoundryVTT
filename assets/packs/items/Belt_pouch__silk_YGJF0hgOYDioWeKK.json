@@ -1,0 +1,53 @@
+{
+  "_id": "YGJF0hgOYDioWeKK",
+  "name": "Belt pouch, silk",
+  "type": "containergear",
+  "img": "systems/hm3/images/icons/svg/sack.svg",
+  "effects": [],
+  "folder": "dl8lJ729W1mFlDvt",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "beltpouchsilk"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "Prices & Weights",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 35,
+    "weight": 0.5,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "capacity": {
+      "max": 5,
+      "value": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689285101425,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!YGJF0hgOYDioWeKK"
+}

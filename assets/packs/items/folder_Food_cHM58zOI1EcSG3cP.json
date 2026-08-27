@@ -1,0 +1,19 @@
+{
+  "name": "Food",
+  "sorting": "a",
+  "folder": "xJuw3RXTfrjeQbG8",
+  "type": "Item",
+  "_id": "cHM58zOI1EcSG3cP",
+  "sort": 0,
+  "color": "#F5DEB3",
+  "flags": {},
+  "_stats": {
+    "systemId": "sohl",
+    "systemVersion": "0.8.2",
+    "coreVersion": "14.359",
+    "createdTime": 0,
+    "modifiedTime": 0,
+    "lastModifiedBy": "sohlbuilder00000"
+  },
+  "_key": "!folders!cHM58zOI1EcSG3cP"
+}

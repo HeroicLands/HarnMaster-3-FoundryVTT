@@ -1,0 +1,49 @@
+{
+  "_id": "6eCmS33z0aK9XrA2",
+  "name": "Kayak (1 crew, 250 lb. cap.)",
+  "type": "miscgear",
+  "img": "systems/hm3/images/icons/svg/miscgear.svg",
+  "effects": [],
+  "folder": "FSPVI1eObGEpMVck",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "kayak1crew250lbcap"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "Prices & Weights",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 192,
+    "weight": 47,
+    "isCarried": true,
+    "isEquipped": false,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689285101425,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!6eCmS33z0aK9XrA2"
+}

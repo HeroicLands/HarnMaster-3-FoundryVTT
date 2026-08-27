@@ -1,0 +1,67 @@
+{
+  "_id": "vI0EeS4aonuvx049",
+  "name": "Mail Short Hauberk",
+  "type": "armorgear",
+  "img": "systems/hm3/images/icons/svg/chain-mail.svg",
+  "effects": [],
+  "folder": "M4nHcUWOatfVGuh3",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "MShHbk"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "quantity": 1,
+    "value": 855,
+    "weight": 26,
+    "isCarried": true,
+    "isEquipped": true,
+    "container": "on-person",
+    "arcane": {
+      "isArtifact": false,
+      "isAttuned": false,
+      "charges": -1,
+      "ego": 0
+    },
+    "material": "Mail",
+    "armorQuality": 0,
+    "locations": [
+      "Elbow",
+      "Upper Arm",
+      "Shoulder",
+      "Thorax",
+      "Abdomen",
+      "Hip",
+      "Groin"
+    ],
+    "protection": {
+      "blunt": 2,
+      "edged": 8,
+      "piercing": 5,
+      "fire": 1
+    },
+    "size": 6
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689285101425,
+    "modifiedTime": 1689285101425,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!vI0EeS4aonuvx049"
+}
