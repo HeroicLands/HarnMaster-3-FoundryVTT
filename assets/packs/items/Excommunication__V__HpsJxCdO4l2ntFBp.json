@@ -1,0 +1,40 @@
+{
+  "_id": "HpsJxCdO4l2ntFBp",
+  "name": "Excommunication (V)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/halea.png",
+  "effects": [],
+  "folder": "hzwJfR7iGfz06Arg",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "haleaexcommunication"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 25−RSI mins+</td><td><b>Ritual:</b> Prayer/Chant</td></tr><tr><td><b>Range:</b> Unlimited+</td><td><b>Duration:</b> Indefinite</td></tr></table><p>May only be performed on a subject of the same religion who has lesser rank and Circle. Strips the subject of rank and responsibilities within the church and notifies the deity that the subject is out of favor. Deity might not agree with the action and may, especially in cases of impiety or corruption, penalize the invoker instead.</p><p>Effects are removal of some/all Piety Points, reduction in Ritual ML or Circle, etc. With CF the Deity is certain to punish the invoker instead.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Halea",
+    "circle": 5,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!HpsJxCdO4l2ntFBp"
+}

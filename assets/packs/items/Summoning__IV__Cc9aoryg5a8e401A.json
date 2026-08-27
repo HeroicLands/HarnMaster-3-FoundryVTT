@@ -1,0 +1,40 @@
+{
+  "_id": "Cc9aoryg5a8e401A",
+  "name": "Summoning (IV)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/halea.png",
+  "effects": [],
+  "folder": "hzwJfR7iGfz06Arg",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "haleasummoning"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Prayer/Meditation</td></tr><tr><td><b>Range:</b> Unlimited+</td><td><b>Duration:</b> One Summoning</td></tr></table><p>Calls forth a specific denizen of the cleric’s deity. Invocation EML is reduced by Aura ×2 of the summoned ethereal; the more powerful the denizen, the more difficult it will be to summon. If the ethereal has already been perceived by the Revelation invocation, Summon EML is +10.</p><p>A summoned denizen will appear immediately with CS, or in 3d6 minutes with MS. It may be asked three questions with Divination, or banished with Command, etc.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Halea",
+    "circle": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!Cc9aoryg5a8e401A"
+}

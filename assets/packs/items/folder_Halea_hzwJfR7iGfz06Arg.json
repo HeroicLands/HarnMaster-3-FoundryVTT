@@ -1,0 +1,23 @@
+{
+  "name": "Halea",
+  "type": "Item",
+  "folder": "nX49OcUBOzl8FyrL",
+  "_id": "hzwJfR7iGfz06Arg",
+  "sorting": "a",
+  "sort": 50000,
+  "flags": {
+    "sohl": {
+      "shortcode": "halea"
+    }
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "color": null,
+  "_key": "!folders!hzwJfR7iGfz06Arg"
+}

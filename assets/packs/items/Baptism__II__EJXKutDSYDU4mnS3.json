@@ -1,0 +1,40 @@
+{
+  "_id": "EJXKutDSYDU4mnS3",
+  "name": "Baptism (II)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/halea.png",
+  "effects": [],
+  "folder": "hzwJfR7iGfz06Arg",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "haleabaptism"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Prayer/Holy Water</td></tr><tr><td><b>Range:</b> Touch+</td><td><b>Duration:</b> The Ceremony</td></tr></table><p>Initiates a new convert, who must be willing, to the faith. The ceremony involves a laying on of hands and dabbing with Holy Water, or other consecrated substance.</p><table><tr><td style='width: 3em;'>CS</td><td>Doubles the Piety for both cleric and convert.</td></tr><tr><td style='width: 3em;'>MS</td><td>Cleric receives 2d6 pp, the subject 5d6 pp.</td></tr><tr><td style='width: 3em;'>CF</td><td>Convert receives 5d6 Piety, taken from the cleric, who will be struck blind and mute for 3d6 hours if there is a shortfall.</td></tr></table>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Halea",
+    "circle": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!EJXKutDSYDU4mnS3"
+}

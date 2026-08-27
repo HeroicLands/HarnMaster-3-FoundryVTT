@@ -1,0 +1,49 @@
+{
+  "_id": "ZTQ7XsaGwtbCm4fz",
+  "name": "Christian",
+  "type": "skill",
+  "img": "systems/hm3/images/icons/svg/circle.svg",
+  "effects": [],
+  "folder": "ehEs3IXsjATxYb8d",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "christian"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "type": "Ritual",
+    "skillBase": {
+      "value": 0,
+      "formula": "@voi, @int, @wil",
+      "isFormulaValid": true
+    },
+    "masteryLevel": 0,
+    "effectiveMasteryLevel": 0,
+    "ritual": {
+      "piety": 0
+    },
+    "improveFlag": false
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284353454,
+    "modifiedTime": 1689285072117,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!ZTQ7XsaGwtbCm4fz"
+}

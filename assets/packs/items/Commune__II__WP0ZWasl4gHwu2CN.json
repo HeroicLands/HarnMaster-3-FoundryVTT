@@ -1,0 +1,40 @@
+{
+  "_id": "WP0ZWasl4gHwu2CN",
+  "name": "Commune (II)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/halea.png",
+  "effects": [],
+  "folder": "hzwJfR7iGfz06Arg",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "haleacommune"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 15−RSI minutes+</td><td><b>Ritual:</b> Prayer/Meditation</td></tr><tr><td><b>Range:</b> Self+</td><td><b>Duration:</b> Trance for 5 minutes</td></tr></table><p>An attempt to establish a close spiritual relationship with the deity. The cleric hopes to earn the deity’s favor, reflected by receiving bonus Piety.</p><table><tr><td style='width: 3em;'>CS</td><td>4d6 Piety</td></tr><tr><td style='width: 3em;'>MS</td><td>2d6 Piety</td></tr><tr><td style='width: 3em;'>CF</td><td>The diety is annoyed by this intrusion and punishes the invoker with -4d6 Piety (or worse).</td></tr></table>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Halea",
+    "circle": 2,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!WP0ZWasl4gHwu2CN"
+}

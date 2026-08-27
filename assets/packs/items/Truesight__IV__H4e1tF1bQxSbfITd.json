@@ -1,0 +1,40 @@
+{
+  "_id": "H4e1tF1bQxSbfITd",
+  "name": "Truesight (IV)",
+  "type": "invocation",
+  "img": "systems/hm3/images/icons/png/halea.png",
+  "effects": [],
+  "folder": "hzwJfR7iGfz06Arg",
+  "flags": {
+    "core": {},
+    "sohl": {
+      "shortcode": "haleatruesight"
+    }
+  },
+  "system": {
+    "notes": "",
+    "description": "<table><tr><td><b>Time:</b> 25−RSI seconds+</td><td><b>Ritual:</b> Prayer</td></tr><tr><td><b>Range:</b> RML feet+</td><td><b>Duration:</b> 30 minutes.</td></tr></table><p>Cleric perceives the presence and location of any holy artifact within Range. The artifact emits an ultra-sonic hum audible only to the cleric. CS identifies the specific deity.</p>",
+    "source": "",
+    "macros": {
+      "type": "script",
+      "command": ""
+    },
+    "diety": "Halea",
+    "circle": 4,
+    "effectiveMasteryLevel": 0
+  },
+  "_stats": {
+    "systemId": "hm3",
+    "systemVersion": "1.4.6",
+    "coreVersion": "11.305",
+    "createdTime": 1689284264856,
+    "modifiedTime": 1689285083843,
+    "lastModifiedBy": "gaRXj6PUpj4nuJ7Y"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "gaRXj6PUpj4nuJ7Y": 3
+  },
+  "_key": "!items!H4e1tF1bQxSbfITd"
+}
