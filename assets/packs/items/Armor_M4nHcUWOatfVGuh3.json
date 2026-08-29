@@ -1,11 +1,11 @@
 {
-  "name": "Weapons",
+  "name": "Armor",
   "sorting": "a",
-  "folder": "O9ilOMwjidmb04JY",
+  "folder": "A3lkLw5amU7NmRP4",
   "type": "Item",
-  "_id": "HXiYHvG6igI3Wlmm",
+  "_id": "M4nHcUWOatfVGuh3",
   "sort": 0,
-  "color": "#8B0000",
+  "color": "#4A4A4A",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!HXiYHvG6igI3Wlmm"
+  "_key": "!folders!M4nHcUWOatfVGuh3"
 }

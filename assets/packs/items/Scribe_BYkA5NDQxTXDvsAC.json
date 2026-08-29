@@ -1,11 +1,11 @@
 {
-  "name": "Instruments",
+  "name": "Scribe",
   "sorting": "a",
   "folder": "xJuw3RXTfrjeQbG8",
   "type": "Item",
-  "_id": "xniLjmZWYQZkSxyv",
+  "_id": "BYkA5NDQxTXDvsAC",
   "sort": 0,
-  "color": "#1D3557",
+  "color": "#36454F",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!xniLjmZWYQZkSxyv"
+  "_key": "!folders!BYkA5NDQxTXDvsAC"
 }

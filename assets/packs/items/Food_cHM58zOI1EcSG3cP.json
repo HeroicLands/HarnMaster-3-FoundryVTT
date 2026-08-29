@@ -1,11 +1,11 @@
 {
-  "name": "Misc_Gear",
+  "name": "Food",
   "sorting": "a",
-  "folder": "O9ilOMwjidmb04JY",
+  "folder": "xJuw3RXTfrjeQbG8",
   "type": "Item",
-  "_id": "xJuw3RXTfrjeQbG8",
+  "_id": "cHM58zOI1EcSG3cP",
   "sort": 0,
-  "color": "#6B8E23",
+  "color": "#F5DEB3",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!xJuw3RXTfrjeQbG8"
+  "_key": "!folders!cHM58zOI1EcSG3cP"
 }

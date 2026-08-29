@@ -1,11 +1,11 @@
 {
-  "name": "Spirits",
+  "name": "Religious",
   "sorting": "a",
   "folder": "xJuw3RXTfrjeQbG8",
   "type": "Item",
-  "_id": "jLdeIpOIZokm8obv",
+  "_id": "9JkoGqoUGqV8b5aL",
   "sort": 0,
-  "color": "#722F37",
+  "color": "#483D8B",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!jLdeIpOIZokm8obv"
+  "_key": "!folders!9JkoGqoUGqV8b5aL"
 }

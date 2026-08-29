@@ -1,11 +1,11 @@
 {
-  "name": "Lighting",
+  "name": "Furniture",
   "sorting": "a",
   "folder": "xJuw3RXTfrjeQbG8",
   "type": "Item",
-  "_id": "csqutf8WiTRM8oru",
+  "_id": "Wq1tmMJTjDoFFtLS",
   "sort": 0,
-  "color": "#FFA500",
+  "color": "#007000",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!csqutf8WiTRM8oru"
+  "_key": "!folders!Wq1tmMJTjDoFFtLS"
 }

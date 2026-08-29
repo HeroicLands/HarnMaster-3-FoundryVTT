@@ -1,11 +1,11 @@
 {
-  "name": "Cash",
+  "name": "Spirits",
   "sorting": "a",
-  "folder": "qhgjZ2XB83LXoBSv",
+  "folder": "xJuw3RXTfrjeQbG8",
   "type": "Item",
-  "_id": "TV3IMHs8SLZ1L1vv",
+  "_id": "jLdeIpOIZokm8obv",
   "sort": 0,
-  "color": "#C0C0C0",
+  "color": "#722F37",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!TV3IMHs8SLZ1L1vv"
+  "_key": "!folders!jLdeIpOIZokm8obv"
 }

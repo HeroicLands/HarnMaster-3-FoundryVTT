@@ -1,11 +1,11 @@
 {
-  "name": "Armor",
+  "name": "Dye",
   "sorting": "a",
-  "folder": "O9ilOMwjidmb04JY",
+  "folder": "xJuw3RXTfrjeQbG8",
   "type": "Item",
-  "_id": "A3lkLw5amU7NmRP4",
+  "_id": "7r8WTAO2Ac8SF9tf",
   "sort": 0,
-  "color": "#708090",
+  "color": "#C71585",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!A3lkLw5amU7NmRP4"
+  "_key": "!folders!7r8WTAO2Ac8SF9tf"
 }

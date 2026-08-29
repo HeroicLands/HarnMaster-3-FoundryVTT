@@ -1,11 +1,11 @@
 {
-  "name": "Containers",
+  "name": "Weapons",
   "sorting": "a",
   "folder": "O9ilOMwjidmb04JY",
   "type": "Item",
-  "_id": "dl8lJ729W1mFlDvt",
+  "_id": "HXiYHvG6igI3Wlmm",
   "sort": 0,
-  "color": "#B8860B",
+  "color": "#8B0000",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!dl8lJ729W1mFlDvt"
+  "_key": "!folders!HXiYHvG6igI3Wlmm"
 }
