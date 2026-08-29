@@ -2,7 +2,7 @@
 
 This document defines how issues are created and classified in the **`hm3`**
 repository, which ships the HârnMaster 3 **game system** for Foundry VTT: the
-code Foundry loads, its templates, styles and localization, and four compendium
+code Foundry loads, its templates, styles and localization, and its compendium
 packs.
 
 **This repository is its own tracker.** File HM3 work here. See §7 for where a

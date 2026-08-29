@@ -158,10 +158,17 @@ packageBuild:
                 injury: {}
                 armorlocation: {}
                 trait: {}
+        # The compendium folder Foundry groups this system's packs under. Its
+        # `packs` list names packs by the same `name` the `packs:` block above
+        # declares, and must name all of them: a name that matches no pack
+        # resolves to nothing, and a pack named by no folder sits loose in the
+        # browser. Neither is reported — `packFolders` is emitted as declared,
+        # and nothing compares it against the pack list the build derives — so
+        # adding or removing a pack above means editing this list by hand (#420).
         packFolders:
             - name: HârnMaster 3 System
               sorting: m
-              packs: [character, possessions, esoteric, system-help]
+              packs: [items, system-help]
         socket: true
         grid: { distance: 5, units: ft }
         primaryTokenAttribute: shockIndex

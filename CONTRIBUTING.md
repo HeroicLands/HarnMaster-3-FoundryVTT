@@ -37,7 +37,7 @@ Every change lands through a pull request.
    someone reading the release notes, not for the reviewer. A change that adds
    none ships nothing, because the release is versioned from changesets.
 5. **Verify it.** `npm run build:local` must pass. It compiles the styles,
-   stages the assets, builds all four compendium packs and generates
+   stages the assets, builds the compendium packs and generates
    `system.json`, so a failure means the system would not load.
 6. **Commit** in Conventional-Commits style, and **open a pull request** with
    `Closes #<n>` and a what/why description.
