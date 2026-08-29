@@ -63,6 +63,10 @@ assets/content/.obsidian/
 /coverage/
 /css/
 
+# The package homepage, emitted by `npm run build:site` from the note in
+# assets/content/. Build output, and the directory is wiped on every run.
+/site/content/
+
 # Cypress run artifacts (specs/support/config are committed)
 /cypress/videos/
 /cypress/screenshots/
