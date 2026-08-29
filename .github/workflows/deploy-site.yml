@@ -1,0 +1,47 @@
+# Build and publish this package's homepage at https://www.heroiclands.org/hm3/
+# (#424).
+#
+# Almost nothing is here, and that is the point. The runner, the completeness
+# guard, the hosting project, the custom domain and the upload are identical for
+# every package that publishes a subtree of heroiclands.org, so they live once in
+# `HeroicLands/.github` and this repository calls them. Two packages carried a
+# hand-written copy of that logic and the copies drifted (HeroicLands/.github#5).
+#
+# What stays this repository's: its build. The shared workflow runs
+# `npm run build:site` and knows nothing about what that script does — here it
+# compiles `assets/content/Homepage.md` with `content-build site` and renders it
+# with Hugo into `build/site/hm3/`.
+#
+# No page bounds are passed. `publish.site: homepage` in
+# `package-build.config.yaml` fixes the count at exactly one, and the shared
+# workflow *fails* if a homepage-mode caller passes `min-pages` or `max-pages`:
+# the bound is a boundary, and a boundary a caller can widen is not one.
+name: Deploy the HM3 site to Cloudflare Pages
+
+on:
+    # Every push to `main` republishes the page. No path filter: a rebuild is
+    # cheap next to how quietly a hand-maintained path list goes stale, and a
+    # push that changes nothing the page serves merely republishes the same
+    # bytes.
+    push:
+        branches: [main]
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+jobs:
+    deploy:
+        # The Pages project is named rather than derived: it does not exist yet,
+        # and the shared workflow creates it on the first run. A project cannot
+        # be renamed later without losing its deployment history, so the name is
+        # settled here once.
+        uses: HeroicLands/.github/.github/workflows/deploy-package-site.yml@main
+        with:
+            project: hm3-site
+        # Passed by name, never `secrets: inherit` — inheriting would hand a
+        # workflow in another repository every secret this one holds, for a job
+        # that needs two.
+        secrets:
+            CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+            CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
