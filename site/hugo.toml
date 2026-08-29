@@ -1,0 +1,134 @@
+# The HârnMaster 3 package homepage — one page, published at /hm3/ (#424).
+#
+# This repository ships a Foundry *system*; the homepage is not part of what
+# Foundry loads. It is a separate, small build: `content-build site` compiles
+# `assets/content/Homepage.md` into `content/` below, and Hugo renders that one
+# note through the shared theme. Nothing here is in `build:noci`, and nothing
+# here reaches `build/stage`.
+#
+# `baseURL` is the one place the page's address is written down.
+baseURL = "https://www.heroiclands.org/hm3/"
+locale = "en-us"
+
+# The homepage note's authored title, matched here so the two do not drift.
+# Deliberately not the manifest's `HarnMaster 3`: the page greets a reader as
+# the game is spelled, not as the package id is.
+title = "HârnMaster 3 for Foundry VTT"
+
+# The output is published *with* its prefix — `build/site/hm3/` — and the deploy
+# uploads `build/site`, whose root is the hosting project's origin. So the
+# deployment is byte-for-byte what www serves, and the routing layer is a
+# path-preserving pass-through rather than a rewriter.
+#
+# Relative to the **Hugo root**, which is this directory, not the repository
+# root.
+publishDir = "../build/site/hm3"
+
+# Brand chrome, the landing layout and the "page not found" page come from the
+# shared theme, so this page reads as one whole with www and the other packages.
+# It arrives through `npm ci`, not a submodule: Hugo looks for
+# `<themesDir>/<theme>`, so the package's scope is the themes directory and its
+# name is the theme name. Also relative to the Hugo root; the lockfile that
+# installed it is one level up.
+themesDir = "../node_modules/@heroiclands"
+theme = "hugo-theme"
+
+# Written by `npm run build:site-content` from `assets/content/`. Build output:
+# the directory is wiped on every run and is gitignored.
+contentDir = "content"
+
+# One page, and the shared deploy workflow enforces exactly that: a
+# homepage-only package that emitted a second page fails its guard rather than
+# publishing it. Hugo would otherwise add a taxonomy root, a term list and an
+# RSS feed to a site with no taxonomy terms and no feed to serve, so the kinds
+# this package does not publish are turned off here rather than discovered in
+# CI. `sitemap` goes too — a one-page sitemap tells a crawler nothing it did not
+# learn from the page.
+disableKinds = ["section", "taxonomy", "term", "RSS", "sitemap"]
+
+[params]
+  description = "A game system definition of the HârnMaster 3 RPG for Foundry Virtual Tabletop."
+  author = "Tom Rodriguez"
+
+  # The theme carries layout, not addresses, so every site-specific URL it
+  # renders is supplied here. The hero banner and the brand logo both resolve
+  # through `partials/cdn-url.html` against this root; with it unset they would
+  # resolve against this site instead, which publishes no images of its own.
+  cdnBaseURL = "https://cdn.heroiclands.org"
+
+  [params.brand]
+    logo       = "images/brand/sohl-icon-white.webp"
+    licenseURL = "https://www.heroiclands.org/license/"
+    discordURL = "https://discord.gg/EwMfkNd3az"
+
+  # The "page not found" page. Its template is the theme's, since every
+  # consumer needs one; the wording and the routes back are ours. This package
+  # publishes a single page, so the only route back inside it is that page —
+  # the rest lead out, to the source and to the wider site.
+  [params.notfound]
+    tagline  = "This package has no page at"
+    sitenoun = "site"
+
+    [[params.notfound.links]]
+      title = "HârnMaster 3 for Foundry VTT"
+      url   = "/"
+      text  = "What the system does, and the manifest URL to install it."
+    [[params.notfound.links]]
+      title = "Heroic Lands"
+      url   = "https://www.heroiclands.org/"
+      text  = "Everything published here, from the top."
+    [[params.notfound.links]]
+      title = "Source and issues"
+      url   = "https://github.com/HeroicLands/HarnMaster-3-FoundryVTT"
+      text  = "The repository, where bugs and requests are tracked."
+
+# The brand nav. Absolute URLs so this header matches the one every other site
+# renders; defined here rather than in the shared theme, which carries no
+# addresses of its own.
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "https://www.heroiclands.org/"
+    weight = 1
+  [[menu.main]]
+    name = "Song of Heroic Lands"
+    url = "https://www.heroiclands.org/projects/song-of-heroic-lands/"
+    weight = 2
+    identifier = "sohl"
+  [[menu.main]]
+    name = "Knowledgebase"
+    url = "https://kb.heroiclands.org/"
+    weight = 1
+    parent = "sohl"
+  [[menu.main]]
+    name = "API Documentation"
+    url = "https://api.heroiclands.org/"
+    weight = 2
+    parent = "sohl"
+  [[menu.main]]
+    name = "Thalorna"
+    url = "https://www.heroiclands.org/thalorna/"
+    weight = 3
+  [[menu.main]]
+    name = "HârnMaster 3"
+    url = "https://www.heroiclands.org/hm3/"
+    weight = 4
+  [[menu.main]]
+    name = "Modules"
+    url = "https://www.heroiclands.org/projects/modules/"
+    weight = 5
+  [[menu.main]]
+    name = "License"
+    url = "https://www.heroiclands.org/license/"
+    weight = 6
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    style = "monokai"
+
+# Only the home page is rendered, so it is the only output to declare.
+[outputs]
+  home = ["HTML"]
