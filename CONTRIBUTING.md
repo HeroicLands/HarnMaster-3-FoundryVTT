@@ -51,7 +51,9 @@ Attribution** check fails any pull request carrying it.
 ## Working on the compendium packs
 
 The packs are **committed JSON**, one file per document, under
-`assets/packs/<name>/`. There is no Markdown content tree in this repository.
+`assets/packs/<name>/`. No compendium document in this repository is compiled
+from Markdown — `assets/content/` holds one note, and it is not a pack document
+(see [The package homepage](#the-package-homepage)).
 
 The comfortable loop is to edit inside Foundry and extract the result:
 
@@ -72,6 +74,26 @@ which is not tracked. Only the JSON under `assets/packs/<name>/` belongs in
 git. `npm run lint:packs` enforces this and CI runs it, so a pull request adding
 `.ldb` files fails — if you find yourself wanting to commit them, the build step
 you are looking for is `npm run build:local`.
+
+## The package homepage
+
+`hm3` publishes one web page, at `https://www.heroiclands.org/hm3/`, and that
+page is `assets/content/Homepage.md` — a `type: homepage` note, whose whole
+frontmatter envelope is `type` and an optional `title`. It compiles to a page
+rather than to a compendium document, so it appears in no pack.
+
+```bash
+npm run build:site       # emits site/content/_index.md, and nothing else
+```
+
+It is **authored, not generated**: everything on it is a person's choice, so
+keep it accurate against `README.md` and the manifest rather than letting it
+drift into claims the system does not make. `site/content/` is a build artifact
+— wiped on every run, and gitignored.
+
+The repository publishes in `homepage` mode (`publish.site` in
+`package-build.config.yaml`), which fences the content surfaces off entirely:
+the tree is never walked for anything but the homepage.
 
 ## Running the system locally
 

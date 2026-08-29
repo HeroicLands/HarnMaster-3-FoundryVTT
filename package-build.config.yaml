@@ -32,6 +32,29 @@ packs:
     - { name: items, label: Items, type: Item }
     - { name: system-help, label: System Help, type: JournalEntry }
 
+# What this package publishes to the web. `homepage` is the default and is what
+# this repository would get with no `publish:` block at all — it is written out
+# because a mode inherited by omission reads, to the next person, as a question
+# nobody asked. It means: publish the authored homepage at `/hm3/` and nothing
+# else. There is no content tree here to publish, and `content` would look for
+# one; the other mode is not a thing this repository could switch to by editing
+# a line.
+#
+# `manifests` and `address` are left at their defaults for the same reason they
+# are absent everywhere else that has no cross-package links: HM3 neither
+# publishes a link manifest nor consumes one.
+publish:
+    site: homepage
+
+# Where the homepage is written. `out` is the only key that means anything in
+# `homepage` mode — the content surfaces are fenced off by the mode itself — but
+# it is required rather than defaulted, deliberately: the directory is wiped on
+# every run, and an unset value would resolve to the repository root, so the
+# build refuses it instead of resolving it. The path matches the sibling
+# convention; the tree is a build artifact and is gitignored.
+site:
+    out: site/content
+
 packageBuild:
     # Everything Foundry loads that is not generated. `css/` is absent on
     # purpose: it is compiled straight into the stage by `build:css`, and
