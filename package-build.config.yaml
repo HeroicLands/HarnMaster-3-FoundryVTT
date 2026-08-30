@@ -162,9 +162,12 @@ packageBuild:
         # `packs` list names packs by the same `name` the `packs:` block above
         # declares, and must name all of them: a name that matches no pack
         # resolves to nothing, and a pack named by no folder sits loose in the
-        # browser. Neither is reported — `packFolders` is emitted as declared,
-        # and nothing compares it against the pack list the build derives — so
-        # adding or removing a pack above means editing this list by hand (#420).
+        # browser. Both are reported since package-build 6.0.0
+        # (HeroicLands/package-build#81, which #420 asked for): a folder naming
+        # a pack this package does not ship is an error that stops the manifest
+        # write, and a pack named by no folder is a warning. So this list still
+        # has to be edited by hand when a pack is added or removed, but no
+        # longer silently.
         packFolders:
             - name: HârnMaster 3 System
               sorting: m

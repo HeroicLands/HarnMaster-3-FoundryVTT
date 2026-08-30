@@ -40,6 +40,50 @@ jobs:
             - uses: actions/checkout@v7
             - run: node utils/check-no-compiled-packs.mjs
 
+    # The content tree. Until #432 nothing in this repository read a note's
+    # frontmatter at all: the lint-shaped scripts were `lint:lang`,
+    # `lint:packs` and `lint:roundtrip`, none of which looks at
+    # `assets/content/`. `content-build lint` is the only command that runs the
+    # frontmatter linter, so no finding of any kind reached here.
+    #
+    # Two of the four checks `npm run lint` chains run here, and only two.
+    # `lint:format` and `lint:markdown` are deliberately absent: neither has
+    # ever run against this tree, and both arrive with a backlog nobody in the
+    # pull request being blocked put there — 110 unformatted files of 145 once
+    # the compendium source is excluded (12 of them HTML templates Prettier
+    # cannot even parse), and 26 markdownlint findings, almost all emphasis
+    # style. A gate that cannot go green teaches everyone to merge past a red
+    # check, and the check then stops meaning anything. Those backlogs are
+    # recorded as #434 and #435; when they clear, these two steps collapse into
+    # a single `npm run lint`, which already chains all six.
+    #
+    # Neither step needs a build: both read the tree directly, so this job
+    # installs and reports without waiting on the compile below.
+    content-lint:
+        name: Content lint
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: 24
+                  cache: npm
+
+            - name: Install dependencies
+              run: npm ci
+
+            # Every note's address and frontmatter: the schema, the retired
+            # `package:` and `draft:` fields, duplicate `(type, shortcode)`
+            # addresses, and the address-bearing fields a `type: homepage` note
+            # refuses.
+            - name: Addresses and frontmatter
+              run: npm run lint:addresses
+
+            # Every anchor link lands and every qualified address resolves,
+            # including the homepage's own links.
+            - name: Content links
+              run: npm run lint:content-links
+
     build:
         name: Build
         runs-on: ubuntu-latest
