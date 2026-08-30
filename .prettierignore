@@ -1,0 +1,24 @@
+# What Prettier is not allowed to touch, on top of everything .gitignore
+# already excludes (content-build passes both files to Prettier's own
+# getFileInfo, so build output and node_modules need no entry here).
+
+# The committed compendium source. This is not a style preference; the two
+# checks would otherwise contradict each other permanently.
+#
+# `assets/packs/<name>/` is written by @foundryvtt/foundryvtt-cli's extractPack,
+# via `npm run build:unpackdb`, and it emits 2-space JSON. The shared Prettier
+# configuration is 4-space, so `content-build format` reports every one of the
+# 1,597 documents, and `--write` reindents all of them — measured at 1,597 files
+# changed, +70,110 / -70,589 lines, with no change of content anywhere.
+#
+# `lint:roundtrip` then fails, because it compares the committed bytes against
+# what extracting the built packs produces — measured, on the reformatted tree,
+# as 1,597 "committed bytes differ" problems. It runs inside `build:noci`, which
+# is what release.yml builds a release from, so the reformat would not merely
+# redden a check: it would stop every release until the packs were reverted.
+#
+# The round trip is the property CONTRIBUTING.md promises a contributor ("a git
+# diff shows only your own edits") and the one the release depends on, so it is
+# the one that owns these bytes. Anyone re-extracting the packs after editing a
+# compendium in Foundry must be able to commit the result unmodified.
+assets/packs/
