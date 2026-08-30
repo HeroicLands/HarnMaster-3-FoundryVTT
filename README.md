@@ -1,14 +1,14 @@
 # HarnMaster-3-FoundryVTT
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/toastygm/HarnMaster-3-FoundryVTT)  
-![GitHub issues](https://img.shields.io/github/issues-raw/toastygm/HarnMaster-3-FoundryVTT) 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/HeroicLands/HarnMaster-3-FoundryVTT)  
+![GitHub issues](https://img.shields.io/github/issues-raw/HeroicLands/HarnMaster-3-FoundryVTT) 
 ![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fhm3)
-[![GitHub downloads (latest)](https://img.shields.io/badge/dynamic/json?label=Downloads@latest&query=assets[?(@.name.includes('zip'))].download_count&url=https://api.github.com/repos/toastygm/HarnMaster-3-FoundryVTT/releases/latest&color=green)](https://github.com/toastygm/HarnMaster-3-FoundryVTT/releases/latest)
+[![GitHub downloads (latest)](https://img.shields.io/github/downloads/HeroicLands/HarnMaster-3-FoundryVTT/latest/total?label=Downloads%40latest&color=green)](https://github.com/HeroicLands/HarnMaster-3-FoundryVTT/releases/latest)
 
 This is a game system definition of the H&acirc;rnMaster 3 RPG for [Foundry Virtual Tabletop](http://foundryvtt.com/).
 
-# Pages Site
-If you are looking for the offical documentation, please see the [HarnMaster 3 FoundryVTT System Site](https://toastygm.github.io/HarnMaster-3-FoundryVTT/).
+# Documentation
+If you are looking for the official documentation, please see the [H&acirc;rnMaster 3 for Foundry VTT](https://www.heroiclands.org/hm3/) page.
 
 ### H&acirc;rnMaster Copyright Notice
 
@@ -35,11 +35,11 @@ The following features are included in this system.
 
 # Recommended Modules
 
-There are a number of modules that extend the H&acirc;rnMaster system by providing new functionality or ready-made content for you to use in your campaign.  See the [Modules](https://github.com/toastygm/HarnMaster-3-FoundryVTT/wiki/Modules) page for more information.
+There are a number of modules that extend the H&acirc;rnMaster system by providing new functionality or ready-made content for you to use in your campaign.  See the [Modules](https://github.com/HeroicLands/HarnMaster-3-FoundryVTT/wiki/Modules) page for more information.
 
 # System Walkthrough
 
-See the [Walkthrough](https://github.com/toastygm/HarnMaster-3-FoundryVTT/wiki/FoundryVTT-HarnMaster-Walkthrough) page for a detailed review of the system (with screenshots).
+See the [Walkthrough](https://github.com/HeroicLands/HarnMaster-3-FoundryVTT/wiki/FoundryVTT-HarnMaster-Walkthrough) page for a detailed review of the system (with screenshots).
 
 # Usage
 
