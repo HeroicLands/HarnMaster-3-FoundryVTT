@@ -1,11 +1,11 @@
 {
-  "name": "Natural",
+  "name": "Possessions",
   "sorting": "a",
-  "folder": "xJuw3RXTfrjeQbG8",
+  "folder": null,
   "type": "Item",
-  "_id": "0JqxkW5hHZ8XVILm",
+  "_id": "O9ilOMwjidmb04JY",
   "sort": 0,
-  "color": "#9ACD32",
+  "color": "#8B4513",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!0JqxkW5hHZ8XVILm"
+  "_key": "!folders!O9ilOMwjidmb04JY"
 }

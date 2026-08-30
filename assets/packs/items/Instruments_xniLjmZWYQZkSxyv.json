@@ -1,11 +1,11 @@
 {
-  "name": "Armor",
+  "name": "Instruments",
   "sorting": "a",
-  "folder": "A3lkLw5amU7NmRP4",
+  "folder": "xJuw3RXTfrjeQbG8",
   "type": "Item",
-  "_id": "M4nHcUWOatfVGuh3",
+  "_id": "xniLjmZWYQZkSxyv",
   "sort": 0,
-  "color": "#4A4A4A",
+  "color": "#1D3557",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!M4nHcUWOatfVGuh3"
+  "_key": "!folders!xniLjmZWYQZkSxyv"
 }

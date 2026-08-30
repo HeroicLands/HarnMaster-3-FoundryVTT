@@ -1,11 +1,11 @@
 {
-  "name": "Music",
+  "name": "Expedition",
   "sorting": "a",
   "folder": "xJuw3RXTfrjeQbG8",
   "type": "Item",
-  "_id": "ncTaRcZt0RFYz0Gq",
+  "_id": "FSPVI1eObGEpMVck",
   "sort": 0,
-  "color": "#9B59B6",
+  "color": "#2A9D8F",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!ncTaRcZt0RFYz0Gq"
+  "_key": "!folders!FSPVI1eObGEpMVck"
 }

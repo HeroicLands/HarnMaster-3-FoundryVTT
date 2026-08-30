@@ -1,11 +1,11 @@
 {
-  "name": "Furniture",
+  "name": "Misc_Gear",
   "sorting": "a",
-  "folder": "xJuw3RXTfrjeQbG8",
+  "folder": "O9ilOMwjidmb04JY",
   "type": "Item",
-  "_id": "Wq1tmMJTjDoFFtLS",
+  "_id": "xJuw3RXTfrjeQbG8",
   "sort": 0,
-  "color": "#007000",
+  "color": "#6B8E23",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!Wq1tmMJTjDoFFtLS"
+  "_key": "!folders!xJuw3RXTfrjeQbG8"
 }

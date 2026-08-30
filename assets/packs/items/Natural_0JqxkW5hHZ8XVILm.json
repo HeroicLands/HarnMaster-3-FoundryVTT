@@ -1,11 +1,11 @@
 {
-  "name": "Jewelry",
+  "name": "Natural",
   "sorting": "a",
-  "folder": "qhgjZ2XB83LXoBSv",
+  "folder": "xJuw3RXTfrjeQbG8",
   "type": "Item",
-  "_id": "3YyFU1QkTs2yFq5t",
+  "_id": "0JqxkW5hHZ8XVILm",
   "sort": 0,
-  "color": "#FFD700",
+  "color": "#9ACD32",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!3YyFU1QkTs2yFq5t"
+  "_key": "!folders!0JqxkW5hHZ8XVILm"
 }
