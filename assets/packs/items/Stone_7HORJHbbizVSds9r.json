@@ -1,11 +1,11 @@
 {
-  "name": "Possessions",
+  "name": "Stone",
   "sorting": "a",
-  "folder": null,
+  "folder": "xJuw3RXTfrjeQbG8",
   "type": "Item",
-  "_id": "O9ilOMwjidmb04JY",
+  "_id": "7HORJHbbizVSds9r",
   "sort": 0,
-  "color": "#8B4513",
+  "color": "#95A5A6",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!O9ilOMwjidmb04JY"
+  "_key": "!folders!7HORJHbbizVSds9r"
 }

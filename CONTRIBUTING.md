@@ -68,6 +68,15 @@ git diff                 # review what actually changed
 Round-tripping without editing produces no diff, so anything `git diff` shows is
 a change you made. Editing the JSON by hand is equally valid for small fixes.
 
+That promise is checked rather than merely stated. `npm run lint:roundtrip` —
+part of `build:noci`, so CI and every local build run it — extracts the packs it
+has just compiled into a scratch directory and compares them byte for byte with
+`assets/packs/`. It fails on a file named something the extractor would not
+choose, on bytes that differ, and on a document present on only one side; the
+remedy for all three is `npm run build:unpackdb`, then commit the result. Hand
+edits therefore have to match what the extractor writes, down to the filename
+(`<name>_<id>.json`) and the trailing newline.
+
 **Never commit the compiled packs.** The LevelDB directories Foundry actually
 reads are build output: `build:compiledb` writes them into `build/stage/packs/`,
 which is not tracked. Only the JSON under `assets/packs/<name>/` belongs in

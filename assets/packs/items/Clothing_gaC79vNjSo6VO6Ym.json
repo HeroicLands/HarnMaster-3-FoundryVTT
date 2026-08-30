@@ -1,11 +1,11 @@
 {
-  "name": "Religious",
+  "name": "Clothing",
   "sorting": "a",
-  "folder": "xJuw3RXTfrjeQbG8",
+  "folder": "A3lkLw5amU7NmRP4",
   "type": "Item",
-  "_id": "9JkoGqoUGqV8b5aL",
+  "_id": "gaC79vNjSo6VO6Ym",
   "sort": 0,
-  "color": "#483D8B",
+  "color": "#DEB887",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!9JkoGqoUGqV8b5aL"
+  "_key": "!folders!gaC79vNjSo6VO6Ym"
 }

@@ -1,11 +1,11 @@
 {
-  "name": "Dye",
+  "name": "Lighting",
   "sorting": "a",
   "folder": "xJuw3RXTfrjeQbG8",
   "type": "Item",
-  "_id": "7r8WTAO2Ac8SF9tf",
+  "_id": "csqutf8WiTRM8oru",
   "sort": 0,
-  "color": "#C71585",
+  "color": "#FFA500",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!7r8WTAO2Ac8SF9tf"
+  "_key": "!folders!csqutf8WiTRM8oru"
 }

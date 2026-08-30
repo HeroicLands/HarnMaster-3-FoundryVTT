@@ -1,11 +1,11 @@
 {
-  "name": "Expedition",
+  "name": "Jewelry_Cash",
   "sorting": "a",
   "folder": "xJuw3RXTfrjeQbG8",
   "type": "Item",
-  "_id": "FSPVI1eObGEpMVck",
+  "_id": "qhgjZ2XB83LXoBSv",
   "sort": 0,
-  "color": "#2A9D8F",
+  "color": "#DAA520",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!FSPVI1eObGEpMVck"
+  "_key": "!folders!qhgjZ2XB83LXoBSv"
 }

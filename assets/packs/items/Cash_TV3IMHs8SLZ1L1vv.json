@@ -1,11 +1,11 @@
 {
-  "name": "Clothing",
+  "name": "Cash",
   "sorting": "a",
-  "folder": "A3lkLw5amU7NmRP4",
+  "folder": "qhgjZ2XB83LXoBSv",
   "type": "Item",
-  "_id": "gaC79vNjSo6VO6Ym",
+  "_id": "TV3IMHs8SLZ1L1vv",
   "sort": 0,
-  "color": "#DEB887",
+  "color": "#C0C0C0",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!gaC79vNjSo6VO6Ym"
+  "_key": "!folders!TV3IMHs8SLZ1L1vv"
 }

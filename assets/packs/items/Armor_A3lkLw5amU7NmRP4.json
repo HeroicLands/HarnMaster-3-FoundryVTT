@@ -1,11 +1,11 @@
 {
-  "name": "Stone",
+  "name": "Armor",
   "sorting": "a",
-  "folder": "xJuw3RXTfrjeQbG8",
+  "folder": "O9ilOMwjidmb04JY",
   "type": "Item",
-  "_id": "7HORJHbbizVSds9r",
+  "_id": "A3lkLw5amU7NmRP4",
   "sort": 0,
-  "color": "#95A5A6",
+  "color": "#708090",
   "flags": {},
   "_stats": {
     "systemId": "sohl",
@@ -15,5 +15,5 @@
     "modifiedTime": 0,
     "lastModifiedBy": "sohlbuilder00000"
   },
-  "_key": "!folders!7HORJHbbizVSds9r"
+  "_key": "!folders!A3lkLw5amU7NmRP4"
 }
