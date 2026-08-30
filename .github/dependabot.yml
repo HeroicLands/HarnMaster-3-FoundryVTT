@@ -1,0 +1,68 @@
+# Dependabot version updates.
+#
+# Labels are pinned to `devops` deliberately. Dependabot's own default label is
+# `dependencies`, which is not in `.github/labels.yml` — and that registry is a
+# closed set, so `labels-sync.yml` would delete the label again on the next push
+# to `main`. Naming a managed label keeps the two from fighting.
+#
+# Routine minor and patch bumps are grouped by dependency type. A major bump is
+# a decision, not housekeeping, so it arrives as its own pull request with its
+# own changelog to read.
+#
+# That reasoning inverts below 1.0, which is where both first-party packages
+# sit. A `0.x` package signals a breaking change with a **minor** bump —
+# `0.4.0` to `0.5.0` is the break — and the major rule never fires, because
+# `1.0.0` never arrives. So `@heroiclands/*` is matched ahead of the catch-alls
+# and never grouped: each gets its own pull request for every update type. The
+# two are kept apart from each other as well, because a toolchain break and a
+# layout break are separate decisions. See #437.
+version: 2
+updates:
+    - package-ecosystem: npm
+      directory: /
+      schedule:
+          interval: weekly
+          day: monday
+      open-pull-requests-limit: 5
+      labels:
+          - devops
+      commit-message:
+          prefix: chore(deps)
+          prefix-development: chore(deps-dev)
+      groups:
+          # First-party packages, ahead of everything: each is its own decision and
+          # neither may be swept into a grouped housekeeping pull request. A group
+          # of one still yields one pull request per package, which is the point.
+          # Dependabot assigns a dependency to the first group it matches, so the
+          # order of these entries is what does the work.
+          package-build:
+              patterns:
+                  - "@heroiclands/package-build"
+          hugo-theme:
+              patterns:
+                  - "@heroiclands/hugo-theme"
+          production-minor-patch:
+              dependency-type: production
+              update-types:
+                  - minor
+                  - patch
+          development-minor-patch:
+              dependency-type: development
+              update-types:
+                  - minor
+                  - patch
+
+    - package-ecosystem: github-actions
+      directory: /
+      schedule:
+          interval: weekly
+          day: monday
+      open-pull-requests-limit: 5
+      labels:
+          - devops
+      commit-message:
+          prefix: chore(ci)
+      groups:
+          github-actions:
+              patterns:
+                  - "*"
