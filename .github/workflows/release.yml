@@ -122,7 +122,7 @@ jobs:
 
             # `build:noci` rather than `build`, which begins with its own
             # `npm ci` — the dependencies are already installed above. It
-            # compiles the styles, stages the assets, builds all four packs and
+            # compiles the styles, stages the assets, builds the packs and
             # generates the manifest, so a release cannot be cut from a tree
             # that does not build.
             - name: Build system
