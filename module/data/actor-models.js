@@ -19,23 +19,6 @@
 const fields = foundry.data.fields;
 
 /**
- * One ability score. Only `base` is stored; `effective` and `modified` are
- * computed every prepare cycle.
- *
- * @returns {foundry.data.fields.SchemaField}
- */
-function abilityField() {
-    return new fields.SchemaField({
-        base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})
-    });
-}
-
-const ABILITIES = [
-    "strength", "stamina", "dexterity", "agility", "intelligence", "aura", "will",
-    "eyesight", "hearing", "smell", "voice", "comeliness", "morality"
-];
-
-/**
  * The `base` Actor template: everything a character and a creature share.
  */
 export class ActorBaseModel extends foundry.abstract.TypeDataModel {
@@ -46,9 +29,31 @@ export class ActorBaseModel extends foundry.abstract.TypeDataModel {
             species: new fields.StringField({required: true, blank: true, initial: ""}),
             fatigue: new fields.NumberField({required: true, nullable: false, initial: 0}),
             sunsign: new fields.StringField({required: true, blank: true, initial: ""}),
-            abilities: new fields.SchemaField(
-                Object.fromEntries(ABILITIES.map(a => [a, abilityField()]))
-            ),
+            // Written out rather than generated from a name list. The schema is
+            // now read as data by `package-build schema`, and a computed key set
+            // reads there as a field with *no* keys beneath it — enough to keep
+            // `abilities.strength.base` from being called undeclared, but never
+            // enough to catch an ability that is merely misspelt. Thirteen lines
+            // buy that check, and the ability list is the kind of thing a reader
+            // should be able to see rather than assemble.
+            //
+            // Only `base` is stored; `effective` and `modified` are computed
+            // every prepare cycle and are deliberately not in the schema.
+            abilities: new fields.SchemaField({
+                strength: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
+                stamina: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
+                dexterity: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
+                agility: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
+                intelligence: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
+                aura: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
+                will: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
+                eyesight: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
+                hearing: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
+                smell: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
+                voice: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
+                comeliness: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
+                morality: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})})
+            }),
             move: new fields.SchemaField({
                 base: new fields.NumberField({required: true, nullable: false, initial: 0})
             }),

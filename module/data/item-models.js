@@ -27,19 +27,6 @@
 const fields = foundry.data.fields;
 
 /**
- * A skill-base specification: a rolled value plus the formula it came from.
- *
- * @returns {foundry.data.fields.SchemaField}
- */
-function skillBaseField() {
-    return new fields.SchemaField({
-        value: new fields.NumberField({required: true, nullable: false, initial: 0}),
-        formula: new fields.StringField({required: true, blank: true, initial: ""}),
-        isFormulaValid: new fields.BooleanField({initial: true})
-    });
-}
-
-/**
  * The `base` Item template.
  */
 export class ItemBaseModel extends foundry.abstract.TypeDataModel {
@@ -104,7 +91,15 @@ export class SkillModel extends ItemBaseModel {
     static defineSchema() {
         return Object.assign(super.defineSchema(), {
             type: new fields.StringField({required: true, blank: true, initial: "Craft"}),
-            skillBase: skillBaseField(),
+            // A rolled value plus the formula it came from. Written out rather
+            // than shared through a helper: the schema is read as data by
+            // `package-build schema`, which follows the declaration and not a
+            // function call, and content authors `skillBase.value` directly.
+            skillBase: new fields.SchemaField({
+                value: new fields.NumberField({required: true, nullable: false, initial: 0}),
+                formula: new fields.StringField({required: true, blank: true, initial: ""}),
+                isFormulaValid: new fields.BooleanField({initial: true})
+            }),
             masteryLevel: new fields.NumberField({required: true, nullable: false, initial: 0}),
             effectiveMasteryLevel: new fields.NumberField({required: true, nullable: false, initial: 0}),
             ritual: new fields.SchemaField({
@@ -143,7 +138,15 @@ export class PsionicModel extends ItemBaseModel {
     /** @override */
     static defineSchema() {
         return Object.assign(super.defineSchema(), {
-            skillBase: skillBaseField(),
+            // A rolled value plus the formula it came from. Written out rather
+            // than shared through a helper: the schema is read as data by
+            // `package-build schema`, which follows the declaration and not a
+            // function call, and content authors `skillBase.value` directly.
+            skillBase: new fields.SchemaField({
+                value: new fields.NumberField({required: true, nullable: false, initial: 0}),
+                formula: new fields.StringField({required: true, blank: true, initial: ""}),
+                isFormulaValid: new fields.BooleanField({initial: true})
+            }),
             masteryLevel: new fields.NumberField({required: true, nullable: false, initial: 0}),
             effectiveMasteryLevel: new fields.NumberField({required: true, nullable: false, initial: 0}),
             improveFlag: new fields.BooleanField({initial: false}),
