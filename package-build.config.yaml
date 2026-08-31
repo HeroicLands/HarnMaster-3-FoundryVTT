@@ -55,6 +55,22 @@ site:
     out: site/content
 
 packageBuild:
+    # Where the data models are, so `package-build schema` can publish this
+    # system's `system` field sets as `schema.json`.
+    #
+    # Declared rather than discovered: a DataModel's schema is only
+    # introspectable inside Foundry, so the field sets are read out of the
+    # source as an AST, and the registry — not a directory walk — is what says
+    # which subtypes exist. Walking `*-models.js` would publish schemas for
+    # classes nothing registers and miss any whose filename did not match.
+    #
+    # One entry per document class because this system keeps one registry per
+    # file; a system that keeps both in a single configuration module names that
+    # file twice instead.
+    schema:
+        Item: { from: module/data/item-models.js, registry: itemModels }
+        Actor: { from: module/data/actor-models.js, registry: actorModels }
+
     # Everything Foundry loads that is not generated. `css/` is absent on
     # purpose: it is compiled straight into the stage by `build:css`, and
     # `system.json` is written into the stage by `build:system`.
@@ -74,6 +90,12 @@ packageBuild:
         - { from: LICENSE, to: LICENSE }
         - { from: README.md, to: README.md }
         - { from: WALKTHROUGH.md, to: WALKTHROUGH.md }
+        # Shipped in the archive, not merely committed. A module that depends on
+        # this system reads its schema from the copy `content-build deps fetch`
+        # caches out of the release it pins — which is what makes the check
+        # happen against the version that module targets rather than against
+        # whatever this repository's `main` holds today.
+        - { from: schema.json, to: schema.json }
 
     lang:
         sources: lang/*.json
