@@ -1,0 +1,358 @@
+{
+  "version": 1,
+  "system": "hm3",
+  "systemVersion": "1.6.3",
+  "documents": {
+    "Item": {
+      "armorgear": {
+        "own": [
+          "armorQuality",
+          "locations",
+          "material",
+          "protection",
+          "protection.blunt",
+          "protection.edged",
+          "protection.fire",
+          "protection.piercing",
+          "size"
+        ],
+        "inherited": [
+          "arcane",
+          "arcane.charges",
+          "arcane.ego",
+          "arcane.isArtifact",
+          "arcane.isAttuned",
+          "container",
+          "description",
+          "isCarried",
+          "isEquipped",
+          "macros",
+          "macros.command",
+          "macros.type",
+          "notes",
+          "quantity",
+          "source",
+          "value",
+          "weight"
+        ]
+      },
+      "armorlocation": {
+        "own": [
+          "armorQuality",
+          "blunt",
+          "edged",
+          "effectiveImpact",
+          "effectiveImpact.ei1",
+          "effectiveImpact.ei13",
+          "effectiveImpact.ei17",
+          "effectiveImpact.ei5",
+          "effectiveImpact.ei9",
+          "fire",
+          "impactType",
+          "isAmputate",
+          "isFumble",
+          "isStumble",
+          "layers",
+          "piercing",
+          "probWeight",
+          "probWeight.high",
+          "probWeight.low",
+          "probWeight.mid"
+        ],
+        "inherited": []
+      },
+      "containergear": {
+        "own": ["capacity", "capacity.max", "capacity.value"],
+        "inherited": [
+          "arcane",
+          "arcane.charges",
+          "arcane.ego",
+          "arcane.isArtifact",
+          "arcane.isAttuned",
+          "container",
+          "description",
+          "isCarried",
+          "isEquipped",
+          "macros",
+          "macros.command",
+          "macros.type",
+          "notes",
+          "quantity",
+          "source",
+          "value",
+          "weight"
+        ]
+      },
+      "injury": {
+        "own": ["healRate", "injuryLevel", "severity"],
+        "inherited": [
+          "description",
+          "macros",
+          "macros.command",
+          "macros.type",
+          "notes",
+          "source"
+        ]
+      },
+      "invocation": {
+        "own": ["circle", "diety", "effectiveMasteryLevel"],
+        "inherited": [
+          "description",
+          "macros",
+          "macros.command",
+          "macros.type",
+          "notes",
+          "source"
+        ]
+      },
+      "miscgear": {
+        "own": [],
+        "inherited": [
+          "arcane",
+          "arcane.charges",
+          "arcane.ego",
+          "arcane.isArtifact",
+          "arcane.isAttuned",
+          "container",
+          "description",
+          "isCarried",
+          "isEquipped",
+          "macros",
+          "macros.command",
+          "macros.type",
+          "notes",
+          "quantity",
+          "source",
+          "value",
+          "weight"
+        ]
+      },
+      "missilegear": {
+        "own": ["attackModifier", "impact", "range", "weaponAspect"],
+        "inherited": [
+          "arcane",
+          "arcane.charges",
+          "arcane.ego",
+          "arcane.isArtifact",
+          "arcane.isAttuned",
+          "assocSkill",
+          "attackMasteryLevel",
+          "container",
+          "description",
+          "isCarried",
+          "isEquipped",
+          "macros",
+          "macros.command",
+          "macros.type",
+          "notes",
+          "quantity",
+          "source",
+          "value",
+          "weaponQuality",
+          "weight"
+        ]
+      },
+      "psionic": {
+        "own": [
+          "effectiveMasteryLevel",
+          "fatigue",
+          "improveFlag",
+          "masteryLevel",
+          "skillBase",
+          "skillBase.formula",
+          "skillBase.isFormulaValid",
+          "skillBase.value"
+        ],
+        "inherited": [
+          "description",
+          "macros",
+          "macros.command",
+          "macros.type",
+          "notes",
+          "source"
+        ]
+      },
+      "skill": {
+        "own": [
+          "effectiveMasteryLevel",
+          "improveFlag",
+          "masteryLevel",
+          "ritual",
+          "ritual.piety",
+          "skillBase",
+          "skillBase.formula",
+          "skillBase.isFormulaValid",
+          "skillBase.value",
+          "type"
+        ],
+        "inherited": [
+          "description",
+          "macros",
+          "macros.command",
+          "macros.type",
+          "notes",
+          "source"
+        ]
+      },
+      "spell": {
+        "own": ["convocation", "effectiveMasteryLevel", "level"],
+        "inherited": [
+          "description",
+          "macros",
+          "macros.command",
+          "macros.type",
+          "notes",
+          "source"
+        ]
+      },
+      "trait": {
+        "own": ["type"],
+        "inherited": [
+          "description",
+          "macros",
+          "macros.command",
+          "macros.type",
+          "notes",
+          "source"
+        ]
+      },
+      "weapongear": {
+        "own": [
+          "attack",
+          "attackModifier",
+          "blunt",
+          "defense",
+          "defenseMasteryLevel",
+          "edged",
+          "piercing"
+        ],
+        "inherited": [
+          "arcane",
+          "arcane.charges",
+          "arcane.ego",
+          "arcane.isArtifact",
+          "arcane.isAttuned",
+          "assocSkill",
+          "attackMasteryLevel",
+          "container",
+          "description",
+          "isCarried",
+          "isEquipped",
+          "macros",
+          "macros.command",
+          "macros.type",
+          "notes",
+          "quantity",
+          "source",
+          "value",
+          "weaponQuality",
+          "weight"
+        ]
+      }
+    },
+    "Actor": {
+      "character": {
+        "own": ["gender", "occupation"],
+        "inherited": [
+          "abilities",
+          "abilities.agility",
+          "abilities.agility.base",
+          "abilities.aura",
+          "abilities.aura.base",
+          "abilities.comeliness",
+          "abilities.comeliness.base",
+          "abilities.dexterity",
+          "abilities.dexterity.base",
+          "abilities.eyesight",
+          "abilities.eyesight.base",
+          "abilities.hearing",
+          "abilities.hearing.base",
+          "abilities.intelligence",
+          "abilities.intelligence.base",
+          "abilities.morality",
+          "abilities.morality.base",
+          "abilities.smell",
+          "abilities.smell.base",
+          "abilities.stamina",
+          "abilities.stamina.base",
+          "abilities.strength",
+          "abilities.strength.base",
+          "abilities.voice",
+          "abilities.voice.base",
+          "abilities.will",
+          "abilities.will.base",
+          "bioImage",
+          "biography",
+          "description",
+          "fatigue",
+          "macros",
+          "macros.command",
+          "macros.type",
+          "move",
+          "move.base",
+          "shockIndex",
+          "shockIndex.max",
+          "shockIndex.value",
+          "species",
+          "sunsign"
+        ]
+      },
+      "container": {
+        "own": [
+          "bioImage",
+          "capacity",
+          "capacity.max",
+          "description",
+          "macros"
+        ],
+        "inherited": []
+      },
+      "creature": {
+        "own": ["loadRating"],
+        "inherited": [
+          "abilities",
+          "abilities.agility",
+          "abilities.agility.base",
+          "abilities.aura",
+          "abilities.aura.base",
+          "abilities.comeliness",
+          "abilities.comeliness.base",
+          "abilities.dexterity",
+          "abilities.dexterity.base",
+          "abilities.eyesight",
+          "abilities.eyesight.base",
+          "abilities.hearing",
+          "abilities.hearing.base",
+          "abilities.intelligence",
+          "abilities.intelligence.base",
+          "abilities.morality",
+          "abilities.morality.base",
+          "abilities.smell",
+          "abilities.smell.base",
+          "abilities.stamina",
+          "abilities.stamina.base",
+          "abilities.strength",
+          "abilities.strength.base",
+          "abilities.voice",
+          "abilities.voice.base",
+          "abilities.will",
+          "abilities.will.base",
+          "bioImage",
+          "biography",
+          "description",
+          "fatigue",
+          "macros",
+          "macros.command",
+          "macros.type",
+          "move",
+          "move.base",
+          "shockIndex",
+          "shockIndex.max",
+          "shockIndex.value",
+          "species",
+          "sunsign"
+        ]
+      }
+    }
+  }
+}

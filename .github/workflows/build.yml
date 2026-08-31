@@ -55,7 +55,7 @@ jobs:
     # style. A gate that cannot go green teaches everyone to merge past a red
     # check, and the check then stops meaning anything. Those backlogs are
     # recorded as #434 and #435; when they clear, these two steps collapse into
-    # a single `npm run lint`, which already chains all six.
+    # a single `npm run lint`, which already chains all seven.
     #
     # Neither step needs a build: both read the tree directly, so this job
     # installs and reports without waiting on the compile below.
@@ -109,6 +109,15 @@ jobs:
             # the system would not load.
             - name: Unit tests
               run: npm test
+
+            # `schema.json` is generated from the data models and committed, so
+            # that content builds — this system's own and those of modules that
+            # depend on it — can check what they emit against what a document
+            # will actually receive. A generated file nothing checks drifts from
+            # its generator silently, and this one is read by other
+            # repositories, so the drift would surface there rather than here.
+            - name: Schema artifact
+              run: npm run lint:schema
 
             # Compiles the styles, stages the assets, builds the compendium
             # packs from their committed JSON, and generates system.json. A
