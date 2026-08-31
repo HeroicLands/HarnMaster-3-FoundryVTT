@@ -24,27 +24,27 @@
     // }
 
     .tabs {
-      flex: 0 0 30px;
-      margin-bottom: 5px;
-      font-family: "Modesto Condensed", "Palatino Linotype", serif;
-      font-size: 20px;
-      font-weight: 700;
+        flex: 0 0 30px;
+        margin-bottom: 5px;
+        font-family: "Modesto Condensed", "Palatino Linotype", serif;
+        font-size: 20px;
+        font-weight: 700;
 
-      .item {
-          height: 30px;
-          line-height: 32px;
-          margin: 0 24px;
-          border-bottom: 3px solid #b5b3a4;
-      }
+        .item {
+            height: 30px;
+            line-height: 32px;
+            margin: 0 24px;
+            border-bottom: 3px solid #b5b3a4;
+        }
 
-      .item.active {
-        text-shadow: none;
-        border-bottom: 3px solid black;
-        font-size: 25px;
-      }
+        .item.active {
+            text-shadow: none;
+            border-bottom: 3px solid black;
+            font-size: 25px;
+        }
     }
 
     .sheet-body .tab {
-      margin-right: 5px;
+        margin-right: 5px;
     }
 }

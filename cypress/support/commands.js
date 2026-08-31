@@ -40,7 +40,7 @@ Cypress.Commands.add("hm3Actor", (name) =>
         const actor = win.game.actors.getName(name);
         expect(actor, `actor "${name}" exists in the seeded world`).to.exist;
         return actor;
-    })
+    }),
 );
 
 /**
@@ -68,7 +68,7 @@ Cypress.Commands.add("closeAllSheets", () =>
         for (const app of win.foundry.applications.instances?.values?.() ?? []) {
             if (app.constructor.name !== "ChatLog") app.close?.();
         }
-    })
+    }),
 );
 
 /**
@@ -85,7 +85,7 @@ Cypress.Commands.add("cleanupByPrefix", (prefix) =>
             const ids = collection.filter((d) => d.name.startsWith(prefix)).map((d) => d.id);
             if (ids.length) await collection.documentClass.deleteDocuments(ids);
         }
-    })
+    }),
 );
 
 /**
@@ -104,5 +104,5 @@ Cypress.Commands.add("createDocument", (documentName, data, options = {}) =>
     cy.window().then((win) => {
         const cls = win.CONFIG[documentName].documentClass;
         return cls.create(win.JSON.parse(JSON.stringify(data)), options);
-    })
+    }),
 );

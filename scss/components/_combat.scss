@@ -14,8 +14,8 @@
             font-weight: 700;
             color: #4b4a44;
             background-color: #bbb;
-            border-top: 2px groove #FFF;
-            border-bottom: 2px groove #FFF;
+            border-top: 2px groove #fff;
+            border-bottom: 2px groove #fff;
             padding: 5px;
         }
 
@@ -40,7 +40,7 @@
                     font-weight: bold;
                     text-transform: uppercase;
                 }
-            
+
                 .combat-stat-value {
                     flex: 0 0 40px;
                     background: #bbb;
@@ -68,13 +68,13 @@
                     background-repeat: no-repeat;
                     background-position: center;
                 }
-        
+
                 .item-name.damage-roll .item-image:hover {
                     background-image: url("../../../icons/svg/d20-black.svg") !important;
                     background-repeat: no-repeat;
                     background-position: center;
                 }
-            
+
                 .weapon-image {
                     flex: 0 0 24px;
                     margin-right: 5px;
@@ -215,7 +215,7 @@
                         color: black;
                     }
                 }
-            
+
                 .weapon-notes {
                     flex: 1 0 75px;
                     padding-left: 10px;
@@ -223,12 +223,12 @@
                     white-space: nowrap;
                     overflow: hidden;
                 }
-            
+
                 .item-controls-inv {
                     flex: 0 0 55px;
                     text-align: right;
                 }
-            
+
                 .item-controls {
                     flex: 0 0 70px;
                     text-align: right;
@@ -236,17 +236,15 @@
                     .item-equip {
                         color: #b5b3a4;
                     }
-              
+
                     .item-carry {
                         color: #b5b3a4;
                     }
-        
+
                     .active {
                         color: #4b4a44;
                     }
-              
                 }
-
             }
         }
 
@@ -271,13 +269,13 @@
                     background-repeat: no-repeat;
                     background-position: center;
                 }
-        
+
                 .item-name.missile-damage-roll .item-image:hover {
                     background-image: url("../../../icons/svg/d20-black.svg") !important;
                     background-repeat: no-repeat;
                     background-position: center;
                 }
-            
+
                 .missile-image {
                     flex: 0 0 24px;
                     margin-right: 5px;
@@ -412,7 +410,7 @@
                         color: black;
                     }
                 }
-            
+
                 .missile-notes {
                     flex: 1 0 50px;
                     padding-left: 10px;
@@ -420,29 +418,27 @@
                     white-space: nowrap;
                     overflow: hidden;
                 }
-            
+
                 .item-controls-inv {
                     flex: 0 0 55px;
                     text-align: right;
                 }
-            
+
                 .item-controls {
                     flex: 0 0 70px;
                     text-align: right;
                     .item-equip {
                         color: #b5b3a4;
                     }
-              
+
                     .item-carry {
                         color: #b5b3a4;
                     }
-              
+
                     .active {
                         color: #4b4a44;
                     }
-              
                 }
-
             }
         }
     }

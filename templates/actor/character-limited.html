@@ -1,15 +1,22 @@
 <div class="{{cssClass}} sheet flexcol">
-
     {{!-- Sheet Header --}}
     <header class="sheet-header sheet-header-character">
         <div class="flexrow">
-            <img class="profile-img" src="{{actor.img}}" data-action="editImage" data-edit="img" title="{{actor.name}}" height="100" width="100" />
+            <img
+                class="profile-img"
+                src="{{actor.img}}"
+                data-action="editImage"
+                data-edit="img"
+                title="{{actor.name}}"
+                height="100"
+                width="100" />
             <div class="flexcol header-fields">
                 <div class="flexrow name-attribute">
-                    <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+                    <h1 class="charname">
+                        <input name="name" type="text" value="{{actor.name}}" placeholder="Name" />
+                    </h1>
                     <div class="header-stat-block">
-                        <div class="penalties flexrow">
-                        </div>
+                        <div class="penalties flexrow"></div>
                         <div class="endurance flexrow">
                             <span class="label">Shock Index: {{adata.shockIndex.value}}</span>
                         </div>
@@ -22,15 +29,30 @@
                     <ol class="flexrow">
                         <li class="attribute species flexcol">
                             <label class="label">Race</label>
-                            <input class="value" type="text" name="system.species" value="{{adata.species}}" data-dtype="String"/>
+                            <input
+                                class="value"
+                                type="text"
+                                name="system.species"
+                                value="{{adata.species}}"
+                                data-dtype="String" />
                         </li>
                         <li class="attribute gender flexcol">
                             <label class="label">Gender</label>
-                            <input class="value" type="text" name="system.gender" value="{{adata.gender}}" data-dtype="String"/>
+                            <input
+                                class="value"
+                                type="text"
+                                name="system.gender"
+                                value="{{adata.gender}}"
+                                data-dtype="String" />
                         </li>
                         <li class="attribute occupation flexcol">
                             <label class="label">Occupation</label>
-                            <input class="value" type="text" name="system.occupation" value="{{adata.occupation}}" data-dtype="String"/>
+                            <input
+                                class="value"
+                                type="text"
+                                name="system.occupation"
+                                value="{{adata.occupation}}"
+                                data-dtype="String" />
                         </li>
                     </ol>
                 </div>
@@ -42,9 +64,17 @@
     <section class="sheet-body">
         <div class="facade">
             <div class="flexrow">
-                <img class="facade-image" src="{{adata.bioImage}}" data-action="editImage" data-edit="system.bioImage" title="{{actor.name}}" height="300" width="200" />
+                <img
+                    class="facade-image"
+                    src="{{adata.bioImage}}"
+                    data-action="editImage"
+                    data-edit="system.bioImage"
+                    title="{{actor.name}}"
+                    height="300"
+                    width="200" />
                 <div class="facade-description">
-                    {{editor adata.description target="system.description" button=true editable=editable}}
+                    {{editor adata.description target="system.description" button=true
+                    editable=editable}}
                 </div>
             </div>
         </div>

@@ -6,7 +6,7 @@ Adopt package-build 7.0.0.
 
 `stats.systemId` was removed from this repository's configuration because
 7.0.0 derives it (HeroicLands/package-build#48) — but the pin was still
-`^6.1.0`, where the key is merely *optional*. Under 6 the deletion resolves
+`^6.1.0`, where the key is merely _optional_. Under 6 the deletion resolves
 to `systemId: null` beside a real `systemVersion`: a version stamped with no
 id, silently, which is the "plausible lie" the upstream change exists to
 prevent.

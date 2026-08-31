@@ -1,4 +1,4 @@
-import { HM3 } from './config.js';
+import { HM3 } from "./config.js";
 
 /**
  * Core's ActiveEffectConfig, offering HM3's curated list of effect keys instead
@@ -19,10 +19,9 @@ import { HM3 } from './config.js';
  * @extends {foundry.applications.sheets.ActiveEffectConfig}
  */
 export class HM3ActiveEffectConfig extends foundry.applications.sheets.ActiveEffectConfig {
-
     /** @override */
     static DEFAULT_OPTIONS = {
-        classes: ["hm3"]
+        classes: ["hm3"],
     };
 
     /**
@@ -36,8 +35,8 @@ export class HM3ActiveEffectConfig extends foundry.applications.sheets.ActiveEff
                 ...context.fields,
                 key: new foundry.data.fields.StringField({
                     ...key.options,
-                    choices: HM3.activeEffectKey
-                })
+                    choices: HM3.activeEffectKey,
+                }),
             };
         }
         return super._renderChange(context);

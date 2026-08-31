@@ -8,7 +8,7 @@ repository was pinned to.
 Nothing this system ships changes. The build stages the same 540 files, and 538
 of them are byte-identical to what 3.0.1 produced — the two that differ are the
 LevelDB `LOG` files, which carry wall-clock timestamps and differ between two
-runs of the *same* version. `system.json` is byte-identical, packs and all, and
+runs of the _same_ version. `system.json` is byte-identical, packs and all, and
 the compiled packs round-trip back to the committed JSON exactly as before.
 
 That is the expected result rather than a lucky one. HM3 uses only the packaging

@@ -20,7 +20,7 @@ Please include what you were doing, what happened, the Foundry and system
 versions, and — if you have one — a minimal reproduction. You will get an
 acknowledgement; there is no paid bounty.
 
-## What is *not* a private advisory
+## What is _not_ a private advisory
 
 A bug with no security dimension is a normal public issue. So is a licensing
 problem: shipping third-party art or verbatim rulebook text is broken behaviour

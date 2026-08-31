@@ -5,15 +5,15 @@
 
 @mixin armorloc {
     .armorlocation {
-      .adv-setting {
-        align-items: center;
-        display: flex;
-        height: 26px;
+        .adv-setting {
+            align-items: center;
+            display: flex;
+            height: 26px;
 
-        .label {
-          padding-right: 5px;
+            .label {
+                padding-right: 5px;
+            }
         }
-      }    
     }
 
     .armorlocations-list {
@@ -22,76 +22,75 @@
         padding: 0;
         overflow-y: auto;
 
-      .armorlocation-header {
-        font-weight: bold;
-      }
-
-      .armorlocation {
-        border-bottom: 1px solid #BBB;
-
-        .armorlocation-image {
-          flex: 0 0 24px;
-          margin-right: 5px;
+        .armorlocation-header {
+            font-weight: bold;
         }
 
-        img {
-          display: block;
+        .armorlocation {
+            border-bottom: 1px solid #bbb;
+
+            .armorlocation-image {
+                flex: 0 0 24px;
+                margin-right: 5px;
+            }
+
+            img {
+                display: block;
+            }
         }
 
-      }
+        .armorlocation-name {
+            flex: 0 0 115px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
 
-      .armorlocation-name {
-        flex: 0 0 115px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
+        .armorlocation-layers {
+            flex: 0 0 120px;
+            text-align: left;
+            padding: 3px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
 
-      .armorlocation-layers {
-        flex: 0 0 120px;
-        text-align: left;
-        padding: 3px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
-  
-      .armorlocation-quality {
-        flex: 0 0 40px;
-        text-align: center;
-      }
+        .armorlocation-quality {
+            flex: 0 0 40px;
+            text-align: center;
+        }
 
-      .armorlocation-blunt {
-        flex: 0 0 25px;
-        text-align: center;
-      }
+        .armorlocation-blunt {
+            flex: 0 0 25px;
+            text-align: center;
+        }
 
-      .armorlocation-edged {
-        flex: 0 0 25px;
-        text-align: center;
-      }
+        .armorlocation-edged {
+            flex: 0 0 25px;
+            text-align: center;
+        }
 
-      .armorlocation-piercing {
-        flex: 0 0 25px;
-        text-align: center;
-      }
+        .armorlocation-piercing {
+            flex: 0 0 25px;
+            text-align: center;
+        }
 
-      .armorlocation-fire {
-        flex: 0 0 25px;
-        text-align: center;
-      }
+        .armorlocation-fire {
+            flex: 0 0 25px;
+            text-align: center;
+        }
 
-      .armorlocation-notes {
-        flex: 1 0 150px;
-        padding-left: 10px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
+        .armorlocation-notes {
+            flex: 1 0 150px;
+            padding-left: 10px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
 
-      .item-controls {
-        flex: 0 0 86px;
-        text-align: right;
-      }
+        .item-controls {
+            flex: 0 0 86px;
+            text-align: right;
+        }
     }
 }

@@ -25,10 +25,14 @@ export class ActorBaseModel extends foundry.abstract.TypeDataModel {
     /** @override */
     static defineSchema() {
         return {
-            bioImage: new fields.StringField({required: true, blank: true, initial: "systems/hm3/images/svg/knight-silhouette.svg"}),
-            species: new fields.StringField({required: true, blank: true, initial: ""}),
-            fatigue: new fields.NumberField({required: true, nullable: false, initial: 0}),
-            sunsign: new fields.StringField({required: true, blank: true, initial: ""}),
+            bioImage: new fields.StringField({
+                required: true,
+                blank: true,
+                initial: "systems/hm3/images/svg/knight-silhouette.svg",
+            }),
+            species: new fields.StringField({ required: true, blank: true, initial: "" }),
+            fatigue: new fields.NumberField({ required: true, nullable: false, initial: 0 }),
+            sunsign: new fields.StringField({ required: true, blank: true, initial: "" }),
             // Written out rather than generated from a name list. The schema is
             // now read as data by `package-build schema`, and a computed key set
             // reads there as a field with *no* keys beneath it — enough to keep
@@ -40,35 +44,130 @@ export class ActorBaseModel extends foundry.abstract.TypeDataModel {
             // Only `base` is stored; `effective` and `modified` are computed
             // every prepare cycle and are deliberately not in the schema.
             abilities: new fields.SchemaField({
-                strength: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
-                stamina: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
-                dexterity: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
-                agility: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
-                intelligence: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
-                aura: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
-                will: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
-                eyesight: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
-                hearing: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
-                smell: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
-                voice: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
-                comeliness: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})}),
-                morality: new fields.SchemaField({base: new fields.NumberField({required: true, nullable: false, integer: false, initial: 0})})
+                strength: new fields.SchemaField({
+                    base: new fields.NumberField({
+                        required: true,
+                        nullable: false,
+                        integer: false,
+                        initial: 0,
+                    }),
+                }),
+                stamina: new fields.SchemaField({
+                    base: new fields.NumberField({
+                        required: true,
+                        nullable: false,
+                        integer: false,
+                        initial: 0,
+                    }),
+                }),
+                dexterity: new fields.SchemaField({
+                    base: new fields.NumberField({
+                        required: true,
+                        nullable: false,
+                        integer: false,
+                        initial: 0,
+                    }),
+                }),
+                agility: new fields.SchemaField({
+                    base: new fields.NumberField({
+                        required: true,
+                        nullable: false,
+                        integer: false,
+                        initial: 0,
+                    }),
+                }),
+                intelligence: new fields.SchemaField({
+                    base: new fields.NumberField({
+                        required: true,
+                        nullable: false,
+                        integer: false,
+                        initial: 0,
+                    }),
+                }),
+                aura: new fields.SchemaField({
+                    base: new fields.NumberField({
+                        required: true,
+                        nullable: false,
+                        integer: false,
+                        initial: 0,
+                    }),
+                }),
+                will: new fields.SchemaField({
+                    base: new fields.NumberField({
+                        required: true,
+                        nullable: false,
+                        integer: false,
+                        initial: 0,
+                    }),
+                }),
+                eyesight: new fields.SchemaField({
+                    base: new fields.NumberField({
+                        required: true,
+                        nullable: false,
+                        integer: false,
+                        initial: 0,
+                    }),
+                }),
+                hearing: new fields.SchemaField({
+                    base: new fields.NumberField({
+                        required: true,
+                        nullable: false,
+                        integer: false,
+                        initial: 0,
+                    }),
+                }),
+                smell: new fields.SchemaField({
+                    base: new fields.NumberField({
+                        required: true,
+                        nullable: false,
+                        integer: false,
+                        initial: 0,
+                    }),
+                }),
+                voice: new fields.SchemaField({
+                    base: new fields.NumberField({
+                        required: true,
+                        nullable: false,
+                        integer: false,
+                        initial: 0,
+                    }),
+                }),
+                comeliness: new fields.SchemaField({
+                    base: new fields.NumberField({
+                        required: true,
+                        nullable: false,
+                        integer: false,
+                        initial: 0,
+                    }),
+                }),
+                morality: new fields.SchemaField({
+                    base: new fields.NumberField({
+                        required: true,
+                        nullable: false,
+                        integer: false,
+                        initial: 0,
+                    }),
+                }),
             }),
             move: new fields.SchemaField({
-                base: new fields.NumberField({required: true, nullable: false, initial: 0})
+                base: new fields.NumberField({ required: true, nullable: false, initial: 0 }),
             }),
             shockIndex: new fields.SchemaField({
-                max: new fields.NumberField({required: true, nullable: false, initial: 100}),
-                value: new fields.NumberField({required: true, nullable: false, initial: 100})
+                max: new fields.NumberField({ required: true, nullable: false, initial: 100 }),
+                value: new fields.NumberField({ required: true, nullable: false, initial: 100 }),
             }),
             // "***INIT***" is a sentinel the actor-creation flow looks for; it is
             // not a placeholder left behind by mistake.
-            description: new fields.HTMLField({required: true, blank: true, initial: "***INIT***"}),
-            biography: new fields.HTMLField({required: true, blank: true, initial: ""}),
+            description: new fields.HTMLField({
+                required: true,
+                blank: true,
+                initial: "***INIT***",
+            }),
+            biography: new fields.HTMLField({ required: true, blank: true, initial: "" }),
             macros: new fields.SchemaField({
-                type: new fields.StringField({required: true, blank: false, initial: "script"}),
-                command: new fields.StringField({required: true, blank: true, initial: ""})
-            })
+                type: new fields.StringField({ required: true, blank: false, initial: "script" }),
+                command: new fields.StringField({ required: true, blank: true, initial: "" }),
+            }),
         };
     }
 }
@@ -80,8 +179,8 @@ export class CharacterModel extends ActorBaseModel {
     /** @override */
     static defineSchema() {
         return Object.assign(super.defineSchema(), {
-            gender: new fields.StringField({required: true, blank: true, initial: ""}),
-            occupation: new fields.StringField({required: true, blank: true, initial: ""})
+            gender: new fields.StringField({ required: true, blank: true, initial: "" }),
+            occupation: new fields.StringField({ required: true, blank: true, initial: "" }),
         });
     }
 }
@@ -93,7 +192,7 @@ export class CreatureModel extends ActorBaseModel {
     /** @override */
     static defineSchema() {
         return Object.assign(super.defineSchema(), {
-            loadRating: new fields.NumberField({required: true, nullable: false, initial: 0})
+            loadRating: new fields.NumberField({ required: true, nullable: false, initial: 0 }),
         });
     }
 }
@@ -110,12 +209,16 @@ export class ContainerModel extends foundry.abstract.TypeDataModel {
     /** @override */
     static defineSchema() {
         return {
-            bioImage: new fields.StringField({required: true, blank: true, initial: "systems/hm3/images/icons/svg/chest.svg"}),
-            description: new fields.HTMLField({required: true, blank: true, initial: ""}),
+            bioImage: new fields.StringField({
+                required: true,
+                blank: true,
+                initial: "systems/hm3/images/icons/svg/chest.svg",
+            }),
+            description: new fields.HTMLField({ required: true, blank: true, initial: "" }),
             macros: new fields.SchemaField({}),
             capacity: new fields.SchemaField({
-                max: new fields.NumberField({required: true, nullable: false, initial: 0})
-            })
+                max: new fields.NumberField({ required: true, nullable: false, initial: 0 }),
+            }),
         };
     }
 }
@@ -123,5 +226,5 @@ export class ContainerModel extends foundry.abstract.TypeDataModel {
 export const actorModels = {
     character: CharacterModel,
     creature: CreatureModel,
-    container: ContainerModel
+    container: ContainerModel,
 };

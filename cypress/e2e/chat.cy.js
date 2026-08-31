@@ -19,18 +19,24 @@ describe("chat messages", () => {
 
     /** Post a d100 test through the system's own dice layer. */
     const rollAbility = (actorName, ability) =>
-        cy.hm3Actor(actorName).then((actor) =>
-            cy.window().then((win) =>
-                win.game.hm3.macros.testAbilityD100Roll(ability, true, actor)
-            )
-        );
+        cy
+            .hm3Actor(actorName)
+            .then((actor) =>
+                cy
+                    .window()
+                    .then((win) => win.game.hm3.macros.testAbilityD100Roll(ability, true, actor)),
+            );
 
     /** The most recently posted chat message. */
     const latest = () => cy.window().then((win) => win.game.messages.contents.at(-1));
 
-    beforeEach(() => cy.window().then((win) => win.game.messages.documentClass.deleteDocuments(
-        win.game.messages.map((m) => m.id)
-    )));
+    beforeEach(() =>
+        cy
+            .window()
+            .then((win) =>
+                win.game.messages.documentClass.deleteDocuments(win.game.messages.map((m) => m.id)),
+            ),
+    );
 
     it("posts an ability roll", () => {
         rollAbility("Sir Baris", "strength");
@@ -72,8 +78,9 @@ describe("chat messages", () => {
     it("renders the message into the log", () => {
         rollAbility("Sir Baris", "strength");
         latest().then((msg) => {
-            cy.get(`.chat-message[data-message-id="${msg.id}"]`, { timeout: 10000 })
-                .should("exist");
+            cy.get(`.chat-message[data-message-id="${msg.id}"]`, { timeout: 10000 }).should(
+                "exist",
+            );
         });
     });
 
@@ -89,11 +96,10 @@ describe("chat messages", () => {
                 </div>
             </div>`,
         });
-        cy.get(".card-buttons button[data-action='e2e-probe']", { timeout: 10000 })
-            .should("exist");
+        cy.get(".card-buttons button[data-action='e2e-probe']", { timeout: 10000 }).should("exist");
         cy.window().then((win) => {
             const button = win.document.querySelector(
-                ".card-buttons button[data-action='e2e-probe']"
+                ".card-buttons button[data-action='e2e-probe']",
             );
             expect(button, "probe button").to.exist;
 
@@ -106,7 +112,11 @@ describe("chat messages", () => {
         });
     });
 
-    after(() => cy.window().then((win) =>
-        win.game.messages.documentClass.deleteDocuments(win.game.messages.map((m) => m.id))
-    ));
+    after(() =>
+        cy
+            .window()
+            .then((win) =>
+                win.game.messages.documentClass.deleteDocuments(win.game.messages.map((m) => m.id)),
+            ),
+    );
 });

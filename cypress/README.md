@@ -54,7 +54,7 @@ docker run --detach \
   felddy/foundryvtt:14
 ```
 
-If it exits immediately with *"already locked by another process"*, remove the
+If it exits immediately with _"already locked by another process"_, remove the
 stale lock — `docker restart` does not clear it the way the toolchain's
 `container recreate` does:
 
@@ -80,7 +80,7 @@ it, and a document without one is skipped in silence.
 
 - Build document payloads with `cy.createDocument()`. An object literal from the
   spec's realm is not a plain object to the game window, and Foundry rejects it
-  with *"must be constructed with a DataModel or Object"*.
+  with _"must be constructed with a DataModel or Object"_.
 - Assert on observables the code cannot undo. The first attempt at the chat-card
   test watched `button.disabled`, which the handler sets on entry and clears on
   exit — it read as a listener that never fired, for an hour. `preventDefault()`

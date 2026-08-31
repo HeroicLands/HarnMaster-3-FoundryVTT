@@ -95,8 +95,7 @@ for (const pack of config.packs) {
     for (const rel of committed) {
         if (!extracted.has(rel)) {
             problems.push(
-                `${path.join(source, rel)}: committed, but extracting writes ` +
-                    `no such file`,
+                `${path.join(source, rel)}: committed, but extracting writes ` + `no such file`,
             );
         }
     }
@@ -115,6 +114,4 @@ if (problems.length) {
     process.exit(1);
 }
 
-console.log(
-    `Compendium source round trips (${config.packs.length} packs checked).`,
-);
+console.log(`Compendium source round trips (${config.packs.length} packs checked).`);

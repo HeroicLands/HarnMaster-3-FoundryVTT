@@ -14,14 +14,14 @@
         <div class="card-content center">
             <div class="flexrow">
                 <span class="label">Aim:</span>
-                <span class="value">{{aim}}</span>    
+                <span class="value">{{aim}}</span>
             </div>
         </div>
-    
+
         <div class="card-content center">
             <div class="flexrow">
                 <span class="label">Aspect:</span>
-                <span class="value">{{aspect}}</span>    
+                <span class="value">{{aspect}}</span>
             </div>
         </div>
     </div>
@@ -29,24 +29,24 @@
     {{#if rangeDist}}
     <div class="card-content flex-group-center">
         <span class="label">Distance (Range/Mod):</span>
-        <span class="value">{{rangeDist}} ({{rangeText}}/{{rangeModSign}}{{rangeModifierAbs}})</span>
+        <span class="value"
+            >{{rangeDist}} ({{rangeText}}/{{rangeModSign}}{{rangeModifierAbs}})</span
+        >
     </div>
 
     {{#if rangeExceedsExtreme}}
     <div class="form-group flex-group-center">
-        <span class="value failure-text">WARNING: Distance exceeds the extreme range for this weapon.</span>
+        <span class="value failure-text"
+            >WARNING: Distance exceeds the extreme range for this weapon.</span
+        >
     </div>
-    {{/if}}
-    {{/if}}
-
-
-    {{#if (or rangeDist addlModifierAbs)}}
+    {{/if}} {{/if}} {{#if (or rangeDist addlModifierAbs)}}
     <div class="grid grid-2col">
         <div class="card-content flexrow">
             <span class="label">AML:</span>
             <span class="value">{{origAML}}</span>
         </div>
-    
+
         {{#if (gt addlModifierAbs 0)}}
         <div class="card-content flexrow">
             <span class="label">Mod:</span>
@@ -59,7 +59,11 @@
 
     <div class="card-content flex-group-center">
         <span class="label">Effective AML:</span>
-        <span class="value">{{origAML}} {{#if rangeDist}}{{rangeModSign}} {{rangeModifierAbs}} {{/if}}{{#if addlModifierAbs}}{{addlModifierSign}} {{addlModifierAbs}} {{/if}}= <strong>{{effAML}}</strong></span>
+        <span class="value"
+            >{{origAML}} {{#if rangeDist}}{{rangeModSign}} {{rangeModifierAbs}} {{/if}}{{#if
+            addlModifierAbs}}{{addlModifierSign}} {{addlModifierAbs}} {{/if}}=
+            <strong>{{effAML}}</strong></span
+        >
     </div>
     {{else}}
     <div class="card-content flex-group-center">
@@ -71,27 +75,61 @@
     <div class="card-buttons">
         <div class="grid grid-2col mingap">
             {{#if hasDodge}}
-            <button data-action="dodge" data-visible-actor-id="{{visibleActorId}}" data-atk-token-id="{{atkTokenId}}" data-def-token-id="{{defTokenId}}"
-                data-eff-aml="{{effAML}}" data-weapon-type="{{weaponType}}" data-weapon="{{weaponName}}"
-                data-aim="{{aim}}" data-aspect="{{aspect}}" data-impact-mod="{{impactMod}}">Dodge</button>
-            {{/if}}
-        
-            {{#if hasCounterstrike}}
-            <button data-action="counterstrike" data-visible-actor-id="{{visibleActorId}}" data-atk-token-id="{{atkTokenId}}" data-def-token-id="{{defTokenId}}"
-                data-eff-aml="{{effAML}}" data-weapon-type="{{weaponType}}" data-weapon="{{weaponName}}"
-                data-aim="{{aim}}" data-aspect="{{aspect}}" data-impact-mod="{{impactMod}}">Counterstrike</button>
-            {{/if}}
-        
-            {{#if hasBlock}}
-            <button data-action="block" data-visible-actor-id="{{visibleActorId}}" data-atk-token-id="{{atkTokenId}}" data-def-token-id="{{defTokenId}}"
-                data-eff-aml="{{effAML}}" data-weapon-type="{{weaponType}}" data-weapon="{{weaponName}}"
-                data-aim="{{aim}}" data-aspect="{{aspect}}" data-impact-mod="{{impactMod}}">Block</button>
-            {{/if}}
-        
-            {{#if hasIgnore}}
-            <button data-action="ignore" data-visible-actor-id="{{visibleActorId}}" data-atk-token-id="{{atkTokenId}}" data-def-token-id="{{defTokenId}}"
-                data-eff-aml="{{effAML}}" data-weapon-type="{{weaponType}}" data-weapon="{{weaponName}}"
-                data-aim="{{aim}}" data-aspect="{{aspect}}" data-impact-mod="{{impactMod}}">Ignore</button>
+            <button
+                data-action="dodge"
+                data-visible-actor-id="{{visibleActorId}}"
+                data-atk-token-id="{{atkTokenId}}"
+                data-def-token-id="{{defTokenId}}"
+                data-eff-aml="{{effAML}}"
+                data-weapon-type="{{weaponType}}"
+                data-weapon="{{weaponName}}"
+                data-aim="{{aim}}"
+                data-aspect="{{aspect}}"
+                data-impact-mod="{{impactMod}}">
+                Dodge
+            </button>
+            {{/if}} {{#if hasCounterstrike}}
+            <button
+                data-action="counterstrike"
+                data-visible-actor-id="{{visibleActorId}}"
+                data-atk-token-id="{{atkTokenId}}"
+                data-def-token-id="{{defTokenId}}"
+                data-eff-aml="{{effAML}}"
+                data-weapon-type="{{weaponType}}"
+                data-weapon="{{weaponName}}"
+                data-aim="{{aim}}"
+                data-aspect="{{aspect}}"
+                data-impact-mod="{{impactMod}}">
+                Counterstrike
+            </button>
+            {{/if}} {{#if hasBlock}}
+            <button
+                data-action="block"
+                data-visible-actor-id="{{visibleActorId}}"
+                data-atk-token-id="{{atkTokenId}}"
+                data-def-token-id="{{defTokenId}}"
+                data-eff-aml="{{effAML}}"
+                data-weapon-type="{{weaponType}}"
+                data-weapon="{{weaponName}}"
+                data-aim="{{aim}}"
+                data-aspect="{{aspect}}"
+                data-impact-mod="{{impactMod}}">
+                Block
+            </button>
+            {{/if}} {{#if hasIgnore}}
+            <button
+                data-action="ignore"
+                data-visible-actor-id="{{visibleActorId}}"
+                data-atk-token-id="{{atkTokenId}}"
+                data-def-token-id="{{defTokenId}}"
+                data-eff-aml="{{effAML}}"
+                data-weapon-type="{{weaponType}}"
+                data-weapon="{{weaponName}}"
+                data-aim="{{aim}}"
+                data-aspect="{{aspect}}"
+                data-impact-mod="{{impactMod}}">
+                Ignore
+            </button>
             {{/if}}
         </div>
     </div>

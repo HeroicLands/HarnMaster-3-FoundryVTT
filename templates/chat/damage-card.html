@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-    
+
     {{#if (ne addlWeaponImpact 0)}}
     <div class="card-content center">
         <span class="label">Addl Weapon Impact:</span>
@@ -34,14 +34,19 @@
     <div class="card-content">
         <div class="flexcol flex-center">
             <span class="label">Total Impact (Base + Addl + Roll):</span>
-            <span class="value">{{weaponImpact}} + {{addlWeaponImpact}} + ({{impactRoll}}) = <strong>{{totalImpact}}</strong></span>    
+            <span class="value"
+                >{{weaponImpact}} + {{addlWeaponImpact}} + ({{impactRoll}}) =
+                <strong>{{totalImpact}}</strong></span
+            >
         </div>
     </div>
     {{else}}
     <div class="card-content">
         <div class="flexcol flex-center">
             <span class="label">Total Impact (Base + Roll):</span>
-            <span class="value">{{weaponImpact}} + ({{impactRoll}}) = <strong>{{totalImpact}}</strong></span>    
+            <span class="value"
+                >{{weaponImpact}} + ({{impactRoll}}) = <strong>{{totalImpact}}</strong></span
+            >
         </div>
     </div>
     {{/if}}

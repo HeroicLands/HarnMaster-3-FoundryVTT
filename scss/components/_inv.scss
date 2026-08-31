@@ -14,11 +14,10 @@
             font-weight: 700;
             color: #4b4a44;
             background-color: #bbb;
-            border-top: 2px groove #FFF;
-            border-bottom: 2px groove #FFF;
+            border-top: 2px groove #fff;
+            border-bottom: 2px groove #fff;
             padding: 5px;
         }
-
 
         .weight {
             flex: 0 0 440px;
@@ -54,15 +53,15 @@
             .missile {
                 flex: 0 0 65px;
             }
-        
+
             .armor {
                 flex: 0 0 65px;
             }
-        
+
             .misc-gear {
                 flex: 0 0 75px;
             }
-        
+
             .total {
                 flex: 0 0 65px;
                 text-align: center;
@@ -72,7 +71,6 @@
                 flex: 1;
             }
         }
-        
 
         .inv-stats {
             .inv-stat {
@@ -83,13 +81,12 @@
                     font-weight: bold;
                     text-transform: uppercase;
                 }
-          
+
                 .inv-stat-value {
                     flex: 0 0 40px;
                     background: #bbb;
                     padding: 2px;
                     text-align: center;
-
                 }
             }
         }

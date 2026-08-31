@@ -5,12 +5,12 @@
 
 @mixin resource {
     .resource-label {
-      font-weight: bold;
-      text-transform: uppercase;
+        font-weight: bold;
+        text-transform: uppercase;
     }
 
     .artifact {
-      padding-top: 5px;
-      align-items: center;
+        padding-top: 5px;
+        align-items: center;
     }
 }

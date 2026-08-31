@@ -6,7 +6,7 @@ export const registerSystemSettings = function () {
         scope: "world",
         config: false,
         type: String,
-        default: 0
+        default: 0,
     });
 
     game.settings.register("hm3", "showWelcomeDialog", {
@@ -15,8 +15,7 @@ export const registerSystemSettings = function () {
         scope: "client",
         config: true,
         type: Boolean,
-        default: true
-
+        default: true,
     });
 
     game.settings.register("hm3", "customSunSign", {
@@ -25,7 +24,7 @@ export const registerSystemSettings = function () {
         scope: "world",
         config: true,
         default: false,
-        type: Boolean
+        type: Boolean,
     });
 
     game.settings.register("hm3", "weaponDamage", {
@@ -34,7 +33,7 @@ export const registerSystemSettings = function () {
         scope: "world",
         config: true,
         default: false,
-        type: Boolean
+        type: Boolean,
     });
 
     game.settings.register("hm3", "bloodloss", {
@@ -43,7 +42,7 @@ export const registerSystemSettings = function () {
         scope: "world",
         config: true,
         default: false,
-        type: Boolean
+        type: Boolean,
     });
 
     game.settings.register("hm3", "amputation", {
@@ -52,7 +51,7 @@ export const registerSystemSettings = function () {
         scope: "world",
         config: true,
         default: false,
-        type: Boolean
+        type: Boolean,
     });
 
     game.settings.register("hm3", "limbInjuries", {
@@ -61,7 +60,7 @@ export const registerSystemSettings = function () {
         scope: "world",
         config: true,
         default: false,
-        type: Boolean
+        type: Boolean,
     });
 
     game.settings.register("hm3", "addInjuryToActorSheet", {
@@ -72,10 +71,10 @@ export const registerSystemSettings = function () {
         default: "enable",
         type: String,
         choices: {
-            "enable": "Add Injuries Automatically",
-            "disable": "Don't Add Injuries Automatically",
-            "ask": "Prompt User On Each Injury"
-        }
+            enable: "Add Injuries Automatically",
+            disable: "Don't Add Injuries Automatically",
+            ask: "Prompt User On Each Injury",
+        },
     });
 
     game.settings.register("hm3", "missileTracking", {
@@ -84,7 +83,7 @@ export const registerSystemSettings = function () {
         scope: "world",
         config: true,
         default: false,
-        type: Boolean
+        type: Boolean,
     });
 
     game.settings.register("hm3", "combatAudio", {
@@ -93,7 +92,7 @@ export const registerSystemSettings = function () {
         scope: "world",
         config: true,
         default: true,
-        type: Boolean
+        type: Boolean,
     });
 
     game.settings.register("hm3", "distanceUnits", {
@@ -104,8 +103,8 @@ export const registerSystemSettings = function () {
         default: "scene",
         type: String,
         choices: {
-            "scene": "Scene Units (e.g. feet)",
-            "grid": "Grid Units (e.g. hexes or squares)"
-        }
+            scene: "Scene Units (e.g. feet)",
+            grid: "Grid Units (e.g. hexes or squares)",
+        },
     });
 };

@@ -5,175 +5,173 @@
 
 @mixin profile {
     .sheet-body {
-      .ability-scores {
-        flex: 0 0 80px;
-        gap: 0;
-        margin: 0;
-        justify-content: center;
-    
-          .ability {
-            display: block;
-            align-items: center;
-            text-align: center;
-            padding: 3px 0 0 0;
+        .ability-scores {
             flex: 0 0 80px;
-            border: 2px groove #eeede0;
+            gap: 0;
+            margin: 0;
+            justify-content: center;
 
-            .ability-name {
-              margin: 0 0 2px;
-              font-size: 13px;
-            }
-
-            .ability-value {
-              font-size: 25px;
-              font-weight: bold;
-              margin: 0 0 2px;
-            }
-
-            .ability-box {
-              border-top: 1px solid black;
-            }
-            .label {
-              flex: 0 0 40px;
-              font-weight: bold;
-              text-transform: uppercase;
-            }
-
-            .value {
-              flex: 0 0 40px;
-              font-size: 20pt;
-            }
-          }
-    
-      }
-
-      .traits {
-        h2 {
-          flex: 1;
-          margin: 0;
-          line-height: 36px;
-          font-family: "Modesto Condensed", "Palatino Linotype", serif;
-          font-size: 20px;
-          font-weight: 700;
-          color: #4b4a44;
-          background-color: #bbb;
-          border-top: 2px groove #fff;
-          border-bottom: 2px groove #fff;
-          padding: 5px;
-        }
-
-        .traits-list {
-          list-style: none;
-          margin: 7px 2px;
-          padding: 0;
-          overflow-y: hidden;
-
-          .trait {
-        
-            .trait-name {
-              flex: 0 0 150px;
-            }
-
-            .trait-notes {
-              flex: 1 0 50px;
-              text-align: left;
-              padding-left: 5px;
-              border-left: 1px solid #c9c7b8;
-              border-right: 1px solid #c9c7b8;
-            }
-
-            .trait-ele {
-              flex: 0 0 40px;
-              text-align: center;
-              border-left: 1px solid #c9c7b8;
-              border-right: 1px solid #c9c7b8;
-            }
-  
-            .item-controls {
-              flex: 0 0 45px;
-              text-align: right;
-              padding-right: 5px;
-  
-              .item-control {
-                flex: 0 0 22px;
-                font-size: 12px;
+            .ability {
+                display: block;
+                align-items: center;
                 text-align: center;
-                color: #4b4a44;
-              }
+                padding: 3px 0 0 0;
+                flex: 0 0 80px;
+                border: 2px groove #eeede0;
+
+                .ability-name {
+                    margin: 0 0 2px;
+                    font-size: 13px;
+                }
+
+                .ability-value {
+                    font-size: 25px;
+                    font-weight: bold;
+                    margin: 0 0 2px;
+                }
+
+                .ability-box {
+                    border-top: 1px solid black;
+                }
+                .label {
+                    flex: 0 0 40px;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+
+                .value {
+                    flex: 0 0 40px;
+                    font-size: 20pt;
+                }
             }
-          }
         }
-      }
 
-      .profile-params {
-        margin-top: 5px;
-        align-items: center;
-        flex: 0 1 10px;
+        .traits {
+            h2 {
+                flex: 1;
+                margin: 0;
+                line-height: 36px;
+                font-family: "Modesto Condensed", "Palatino Linotype", serif;
+                font-size: 20px;
+                font-weight: 700;
+                color: #4b4a44;
+                background-color: #bbb;
+                border-top: 2px groove #fff;
+                border-bottom: 2px groove #fff;
+                padding: 5px;
+            }
 
-        .profile-item {
-          align-items: center;
-          border-top: 2px groove #eeede0;
-          border-bottom: 2px groove #eeede0;
-          margin-top: 12px;
-          padding: 5px 0;
+            .traits-list {
+                list-style: none;
+                margin: 7px 2px;
+                padding: 0;
+                overflow-y: hidden;
 
-          .attribute {
+                .trait {
+                    .trait-name {
+                        flex: 0 0 150px;
+                    }
+
+                    .trait-notes {
+                        flex: 1 0 50px;
+                        text-align: left;
+                        padding-left: 5px;
+                        border-left: 1px solid #c9c7b8;
+                        border-right: 1px solid #c9c7b8;
+                    }
+
+                    .trait-ele {
+                        flex: 0 0 40px;
+                        text-align: center;
+                        border-left: 1px solid #c9c7b8;
+                        border-right: 1px solid #c9c7b8;
+                    }
+
+                    .item-controls {
+                        flex: 0 0 45px;
+                        text-align: right;
+                        padding-right: 5px;
+
+                        .item-control {
+                            flex: 0 0 22px;
+                            font-size: 12px;
+                            text-align: center;
+                            color: #4b4a44;
+                        }
+                    }
+                }
+            }
+        }
+
+        .profile-params {
+            margin-top: 5px;
             align-items: center;
+            flex: 0 1 10px;
+
+            .profile-item {
+                align-items: center;
+                border-top: 2px groove #eeede0;
+                border-bottom: 2px groove #eeede0;
+                margin-top: 12px;
+                padding: 5px 0;
+
+                .attribute {
+                    align-items: center;
+
+                    .label {
+                        flex: 0 0 60px;
+                        font-weight: bold;
+                        text-transform: uppercase;
+                        text-align: right;
+                        padding-right: 4px;
+                    }
+
+                    .value {
+                        flex: 0 0 150px;
+                    }
+                }
+            }
+        }
+
+        .profile-desc {
+            margin-top: 5px;
 
             .label {
-              flex: 0 0 60px;
-              font-weight: bold;
-              text-transform: uppercase;
-              text-align: right;
-              padding-right: 4px;
+                padding-left: 5px;
+                font-family: "Modesto Condensed", "Palatino Linotype", serif;
+                font-size: 16px;
+                margin: 2px 0;
+                align-items: center;
+                background: rgba(0, 0, 0, 0.05);
+                border: 2px groove #eeede0;
+                font-weight: bold;
+                line-height: 24px;
+
+                i {
+                    font-size: 12px;
+                    padding-left: 5px;
+                }
             }
-  
-            .value {
-              flex: 0 0 150px;
-            }  
-          }
-        }
-      }
 
-      .profile-desc {
-        margin-top: 5px;
+            .description {
+                margin-left: 5px;
+            }
 
-        .label {
-          padding-left: 5px;
-          font-family: "Modesto Condensed", "Palatino Linotype", serif;
-          font-size: 16px;
-          margin: 2px 0;
-          align-items: center;
-          background: rgba(0, 0, 0, 0.05);
-          border: 2px groove #eeede0;
-          font-weight: bold;
-          line-height: 24px;  
-
-          i {
-            font-size: 12px;
-            padding-left: 5px;
-          }
+            //    textarea.description {
+            //      resize: none;
+            //      font-family: "Signika", sans-serif;
+            //      font-size: 14px;
+            //      border: none;
+            //      background: transparent;
+            //    }
         }
 
-        .description {
-          margin-left: 5px;
+        .profile {
+            img.bio-image {
+                flex: 0 0 200px;
+                object-fit: contain;
+                background: white;
+            }
         }
-
-    //    textarea.description {
-    //      resize: none;
-    //      font-family: "Signika", sans-serif;
-    //      font-size: 14px;
-    //      border: none;
-    //      background: transparent;
-    //    }
-    }
-
-      .profile {
-        img.bio-image {
-          flex: 0 0 200px;
-          object-fit: contain;
-          background: white;
-        }
-      }
     }
 }
