@@ -12,7 +12,6 @@ contentPackage: hm3
 packageKind: systems
 
 stats:
-    systemId: hm3
     lastModifiedBy: hm3build00000000
 
 # The Foundry core range. `minimum` is what every compiled document is stamped
