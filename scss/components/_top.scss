@@ -78,7 +78,6 @@
         line-height: 22px;
     }
     .sheet {
-
         .window-content {
             overflow-y: hidden;
             padding: 5px;
@@ -91,7 +90,7 @@
             height: 100%;
             overflow: hidden;
         }
-    
+
         .window-content .tab {
             height: 100%;
             overflow-y: hidden;
@@ -190,7 +189,7 @@
             line-height: 34px;
             color: #4b4a44;
         }
-    
+
         .sheet-header .summary li:last-child {
             border-right: none;
         }
@@ -208,19 +207,19 @@
             margin: 0 24px;
             border-bottom: 3px solid #b5b3a4;
         }
-    
+
         .sheet-navigation .item.active {
-            border-bottom: 3px solid #44191A;
+            border-bottom: 3px solid #44191a;
         }
     }
 
     .sheet-body .macro .command {
         height: calc(100% - 80px);
-    
+
         textarea {
             width: 100%;
-            height: 100%; 
+            height: 100%;
             box-sizing: border-box;
-        }    
+        }
     }
 }

@@ -22,3 +22,30 @@
 # the one that owns these bytes. Anyone re-extracting the packs after editing a
 # compendium in Foundry must be able to commit the result unmodified.
 assets/packs/
+
+# Templates that put a Handlebars block helper in attribute position:
+#
+#     <input type="text" … {{#if idata.skillBase.formula}}readonly{{/if}} />
+#     <option value="{{key}}" {{#if (eq key ../defaultAspect)}}selected{{/if}}>
+#
+# These are Handlebars files that happen to be named `.html`, and Prettier's
+# HTML parser cannot read `{{#if}}…{{/if}}` between attributes — it reports
+# `Opening tag "input" not terminated` and formats nothing. That is a parser
+# limitation, not a defect in the template: the markup is correct Handlebars and
+# Foundry renders it.
+#
+# So the criterion for this list is exact — *a template using a block helper in
+# attribute position* — and not "templates". Every other template here formats,
+# and adding `templates/` wholesale would stop checking forty files that are
+# perfectly parseable. Add a file here only after confirming Prettier cannot
+# parse it; the fix is never to remove a conditional attribute to please the
+# formatter.
+templates/chat/attack-result-card.html
+templates/chat/injury-card.html
+templates/dialog/actor-create.html
+templates/dialog/attack-dialog.html
+templates/dialog/damage-dialog.html
+templates/dialog/missile-damage-dialog.html
+templates/item/armorlocation-sheet.html
+templates/item/psionic-sheet.html
+templates/item/skill-sheet.html

@@ -114,6 +114,6 @@ which installs it into the data directory named by `HM3_*`/`FOUNDRYVTT_DEV_DATA`
 ## Releasing
 
 Nobody cuts a release by hand. Merging a pull request that carries a changeset
-opens (or updates) a **Version Packages** pull request; merging *that* builds
+opens (or updates) a **Version Packages** pull request; merging _that_ builds
 the system, tags `v<version>`, and publishes the GitHub Release with
 `system.zip` and `system.json` attached.

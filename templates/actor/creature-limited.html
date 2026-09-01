@@ -1,12 +1,20 @@
 <div class="{{cssClass}} sheet flexcol">
-
     {{!-- Sheet Header --}}
     <header class="sheet-header sheet-header-character">
         <div class="flexrow">
-            <img class="profile-img" src="{{actor.img}}" data-action="editImage" data-edit="img" title="{{actor.name}}" height="100" width="100" />
+            <img
+                class="profile-img"
+                src="{{actor.img}}"
+                data-action="editImage"
+                data-edit="img"
+                title="{{actor.name}}"
+                height="100"
+                width="100" />
             <div class="flexcol header-fields">
                 <div class="flexrow name-attribute">
-                    <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+                    <h1 class="charname">
+                        <input name="name" type="text" value="{{actor.name}}" placeholder="Name" />
+                    </h1>
                     <div class="header-stat-block">
                         <div class="endurance flexrow">
                             <span class="label">Shock Index: {{adata.shockIndex.value}}</span>
@@ -18,14 +26,18 @@
                 </div>
                 <div class="header-attributes">
                     <ol class="flexrow">
-                        <li class="attribute creature-species flexcol">
-                        </li>
+                        <li class="attribute creature-species flexcol"></li>
                         <li class="attribute move flexcol">
                             <label class="label">Move</label>
                             <div class="flexrow move-values">
                                 <span class="move-eff">{{adata.move.effective}}</span>
                                 <span class="sep">/</span>
-                                <input class="move-base" type="number" name="system.move.base" value="{{adata.move.base}}" data-dtype="Number"/>
+                                <input
+                                    class="move-base"
+                                    type="number"
+                                    name="system.move.base"
+                                    value="{{adata.move.base}}"
+                                    data-dtype="Number" />
                             </div>
                         </li>
                     </ol>
@@ -38,12 +50,19 @@
     <section class="sheet-body">
         <div class="facade">
             <div class="flexrow">
-                <img class="facade-image" src="{{adata.bioImage}}" data-action="editImage" data-edit="system.bioImage" title="{{actor.name}}" height="300" width="200" />
+                <img
+                    class="facade-image"
+                    src="{{adata.bioImage}}"
+                    data-action="editImage"
+                    data-edit="system.bioImage"
+                    title="{{actor.name}}"
+                    height="300"
+                    width="200" />
                 <div class="facade-description">
-                    {{editor adata.description target="system.description" button=true editable=editable}}
+                    {{editor adata.description target="system.description" button=true
+                    editable=editable}}
                 </div>
             </div>
         </div>
     </section>
-
 </div>

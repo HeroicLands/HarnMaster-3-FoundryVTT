@@ -1,87 +1,87 @@
 {
-  "_id": "hm3e2eSirBaris01",
-  "name": "Sir Baris",
-  "type": "character",
-  "system": {
-    "bioImage": "systems/hm3/images/svg/knight-silhouette.svg",
-    "species": "Human",
-    "fatigue": 0,
-    "sunsign": "Ahnu",
-    "move": {
-      "base": 0
-    },
-    "shockIndex": {
-      "max": 100,
-      "value": 100
-    },
-    "description": "",
-    "biography": "",
-    "macros": {
-      "type": "script",
-      "command": ""
-    },
-    "abilities": {
-      "strength": {
-        "base": 15
-      },
-      "stamina": {
-        "base": 14
-      },
-      "dexterity": {
-        "base": 13
-      },
-      "agility": {
-        "base": 12
-      },
-      "intelligence": {
-        "base": 10
-      },
-      "aura": {
-        "base": 9
-      },
-      "will": {
-        "base": 14
-      },
-      "eyesight": {
-        "base": 11
-      },
-      "hearing": {
-        "base": 10
-      },
-      "smell": {
-        "base": 8
-      },
-      "voice": {
-        "base": 10
-      },
-      "comeliness": {
-        "base": 12
-      },
-      "morality": {
-        "base": 12
-      }
-    },
-    "gender": "Male",
-    "occupation": "Knight"
-  },
-  "_key": "!actors!hm3e2eSirBaris01",
-  "img": "systems/hm3/images/svg/knight-silhouette.svg",
-  "items": [],
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "ownership": {
-    "default": 0
-  },
-  "flags": {},
-  "prototypeToken": {
+    "_id": "hm3e2eSirBaris01",
     "name": "Sir Baris",
-    "displayName": 20,
-    "actorLink": true,
-    "width": 1,
-    "height": 1,
-    "texture": {
-      "src": "systems/hm3/images/svg/knight-silhouette.svg"
+    "type": "character",
+    "system": {
+        "bioImage": "systems/hm3/images/svg/knight-silhouette.svg",
+        "species": "Human",
+        "fatigue": 0,
+        "sunsign": "Ahnu",
+        "move": {
+            "base": 0
+        },
+        "shockIndex": {
+            "max": 100,
+            "value": 100
+        },
+        "description": "",
+        "biography": "",
+        "macros": {
+            "type": "script",
+            "command": ""
+        },
+        "abilities": {
+            "strength": {
+                "base": 15
+            },
+            "stamina": {
+                "base": 14
+            },
+            "dexterity": {
+                "base": 13
+            },
+            "agility": {
+                "base": 12
+            },
+            "intelligence": {
+                "base": 10
+            },
+            "aura": {
+                "base": 9
+            },
+            "will": {
+                "base": 14
+            },
+            "eyesight": {
+                "base": 11
+            },
+            "hearing": {
+                "base": 10
+            },
+            "smell": {
+                "base": 8
+            },
+            "voice": {
+                "base": 10
+            },
+            "comeliness": {
+                "base": 12
+            },
+            "morality": {
+                "base": 12
+            }
+        },
+        "gender": "Male",
+        "occupation": "Knight"
+    },
+    "_key": "!actors!hm3e2eSirBaris01",
+    "img": "systems/hm3/images/svg/knight-silhouette.svg",
+    "items": [],
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+        "default": 0
+    },
+    "flags": {},
+    "prototypeToken": {
+        "name": "Sir Baris",
+        "displayName": 20,
+        "actorLink": true,
+        "width": 1,
+        "height": 1,
+        "texture": {
+            "src": "systems/hm3/images/svg/knight-silhouette.svg"
+        }
     }
-  }
 }

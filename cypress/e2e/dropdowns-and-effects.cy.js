@@ -29,7 +29,7 @@ describe("dropdowns", () => {
             cy.window().then(async () => {
                 await item.sheet.render(true);
                 return item;
-            })
+            }),
         );
 
     it("renders a skill's type dropdown with the stored value selected", () => {
@@ -64,7 +64,11 @@ describe("dropdowns", () => {
         withItemSheet("armorlocation", {}).then((item) => {
             const el = item.sheet.element;
             for (const [field, expected] of Object.entries({
-                ei1: "M1", ei5: "S2", ei9: "S3", ei13: "G4", ei17: "G5",
+                ei1: "M1",
+                ei5: "S2",
+                ei9: "S3",
+                ei13: "G4",
+                ei17: "G5",
             })) {
                 const select = el.querySelector(`select[name="system.effectiveImpact.${field}"]`);
                 expect(select, `${field} select`).to.exist;
@@ -94,45 +98,53 @@ describe("active effects", () => {
         // `label`/`icon` would fail validation here: `name` is required and may
         // not be blank, and v14 keeps no migration from the old keys.
         cy.hm3Actor("Sir Baris").then((actor) =>
-            cy.createDocument(
-                "ActiveEffect",
-                { name: "E2E Test Effect", img: "icons/svg/aura.svg", origin: actor.uuid },
-                { parent: actor }
-            ).then((effect) => {
-                expect(effect, "created effect").to.exist;
-                expect(effect.name).to.equal("E2E Test Effect");
-                return cy.window().then(() => effect.delete());
-            })
+            cy
+                .createDocument(
+                    "ActiveEffect",
+                    { name: "E2E Test Effect", img: "icons/svg/aura.svg", origin: actor.uuid },
+                    { parent: actor },
+                )
+                .then((effect) => {
+                    expect(effect, "created effect").to.exist;
+                    expect(effect.name).to.equal("E2E Test Effect");
+                    return cy.window().then(() => effect.delete());
+                }),
         );
     });
 
     it("opens the HM3 effect config, offering the system's key list", () => {
         cy.hm3Actor("Sir Baris").then((actor) =>
-            cy.createDocument(
-                "ActiveEffect",
-                {
-                    name: "E2E Keyed Effect",
-                    img: "icons/svg/aura.svg",
-                    changes: [{ key: "system.eph.meleeAMLMod", mode: 2, value: "10" }],
-                },
-                { parent: actor }
-            ).then((effect) => cy.window().then(async () => {
-                expect(effect.sheet.constructor.name, "HM3's config, not core's")
-                    .to.equal("HM3ActiveEffectConfig");
-                await effect.sheet.render(true);
-                return { effect, sheet: effect.sheet };
-            })).then(({ effect, sheet }) => {
-                // The curated key list is supplied by giving the schema field
-                // its `choices`, so core's own template renders a <select>.
-                const select = sheet.element.querySelector('select[name*="changes.0.key"]');
-                expect(select, "key rendered as a dropdown").to.exist;
-                const values = [...select.options].map((o) => o.value);
-                expect(values).to.include("system.eph.meleeAMLMod");
-                return cy.window().then(async () => {
-                    await sheet.close();
-                    await effect.delete();
-                });
-            })
+            cy
+                .createDocument(
+                    "ActiveEffect",
+                    {
+                        name: "E2E Keyed Effect",
+                        img: "icons/svg/aura.svg",
+                        changes: [{ key: "system.eph.meleeAMLMod", mode: 2, value: "10" }],
+                    },
+                    { parent: actor },
+                )
+                .then((effect) =>
+                    cy.window().then(async () => {
+                        expect(effect.sheet.constructor.name, "HM3's config, not core's").to.equal(
+                            "HM3ActiveEffectConfig",
+                        );
+                        await effect.sheet.render(true);
+                        return { effect, sheet: effect.sheet };
+                    }),
+                )
+                .then(({ effect, sheet }) => {
+                    // The curated key list is supplied by giving the schema field
+                    // its `choices`, so core's own template renders a <select>.
+                    const select = sheet.element.querySelector('select[name*="changes.0.key"]');
+                    expect(select, "key rendered as a dropdown").to.exist;
+                    const values = [...select.options].map((o) => o.value);
+                    expect(values).to.include("system.eph.meleeAMLMod");
+                    return cy.window().then(async () => {
+                        await sheet.close();
+                        await effect.delete();
+                    });
+                }),
         );
     });
 });

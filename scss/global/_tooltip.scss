@@ -6,9 +6,9 @@
 .tooltip {
     position: relative;
     display: inline-block;
-  }
-  
-  .tooltiptext {
+}
+
+.tooltiptext {
     text-transform: none;
     font-size: 12px;
     visibility: hidden;
@@ -18,15 +18,15 @@
     text-align: left;
     border-radius: 6px;
     padding: 5px 5px;
-    
+
     /* Position the tooltip */
     position: absolute;
     bottom: 150%;
     left: 50%;
     margin-left: -60px;
-  }
+}
 
-  .tooltiptext::after {
+.tooltiptext::after {
     content: "";
     position: absolute;
     top: 100%;
@@ -35,9 +35,8 @@
     border-width: 5px;
     border-style: solid;
     border-color: rgb(216, 189, 36) transparent transparent transparent;
-  }
-  
-  
-  .tooltip:hover .tooltiptext {
+}
+
+.tooltip:hover .tooltiptext {
     visibility: visible;
-  }
+}

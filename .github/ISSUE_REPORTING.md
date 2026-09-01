@@ -26,13 +26,13 @@ Issue types are **organization-level** in the `HeroicLands` org, so the same fiv
 types — and their definitions — are shared with every repository in the project.
 They are not redefined here.
 
-| Type        | Use it when…                                                                                                                                                       |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **bug**     | Existing, shipped behavior is wrong or broken — an error, crash, incorrect result, or regression.                                                                  |
-| **feature** | A new capability or enhancement that does not exist yet, deliverable as one shippable unit of value.                                                               |
-| **epic**    | A large body of work that only makes sense decomposed into sub-issues; a coordinating container tracked by its children.                                           |
-| **task**    | Necessary work that is neither a defect nor a new capability: chores, maintenance, refactors, dependency bumps, tooling, docs, releases.                           |
-| **spike**   | A **timeboxed** investigation whose deliverable is a decision or recommendation — not shipped code.                                                                |
+| Type        | Use it when…                                                                                                                             |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| **bug**     | Existing, shipped behavior is wrong or broken — an error, crash, incorrect result, or regression.                                        |
+| **feature** | A new capability or enhancement that does not exist yet, deliverable as one shippable unit of value.                                     |
+| **epic**    | A large body of work that only makes sense decomposed into sub-issues; a coordinating container tracked by its children.                 |
+| **task**    | Necessary work that is neither a defect nor a new capability: chores, maintenance, refactors, dependency bumps, tooling, docs, releases. |
+| **spike**   | A **timeboxed** investigation whose deliverable is a decision or recommendation — not shipped code.                                      |
 
 **Type rules**
 
@@ -42,13 +42,13 @@ They are not redefined here.
 - A **spike** MUST state the question it answers and its timebox. It typically _spawns_ follow-up issues rather than doing the work.
 - A **refactor** that changes no external behavior is a **task**, labelled `tech-debt`.
 
-**What "broken" means here.** This repository ships running code *and* game data,
+**What "broken" means here.** This repository ships running code _and_ game data,
 so a bug is either: behavior that misfires (a roll that applies the wrong
 modifier, a sheet that will not open, an active effect silently ignored), or a
 compendium document whose data is wrong in a way the rules can detect. A rule
 that was never implemented is not broken — that is a **feature**.
 
-> `bug` and `enhancement` were used as *labels* in this repository until 2026-08.
+> `bug` and `enhancement` were used as _labels_ in this repository until 2026-08.
 > They are the **type** axis now. Every issue that carried one had its type set
 > from it before the labels were retired; do not reintroduce them.
 
@@ -61,12 +61,12 @@ Medium · Low**.
 Priority is about attention, not schedule — this project has no deadlines, so it
 answers "when I next sit down, what deserves my time?"
 
-| Priority   | Meaning                                                     | Typical triggers                                                                              |
-| ---------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| **Urgent** | Do it next session. Active harm or a hard blocker.          | World data loss or corruption; the system fails to load; a release cannot be cut.             |
-| **High**   | Wanted soon.                                                | A core play loop is unusable with no workaround; work the active milestone depends on.        |
-| **Medium** | **Default.** Should get done; not blocking.                 | Most fixes and features; defects with a workaround.                                            |
-| **Low**    | Deferrable indefinitely with little cost.                   | Cosmetic issues; nice-to-haves; long-tail edge cases.                                          |
+| Priority   | Meaning                                            | Typical triggers                                                                       |
+| ---------- | -------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| **Urgent** | Do it next session. Active harm or a hard blocker. | World data loss or corruption; the system fails to load; a release cannot be cut.      |
+| **High**   | Wanted soon.                                       | A core play loop is unusable with no workaround; work the active milestone depends on. |
+| **Medium** | **Default.** Should get done; not blocking.        | Most fixes and features; defects with a workaround.                                    |
+| **Low**    | Deferrable indefinitely with little cost.          | Cosmetic issues; nice-to-haves; long-tail edge cases.                                  |
 
 **Priority rules**
 
@@ -86,22 +86,22 @@ sync, from the repository and from every issue carrying it.
 > add none and note the gap in the body. Extending the registry is a deliberate
 > edit to **both** this table and `.github/labels.yml`.
 
-| Label              | Scope                                                                                          |
-| ------------------ | ---------------------------------------------------------------------------------------------- |
-| `compendium`       | The shipped compendium content — items, characters, journals, and their data.                  |
-| `cosmetic`         | Presentation only; does not affect function or a rules outcome.                                |
-| `regression`       | Something that previously worked and stopped. Pairs with type `bug`.                           |
-| `devops`           | Build, tooling, pack pipeline, release, repository configuration.                              |
+| Label              | Scope                                                                                           |
+| ------------------ | ----------------------------------------------------------------------------------------------- |
+| `compendium`       | The shipped compendium content — items, characters, journals, and their data.                   |
+| `cosmetic`         | Presentation only; does not affect function or a rules outcome.                                 |
+| `regression`       | Something that previously worked and stopped. Pairs with type `bug`.                            |
+| `devops`           | Build, tooling, pack pipeline, release, repository configuration.                               |
 | `security`         | Touches an attack surface: client script execution, world-data integrity, privilege escalation. |
-| `tech-debt`        | Restructuring or cleanup of working code; refactors.                                           |
+| `tech-debt`        | Restructuring or cleanup of working code; refactors.                                            |
 | `breaking-change`  | Alters a document ID, the data model, or pack compatibility in a way existing worlds notice.    |
-| `blocked`          | Cannot proceed until an external dependency or another issue clears.                           |
-| `documentation`    | Documentation about this repository — README, process, authoring guides.                       |
-| `duplicate`        | This issue or pull request already exists.                                                     |
-| `question`         | Further information is requested.                                                              |
-| `wontfix`          | This will not be worked on.                                                                    |
-| `good first issue` | Small, well-bounded, and a reasonable place for a new contributor to start.                    |
-| `help wanted`      | Extra attention is needed.                                                                     |
+| `blocked`          | Cannot proceed until an external dependency or another issue clears.                            |
+| `documentation`    | Documentation about this repository — README, process, authoring guides.                        |
+| `duplicate`        | This issue or pull request already exists.                                                      |
+| `question`         | Further information is requested.                                                               |
+| `wontfix`          | This will not be worked on.                                                                     |
+| `good first issue` | Small, well-bounded, and a reasonable place for a new contributor to start.                     |
+| `help wanted`      | Extra attention is needed.                                                                      |
 
 There is deliberately no `system` or `code` label: almost every issue here is
 about the system code, so the label would carry no information.
@@ -151,12 +151,12 @@ The project spans several repositories in the `HeroicLands` organization, and
 **each one tracks its own work.** There is no central tracker.
 
 | Repository                        | Tracks                                                                     |
-| --------------------------------- | ---------------------------------------------------------------------------- |
-| `HarnMaster-3-FoundryVTT`         | **This repository** — the `hm3` system: code, templates, styles, its packs  |
-| `Song-of-Heroic-Lands-FoundryVTT` | The `sohl` system — a separate game system, not a version of this one       |
-| `sohl-kethira-basic`              | The `kethira` package — Hârn content for `sohl`, not for `hm3`              |
-| `package-build`                   | The shared build toolchain this repository consumes                          |
-| `heroiclands-site`                | heroiclands.org — its content, hosting, and CDN                              |
+| --------------------------------- | -------------------------------------------------------------------------- |
+| `HarnMaster-3-FoundryVTT`         | **This repository** — the `hm3` system: code, templates, styles, its packs |
+| `Song-of-Heroic-Lands-FoundryVTT` | The `sohl` system — a separate game system, not a version of this one      |
+| `sohl-kethira-basic`              | The `kethira` package — Hârn content for `sohl`, not for `hm3`             |
+| `package-build`                   | The shared build toolchain this repository consumes                        |
+| `heroiclands-site`                | heroiclands.org — its content, hosting, and CDN                            |
 
 **File the issue where the work will be done.** The rule is delivery, not
 subject: if the fix is an edit to a file in this repository, the issue belongs

@@ -18,8 +18,6 @@
 
 # ------------------------------------------------- subject matter, in use here
 
-
-
 - name: compendium
   color: "672dc4"
   description: Add, remove, or modify compendium content.

@@ -80,9 +80,7 @@ describe("HM3.injuryLocations", () => {
 
     it("each location has impactType", () => {
         for (const [key, loc] of Object.entries(HM3.injuryLocations)) {
-            expect(loc, `${key} missing impactType`).toHaveProperty(
-                "impactType",
-            );
+            expect(loc, `${key} missing impactType`).toHaveProperty("impactType");
         }
     });
 });
@@ -111,9 +109,7 @@ describe("HM3.stdSkills", () => {
         for (const [name, skill] of Object.entries(HM3.stdSkills)) {
             expect(skill, `${name} missing type`).toHaveProperty("type");
             expect(skill, `${name} missing skillBase`).toHaveProperty("skillBase");
-            expect(skill.skillBase, `${name} missing formula`).toHaveProperty(
-                "formula",
-            );
+            expect(skill.skillBase, `${name} missing formula`).toHaveProperty("formula");
         }
     });
 });

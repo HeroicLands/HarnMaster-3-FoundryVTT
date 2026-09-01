@@ -28,7 +28,12 @@ describe("system initialisation", () => {
             expect(win.CONFIG.fontDefinitions).to.have.property("Lankorian Blackhand");
             expect(win.CONFIG.HM3, "CONFIG.HM3").to.exist;
             expect(win.game.hm3, "game.hm3 API").to.have.keys(
-                "HarnMasterActor", "HarnMasterItem", "DiceHM3", "config", "macros", "migrations"
+                "HarnMasterActor",
+                "HarnMasterItem",
+                "DiceHM3",
+                "config",
+                "macros",
+                "migrations",
             );
         });
     });
@@ -48,9 +53,18 @@ describe("system initialisation", () => {
             // untyped blob and lose its defaults silently.
             const actorTypes = ["character", "creature", "container"];
             const itemTypes = [
-                "skill", "spell", "invocation", "psionic", "weapongear",
-                "containergear", "missilegear", "armorgear", "miscgear",
-                "injury", "armorlocation", "trait",
+                "skill",
+                "spell",
+                "invocation",
+                "psionic",
+                "weapongear",
+                "containergear",
+                "missilegear",
+                "armorgear",
+                "miscgear",
+                "injury",
+                "armorlocation",
+                "trait",
             ];
             expect(Object.keys(win.CONFIG.Actor.dataModels)).to.have.members(actorTypes);
             expect(Object.keys(win.CONFIG.Item.dataModels)).to.have.members(itemTypes);
@@ -69,7 +83,8 @@ describe("system initialisation", () => {
 
     it("offers the Harnic fonts to the ProseMirror editor", () => {
         cy.window().then((win) => {
-            const available = win.foundry.applications.settings.menus.FontConfig.getAvailableFonts();
+            const available =
+                win.foundry.applications.settings.menus.FontConfig.getAvailableFonts();
             expect(available).to.include.members(["Lakise", "Runic", "Lankorian Blackhand"]);
         });
     });
@@ -80,7 +95,9 @@ describe("system initialisation", () => {
                 const actor = win.game.actors.getName(name);
                 expect(actor, name).to.exist;
                 // A DataModel instance, not the plain object template.json gave.
-                expect(actor.system, `${name} system`).to.be.instanceOf(win.foundry.abstract.DataModel);
+                expect(actor.system, `${name} system`).to.be.instanceOf(
+                    win.foundry.abstract.DataModel,
+                );
             }
         });
     });

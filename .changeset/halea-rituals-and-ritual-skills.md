@@ -4,7 +4,7 @@
 
 Add Halea's rituals, and Ritual skills for seven more faiths.
 
-- **Halea now has a full ritual set.** The compendium carried a Halea *skill* but
+- **Halea now has a full ritual set.** The compendium carried a Halea _skill_ but
   no invocations for her, so a Halea cleric had nothing to draw on. There is now
   an `Esoteric/Rituals/Halea` folder holding 32 invocations: the 20 common to
   every faith — Baptism, Blessing, Commune, Liturgy, Marriage, Passage of the

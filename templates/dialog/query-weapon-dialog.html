@@ -1,15 +1,15 @@
-    <p>{{prompt}}<br/></p>
+<p>{{prompt}}<br /></p>
 
-    <div class="form-group">
-        <label>Weapon:</label>
-        <select name="weapon">
-            {{selectOptions (toChoices weapons) selected=defaultWeapon}}
-        </select>
-    </div>
+<div class="form-group">
+    <label>Weapon:</label>
+    <select name="weapon">
+        {{selectOptions (toChoices weapons) selected=defaultWeapon}}
+    </select>
+</div>
 
-    {{#if modifierType}}
-    <div class="form-group">
-        <label>Addl {{modifierType}} Modifier:</label>
-        <input type="number" name="addlModifier" value="{{defaultModifier}}" />
-    </div>
-    {{/if}}
+{{#if modifierType}}
+<div class="form-group">
+    <label>Addl {{modifierType}} Modifier:</label>
+    <input type="number" name="addlModifier" value="{{defaultModifier}}" />
+</div>
+{{/if}}

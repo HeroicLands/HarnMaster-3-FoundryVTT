@@ -1,37 +1,42 @@
-    <div class="form-group">
-        <label>Aim:</label>
-        <select name="aim">
-            <option value="Mid">Mid</option>
-            <option value="High">High</option>
-            <option value="Low">Low</option>
-        </select>
-    </div>
+<div class="form-group">
+    <label>Aim:</label>
+    <select name="aim">
+        <option value="Mid">Mid</option>
+        <option value="High">High</option>
+        <option value="Low">Low</option>
+    </select>
+</div>
 
-    <div class="form-group">
-        <label>Location:</label>
-        <select name="location">
-            {{selectOptions (toChoices hitLocations) selected=location}}
-        </select>
-    </div>
+<div class="form-group">
+    <label>Location:</label>
+    <select name="location">
+        {{selectOptions (toChoices hitLocations) selected=location}}
+    </select>
+</div>
 
-    <div class="form-group">
-        <label>Aspect:</label>
-        <select name="aspect">
-            <option value="Blunt">Blunt</option>
-            <option value="Edged">Edged</option>
-            <option value="Piercing">Piercing</option>
-            <option value="Fire">Fire</option>
-        </select>
-    </div>
+<div class="form-group">
+    <label>Aspect:</label>
+    <select name="aspect">
+        <option value="Blunt">Blunt</option>
+        <option value="Edged">Edged</option>
+        <option value="Piercing">Piercing</option>
+        <option value="Fire">Fire</option>
+    </select>
+</div>
 
-    <div class="form-group">
-        <label>Impact:</label>
-        <input type="text" name="impact" value="{{impact}}" />
-    </div>
+<div class="form-group">
+    <label>Impact:</label>
+    <input type="text" name="impact" value="{{impact}}" />
+</div>
 
-    {{#if askRecordInjury}}
-    <div class="form-group">
-        <input type="checkbox" name="addToCharSheet" value="{{addToCharSheet}}" data-dtype="Boolean" checked />
-        <label for="addToCharSheet">Add to Character Sheet</label>
-    </div>
-    {{/if}}
+{{#if askRecordInjury}}
+<div class="form-group">
+    <input
+        type="checkbox"
+        name="addToCharSheet"
+        value="{{addToCharSheet}}"
+        data-dtype="Boolean"
+        checked />
+    <label for="addToCharSheet">Add to Character Sheet</label>
+</div>
+{{/if}}

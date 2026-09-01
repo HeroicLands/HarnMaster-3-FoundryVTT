@@ -32,12 +32,17 @@
 
     <div class="card-content">
         <span class="label">Impact (Range + Addl + Roll):</span>
-        <span class="value">{{rangeImpact}} + {{addlImpact}} + {{rollValue}} = <strong>{{totalImpact}}</strong></span>
+        <span class="value"
+            >{{rangeImpact}} + {{addlImpact}} + {{rollValue}} =
+            <strong>{{totalImpact}}</strong></span
+        >
     </div>
     {{else}}
     <div class="card-content">
         <span class="label">Impact (Range + Roll):</span>
-        <span class="value">{{rangeImpact}} + {{rollValue}} = <strong>{{totalImpact}}</strong></span>
+        <span class="value"
+            >{{rangeImpact}} + {{rollValue}} = <strong>{{totalImpact}}</strong></span
+        >
     </div>
     {{/if}}
 </div>

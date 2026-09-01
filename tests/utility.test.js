@@ -88,13 +88,9 @@ describe("parseAEValue", () => {
 
 describe("getAssocSkill", () => {
     // Shaped like real Items: `name` on the document. The fixture this
-        // replaced used `{data: {name}}`, the pre-v11 shape, which is what let
-        // the `s.data.name` bug in getAssocSkill survive being tested.
-    const skills = [
-        { name: "Sword" },
-        { name: "Shield" },
-        { name: "Riding" },
-    ];
+    // replaced used `{data: {name}}`, the pre-v11 shape, which is what let
+    // the `s.data.name` bug in getAssocSkill survive being tested.
+    const skills = [{ name: "Sword" }, { name: "Shield" }, { name: "Riding" }];
 
     it("returns exact match", () => {
         expect(getAssocSkill("Sword", skills, "default")).toBe("Sword");

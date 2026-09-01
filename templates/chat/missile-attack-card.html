@@ -39,43 +39,46 @@
 
     <div class="card-content">
         <span class="label">Effective Target:</span>
-        <span class="value">{{origTarget}}{{#if rangeModifier}} {{rmPlusMinus}} {{rangeModifier}}{{/if}} {{amPlusMinus}} {{addlModifier}} = <strong>{{modifiedTarget}}</strong></span>
+        <span class="value"
+            >{{origTarget}}{{#if rangeModifier}} {{rmPlusMinus}} {{rangeModifier}}{{/if}}
+            {{amPlusMinus}} {{addlModifier}} = <strong>{{modifiedTarget}}</strong></span
+        >
     </div>
     {{else}}
     <div class="card-content">
         <span class="label">Effective Target:</span>
-        <span class="value">{{#if rangeModifier}}{{origTarget}} {{rmPlusMinus}} {{rangeModifier}} = {{/if}}<strong>{{modifiedTarget}}</strong></span>
+        <span class="value"
+            >{{#if rangeModifier}}{{origTarget}} {{rmPlusMinus}} {{rangeModifier}} = {{/if}}<strong
+                >{{modifiedTarget}}</strong
+            ></span
+        >
     </div>
     {{/if}}
 
     <div class="card-content">
         <span class="label">Roll:</span>
         {{#if isSuccess}}
-            <span class="value success-text">{{rollValue}}</span>
+        <span class="value success-text">{{rollValue}}</span>
         {{else}}
-            <span class="value failure-text">{{rollValue}}</span>
+        <span class="value failure-text">{{rollValue}}</span>
         {{/if}}
     </div>
 
-    {{#if isSuccess}}
-        {{#if isCritical}}
-        <footer class="card-footer critical-success-block">
-            <span>{{description}}</span>
-        </footer>
-        {{else}}
-        <footer class="card-footer success-text">
-            <span>{{description}}</span>
-        </footer>
-        {{/if}}
+    {{#if isSuccess}} {{#if isCritical}}
+    <footer class="card-footer critical-success-block">
+        <span>{{description}}</span>
+    </footer>
     {{else}}
-        {{#if isCritical}}
-        <footer class="card-footer critical-failure-block">
-            <span>{{description}}</span>
-        </footer>
-        {{else}}
-        <footer class="card-footer failure-text">
-            <span>{{description}}</span>
-        </footer>
-        {{/if}}
-    {{/if}}
+    <footer class="card-footer success-text">
+        <span>{{description}}</span>
+    </footer>
+    {{/if}} {{else}} {{#if isCritical}}
+    <footer class="card-footer critical-failure-block">
+        <span>{{description}}</span>
+    </footer>
+    {{else}}
+    <footer class="card-footer failure-text">
+        <span>{{description}}</span>
+    </footer>
+    {{/if}} {{/if}}
 </div>

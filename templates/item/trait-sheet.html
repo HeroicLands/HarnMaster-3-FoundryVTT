@@ -1,9 +1,16 @@
 <div class="{{cssClass}}">
     <header class="sheet-header skill-header">
         <div class="flexrow">
-            <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}" />
+            <img
+                class="profile-img"
+                src="{{item.img}}"
+                data-action="editImage"
+                data-edit="img"
+                title="{{item.name}}" />
             <div class="header-fields flexcol">
-                <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
+                <h1 class="charname">
+                    <input name="name" type="text" value="{{item.name}}" placeholder="Name" />
+                </h1>
                 <div class="skill-type flexrow">
                     <label class="label">Type</label>
                     <select class="value" name="system.type">
@@ -16,62 +23,108 @@
 
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item {{#if tabs.properties.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="properties">Properties</a>
-        <a class="item {{#if tabs.description.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="description">Description</a>
-        <a class="item {{#if tabs.effects.active}}active{{/if}}" data-action="tab" data-group="primary" data-tab="effects">effects</a>
+        <a
+            class="item {{#if tabs.properties.active}}active{{/if}}"
+            data-action="tab"
+            data-group="primary"
+            data-tab="properties"
+            >Properties</a
+        >
+        <a
+            class="item {{#if tabs.description.active}}active{{/if}}"
+            data-action="tab"
+            data-group="primary"
+            data-tab="description"
+            >Description</a
+        >
+        <a
+            class="item {{#if tabs.effects.active}}active{{/if}}"
+            data-action="tab"
+            data-group="primary"
+            data-tab="effects"
+            >effects</a
+        >
     </nav>
 
     {{!-- Sheet Body --}}
     <section class="sheet-body skill-body">
-
         {{!-- Properties Tab --}}
-        <div class="tab properties {{#if tabs.properties.active}}active{{/if}}" data-group="primary" data-tab="properties">
+        <div
+            class="tab properties {{#if tabs.properties.active}}active{{/if}}"
+            data-group="primary"
+            data-tab="properties">
             <div class="resource">
                 <label class="resource-label">Source</label>
-                <input type="text" name="system.source" value="{{idata.source}}" data-dtype="String" />
+                <input
+                    type="text"
+                    name="system.source"
+                    value="{{idata.source}}"
+                    data-dtype="String" />
             </div>
             <div class="resource">
                 <label class="resource-label">Note</label>
-                <input type="text" name="system.notes" value="{{idata.notes}}" data-dtype="String" />
+                <input
+                    type="text"
+                    name="system.notes"
+                    value="{{idata.notes}}"
+                    data-dtype="String" />
             </div>
         </div>
 
         {{!-- Description Tab --}}
-        <div class="tab description {{#if tabs.description.active}}active{{/if}}" data-group="primary" data-tab="description">
+        <div
+            class="tab description {{#if tabs.description.active}}active{{/if}}"
+            data-group="primary"
+            data-tab="description">
             {{editor idata.description target="system.description" button=true editable=editable}}
         </div>
 
         {{!-- Effects Tab --}}
-        <div class="tab effects {{#if tabs.effects.active}}active{{/if}}" data-group="primary" data-tab="effects">
+        <div
+            class="tab effects {{#if tabs.effects.active}}active{{/if}}"
+            data-group="primary"
+            data-tab="effects">
             <ol class="effects-list">
                 <li class="effects-header flexrow">
                     <h3 class="effect-name flexrow">Effect</h3>
                     <div class="effect-duration">Duration</div>
                     <div class="effect-changes">Changes</div>
-                    <a class="effect-controls effect-control" title="Add Effect"
-                        data-action="{{#unless hasActor}}create{{/unless}}"><span
-                            class="{{#unless hasActor}}active{{/unless}}"><i class="fas fa-plus"></i> Add</span></a>
+                    <a
+                        class="effect-controls effect-control"
+                        title="Add Effect"
+                        data-action="{{#unless hasActor}}create{{/unless}}"
+                        ><span class="{{#unless hasActor}}active{{/unless}}"
+                            ><i class="fas fa-plus"></i> Add</span
+                        ></a
+                    >
                 </li>
 
                 <ol class="effect-list item-list">
                     {{#each effects as |effect id|}}
-                        <li class="effect {{#if effect.data.disabled}}disabled{{/if}} flexrow"
-                            data-effect-id="{{effect.data._id}}">
-                            <div class="effect-name flexrow">
-                                <div class="effect-image" style="background-image: url('{{effect.data.img}}')"></div>
-                                <h4>{{effect.data.name}}</h4>
-                            </div>
-                            <div class="effect-ele effect-duration">{{effect.duration.label}}</div>
-                            <div class="effect-ele effect-changes">{{effect.changes}}</div>
-                            <div class="effect-controls">
-                                <a class="effect-control" data-action="toggle"><i
-                                        class="{{#unless (or effect.data.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i></a>
-                                <a class="effect-control" data-action="edit"><i
-                                        class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i></a>
-                                <a class="effect-control" data-action="delete"><i
-                                        class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i></a>
-                            </div>
-                        </li>
+                    <li
+                        class="effect {{#if effect.data.disabled}}disabled{{/if}} flexrow"
+                        data-effect-id="{{effect.data._id}}">
+                        <div class="effect-name flexrow">
+                            <div
+                                class="effect-image"
+                                style="background-image: url('{{effect.data.img}}')"></div>
+                            <h4>{{effect.data.name}}</h4>
+                        </div>
+                        <div class="effect-ele effect-duration">{{effect.duration.label}}</div>
+                        <div class="effect-ele effect-changes">{{effect.changes}}</div>
+                        <div class="effect-controls">
+                            <a class="effect-control" data-action="toggle"
+                                ><i
+                                    class="{{#unless (or effect.data.disabled hasActor)}}active{{/unless}} fas fa-circle-notch"></i
+                            ></a>
+                            <a class="effect-control" data-action="edit"
+                                ><i class="{{#unless hasActor}}active{{/unless}} fas fa-edit"></i
+                            ></a>
+                            <a class="effect-control" data-action="delete"
+                                ><i class="{{#unless hasActor}}active{{/unless}} fas fa-trash"></i
+                            ></a>
+                        </div>
+                    </li>
                     {{/each}}
                 </ol>
             </ol>

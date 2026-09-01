@@ -5,7 +5,6 @@ import { HarnMasterBaseActorSheet } from "./base-actor-sheet.js";
  * @extends {HarnMasterBaseActorSheet}
  */
 export class HarnMasterCreatureSheet extends HarnMasterBaseActorSheet {
-
     /**
      * ApplicationV2 merges DEFAULT_OPTIONS up the prototype chain, so this only
      * contributes what it adds to the base sheet's.
@@ -13,7 +12,7 @@ export class HarnMasterCreatureSheet extends HarnMasterBaseActorSheet {
      */
     static DEFAULT_OPTIONS = {
         classes: ["creature"],
-        position: { width: 780, height: 640 }
+        position: { width: 780, height: 640 },
     };
 
     /**
@@ -23,6 +22,6 @@ export class HarnMasterCreatureSheet extends HarnMasterBaseActorSheet {
      */
     static TEMPLATES = {
         full: "systems/hm3/templates/actor/creature-sheet.html",
-        limited: "systems/hm3/templates/actor/creature-limited.html"
+        limited: "systems/hm3/templates/actor/creature-limited.html",
     };
 }

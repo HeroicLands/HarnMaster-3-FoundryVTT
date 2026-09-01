@@ -47,9 +47,7 @@ for (const pack of config.packs) {
     fs.rmSync(dest, { recursive: true, force: true });
     fs.mkdirSync(dest, { recursive: true });
 
-    const count = fs
-        .readdirSync(source)
-        .filter((entry) => entry.endsWith(".json")).length;
+    const count = fs.readdirSync(source).filter((entry) => entry.endsWith(".json")).length;
 
     await compilePack(source, dest, { recursive: true, log: false });
 

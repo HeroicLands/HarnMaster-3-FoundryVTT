@@ -17,5 +17,5 @@ armour effective-impact, macro type, and others — render from a plain list of
 strings. Foundry's `selectOptions` helper numbers such a list, producing
 `<option value="0">Craft</option>`, so the stored value never matched and
 nothing appeared selected. Worse, saving the sheet would have written the
-option's *index* into the field. They now render the value they display, as they
+option's _index_ into the field. They now render the value they display, as they
 did before v14.

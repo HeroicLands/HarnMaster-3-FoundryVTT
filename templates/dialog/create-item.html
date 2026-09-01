@@ -1,16 +1,16 @@
-    <div class="form-group">
-        <label>Name</label>
-        <input type="text" name="name" placeholder="{{placeholder}}" />
-    </div>
-    {{#if extraLabel}}
-    <div class="form-group">
-        <label>{{extraLabel}}</label>
-        {{#if extraList}}
-        <select class="resource-value" name="extra_value" data-dtype="String">
-            {{selectOptions (toChoices extraList) selected=extra_value}}
-        </select>
-        {{else}}
-        <input type="text" name="extra_value" data-dtype="String"/>
-        {{/if}}
-    </div>
+<div class="form-group">
+    <label>Name</label>
+    <input type="text" name="name" placeholder="{{placeholder}}" />
+</div>
+{{#if extraLabel}}
+<div class="form-group">
+    <label>{{extraLabel}}</label>
+    {{#if extraList}}
+    <select class="resource-value" name="extra_value" data-dtype="String">
+        {{selectOptions (toChoices extraList) selected=extra_value}}
+    </select>
+    {{else}}
+    <input type="text" name="extra_value" data-dtype="String" />
     {{/if}}
+</div>
+{{/if}}

@@ -1,8 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-    meleeCombatResult,
-    missileCombatResult,
-} from "../module/combat.js";
+import { meleeCombatResult, missileCombatResult } from "../module/combat.js";
 import { HM3 } from "../module/config.js";
 
 describe("meleeCombatResult", () => {
@@ -112,10 +109,7 @@ describe("meleeCombatResult", () => {
 
         it("ignore defense has all 4 attack results", () => {
             for (const atk of rollResults) {
-                expect(
-                    HM3.meleeCombatTable["ignore"],
-                    `ignore missing ${atk}`,
-                ).toHaveProperty(atk);
+                expect(HM3.meleeCombatTable["ignore"], `ignore missing ${atk}`).toHaveProperty(atk);
             }
         });
     });
@@ -172,10 +166,9 @@ describe("missileCombatResult", () => {
 
         it("ignore defense has all 4 attack results", () => {
             for (const atk of rollResults) {
-                expect(
-                    HM3.missileCombatTable["ignore"],
-                    `ignore missing ${atk}`,
-                ).toHaveProperty(atk);
+                expect(HM3.missileCombatTable["ignore"], `ignore missing ${atk}`).toHaveProperty(
+                    atk,
+                );
             }
         });
     });

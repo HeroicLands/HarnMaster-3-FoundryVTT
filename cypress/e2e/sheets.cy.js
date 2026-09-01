@@ -15,8 +15,34 @@ describe("sheets", () => {
     afterEach(() => cy.closeAllSheets());
 
     const cases = [
-        { name: "Sir Baris", type: "character", tabs: ["facade", "profile", "skills", "combat", "esoteric", "inventory", "macro", "effects"] },
-        { name: "Gârgún Warrior", type: "creature", tabs: ["facade", "profile", "skills", "combat", "esoteric", "inventory", "macro", "effects"] },
+        {
+            name: "Sir Baris",
+            type: "character",
+            tabs: [
+                "facade",
+                "profile",
+                "skills",
+                "combat",
+                "esoteric",
+                "inventory",
+                "macro",
+                "effects",
+            ],
+        },
+        {
+            name: "Gârgún Warrior",
+            type: "creature",
+            tabs: [
+                "facade",
+                "profile",
+                "skills",
+                "combat",
+                "esoteric",
+                "inventory",
+                "macro",
+                "effects",
+            ],
+        },
         { name: "Treasure Chest", type: "container", tabs: ["facade"] },
     ];
 
@@ -28,7 +54,7 @@ describe("sheets", () => {
                     const sheet = actor.sheet;
                     // ApplicationV2, not the AppV1 class it used to extend.
                     expect(sheet).to.be.instanceOf(
-                        cy.state("window").foundry.applications.api.ApplicationV2
+                        cy.state("window").foundry.applications.api.ApplicationV2,
                     );
                     // DocumentSheetV2 renders itself as the form.
                     expect(sheet.element.tagName.toLowerCase()).to.equal("form");
@@ -66,10 +92,11 @@ describe("sheets", () => {
                         if (!nav) return; // this type does not carry that tab
                         nav.click();
                         const content = el.querySelector(`.tab[data-tab="${tab}"]`);
-                        expect(content?.classList.contains("active"), `${tab} became active`).to.be.true;
+                        expect(content?.classList.contains("active"), `${tab} became active`).to.be
+                            .true;
                         expect(
                             el.querySelectorAll('.tab[data-group="primary"].active').length,
-                            `only ${tab} is active`
+                            `only ${tab} is active`,
                         ).to.equal(1);
                     });
                 }
@@ -83,24 +110,31 @@ describe("sheets", () => {
         // `get template()`. A type whose template failed to resolve would throw
         // here rather than silently render blank.
         const types = [
-            "skill", "spell", "invocation", "psionic", "weapongear",
-            "containergear", "missilegear", "armorgear", "miscgear",
-            "injury", "armorlocation", "trait",
+            "skill",
+            "spell",
+            "invocation",
+            "psionic",
+            "weapongear",
+            "containergear",
+            "missilegear",
+            "armorgear",
+            "miscgear",
+            "injury",
+            "armorlocation",
+            "trait",
         ];
         cy.window().then(async (win) => {
             for (const type of types) {
                 // Rebuilt in the window's realm; a literal from the spec's
                 // realm fails Foundry's plain-object check.
                 const item = await win.Item.implementation.create(
-                    win.JSON.parse(JSON.stringify({ name: `E2E ${type}`, type }))
+                    win.JSON.parse(JSON.stringify({ name: `E2E ${type}`, type })),
                 );
                 expect(item, `created ${type}`).to.exist;
                 await item.sheet.render(true);
                 expect(item.sheet.element, `${type} sheet element`).to.exist;
-                expect(
-                    item.sheet.element.querySelector(".sheet-header"),
-                    `${type} sheet header`
-                ).to.exist;
+                expect(item.sheet.element.querySelector(".sheet-header"), `${type} sheet header`).to
+                    .exist;
                 await item.sheet.close();
                 await item.delete();
             }

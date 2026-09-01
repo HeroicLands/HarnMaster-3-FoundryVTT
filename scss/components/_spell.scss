@@ -5,171 +5,168 @@
 
 @mixin spell {
     .esoteric {
-      h2 {
-        flex: 1;
-        margin: 0;
-        line-height: 36px;
-        font-family: "Modesto Condensed", "Palatino Linotype", serif;
-        font-size: 20px;
-        font-weight: 700;
-        color: #4b4a44;
-        background-color: #bbb;
-        border-top: 2px groove #FFF;
-        border-bottom: 2px groove #FFF;
-        padding: 5px;
-      }
-  
-      .spells-list {
-          list-style: none;
-          margin: 7px 0;
-          padding: 0;
-          overflow-y: hidden;
-    
-          .spell-header {
-            font-weight: bold;
-          }
-    
-          .spell {
-            border-bottom: 1px solid #BBB;
-    
-            .item-name.std-roll:hover .item-image {
-              background-image: url("../../../icons/svg/d20-grey.svg") !important;
-            }
-  
-            .item-name.std-roll .item-image:hover {
-              background-image: url("../../../icons/svg/d20-black.svg") !important;
-            }
-
-            .spell-image {
-              flex: 0 0 24px;
-              margin-right: 5px;
-            }
-    
-            img {
-              display: block;
-            }
-          }
-    
-          .spell-name {
-            flex: 0 0 200px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-          }
-    
-          .spell-convocation {
-            flex: 0 0 80px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-            padding-left: 3px;
-          }
-    
-          .spell-level {
-            flex: 0 0 40px;
-            text-align: center;
-          }
-    
-          .spell-eml {
-            flex: 0 0 40px;
-            text-align: center;
-          }
-    
-          .spell-notes {
-            flex: 1 0 150px;
-            padding-left: 10px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-          }
-
-          .item-controls {
-            flex: 0 0 45px;
-            text-align: right;
-
-            .active {
-              color: #4b4a44;
-            }      
-
-          }
-
-      }
-
-      .psionics-list {
-        list-style: none;
-        margin: 7px 0;
-        padding: 0;
-        overflow-y: hidden;
-
-        .psionic-header {
-          font-weight: bold;
+        h2 {
+            flex: 1;
+            margin: 0;
+            line-height: 36px;
+            font-family: "Modesto Condensed", "Palatino Linotype", serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #4b4a44;
+            background-color: #bbb;
+            border-top: 2px groove #fff;
+            border-bottom: 2px groove #fff;
+            padding: 5px;
         }
 
-        .psionic {
-          border-bottom: 1px solid #BBB;
+        .spells-list {
+            list-style: none;
+            margin: 7px 0;
+            padding: 0;
+            overflow-y: hidden;
 
-          .item-name.std-roll:hover .item-image {
-            background-image: url("../../../icons/svg/d20-grey.svg") !important;
-          }
+            .spell-header {
+                font-weight: bold;
+            }
 
-          .item-name.std-roll .item-image:hover {
-            background-image: url("../../../icons/svg/d20-black.svg") !important;
-          }
+            .spell {
+                border-bottom: 1px solid #bbb;
 
-          .psionic-image {
-            flex: 0 0 24px;
-            margin-right: 5px;
-          }
+                .item-name.std-roll:hover .item-image {
+                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                }
 
-          img {
-            display: block;
-          }
+                .item-name.std-roll .item-image:hover {
+                    background-image: url("../../../icons/svg/d20-black.svg") !important;
+                }
+
+                .spell-image {
+                    flex: 0 0 24px;
+                    margin-right: 5px;
+                }
+
+                img {
+                    display: block;
+                }
+            }
+
+            .spell-name {
+                flex: 0 0 200px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            .spell-convocation {
+                flex: 0 0 80px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                padding-left: 3px;
+            }
+
+            .spell-level {
+                flex: 0 0 40px;
+                text-align: center;
+            }
+
+            .spell-eml {
+                flex: 0 0 40px;
+                text-align: center;
+            }
+
+            .spell-notes {
+                flex: 1 0 150px;
+                padding-left: 10px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            .item-controls {
+                flex: 0 0 45px;
+                text-align: right;
+
+                .active {
+                    color: #4b4a44;
+                }
+            }
         }
 
-        .psionic-name {
-            flex: 0 0 200px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-          }
+        .psionics-list {
+            list-style: none;
+            margin: 7px 0;
+            padding: 0;
+            overflow-y: hidden;
 
-          .psionic-fatigue {
-            flex: 0 0 50px;
-            text-align: center;
-          }
+            .psionic-header {
+                font-weight: bold;
+            }
 
-          .psionic-sb {
-            flex: 0 0 35px;
-            text-align: center;
-          }
+            .psionic {
+                border-bottom: 1px solid #bbb;
 
-          .psionic-ml {
-            flex: 0 0 35px;
-            text-align: center;
-          }
+                .item-name.std-roll:hover .item-image {
+                    background-image: url("../../../icons/svg/d20-grey.svg") !important;
+                }
 
-          .psionic-eml {
-            flex: 0 0 40px;
-            text-align: center;
-          }
+                .item-name.std-roll .item-image:hover {
+                    background-image: url("../../../icons/svg/d20-black.svg") !important;
+                }
 
-          .psionic-notes {
-            flex: 1 0 150;
-            padding-left: 10px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-          }
-      
-          .item-controls {
-            flex: 0 0 45px;
-            text-align: right;
+                .psionic-image {
+                    flex: 0 0 24px;
+                    margin-right: 5px;
+                }
 
-            .active {
-              color: #4b4a44;
-            }      
+                img {
+                    display: block;
+                }
+            }
 
-          }
-      }
+            .psionic-name {
+                flex: 0 0 200px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            .psionic-fatigue {
+                flex: 0 0 50px;
+                text-align: center;
+            }
+
+            .psionic-sb {
+                flex: 0 0 35px;
+                text-align: center;
+            }
+
+            .psionic-ml {
+                flex: 0 0 35px;
+                text-align: center;
+            }
+
+            .psionic-eml {
+                flex: 0 0 40px;
+                text-align: center;
+            }
+
+            .psionic-notes {
+                flex: 1 0 150;
+                padding-left: 10px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+            .item-controls {
+                flex: 0 0 45px;
+                text-align: right;
+
+                .active {
+                    color: #4b4a44;
+                }
+            }
+        }
     }
 }

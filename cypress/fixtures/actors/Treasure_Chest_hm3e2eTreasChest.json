@@ -1,33 +1,33 @@
 {
-  "_id": "hm3e2eTreasChest",
-  "name": "Treasure Chest",
-  "type": "container",
-  "system": {
-    "bioImage": "systems/hm3/images/icons/svg/chest.svg",
-    "description": "",
-    "macros": {},
-    "capacity": {
-      "max": 100
-    }
-  },
-  "_key": "!actors!hm3e2eTreasChest",
-  "img": "systems/hm3/images/icons/svg/chest.svg",
-  "items": [],
-  "effects": [],
-  "folder": null,
-  "sort": 0,
-  "ownership": {
-    "default": 0
-  },
-  "flags": {},
-  "prototypeToken": {
+    "_id": "hm3e2eTreasChest",
     "name": "Treasure Chest",
-    "displayName": 20,
-    "actorLink": true,
-    "width": 1,
-    "height": 1,
-    "texture": {
-      "src": "systems/hm3/images/icons/svg/chest.svg"
+    "type": "container",
+    "system": {
+        "bioImage": "systems/hm3/images/icons/svg/chest.svg",
+        "description": "",
+        "macros": {},
+        "capacity": {
+            "max": 100
+        }
+    },
+    "_key": "!actors!hm3e2eTreasChest",
+    "img": "systems/hm3/images/icons/svg/chest.svg",
+    "items": [],
+    "effects": [],
+    "folder": null,
+    "sort": 0,
+    "ownership": {
+        "default": 0
+    },
+    "flags": {},
+    "prototypeToken": {
+        "name": "Treasure Chest",
+        "displayName": 20,
+        "actorLink": true,
+        "width": 1,
+        "height": 1,
+        "texture": {
+            "src": "systems/hm3/images/icons/svg/chest.svg"
+        }
     }
-  }
 }

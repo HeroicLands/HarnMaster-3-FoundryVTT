@@ -10,8 +10,8 @@
     .card-header {
         text-align: center;
         padding: 3px 0;
-        border-top: 2px groove #FFF;
-        border-bottom: 2px groove #FFF;
+        border-top: 2px groove #fff;
+        border-bottom: 2px groove #fff;
         background-color: #bbb;
         color: #111;
 
@@ -25,8 +25,7 @@
             color: #4b4a44;
         }
 
-        h4
-         {
+        h4 {
             flex: 1;
             margin: 0;
             line-height: 20px;
@@ -45,7 +44,7 @@
     .mingap {
         gap: 3px;
     }
-    
+
     .header {
         text-align: center;
         font-weight: bold;
@@ -68,7 +67,7 @@
 
     .card-content {
         margin: 5px 0;
-    
+
         h3 {
             font-size: 12px;
             margin: 0;
@@ -88,7 +87,7 @@
 
     .card-footer {
         padding: 3px 0 0;
-        border-top: 2px groove #FFF;
+        border-top: 2px groove #fff;
         text-align: center;
         font-size: 16px;
     }
@@ -102,7 +101,7 @@
         background-color: red;
         color: white;
     }
-    
+
     .critical-success-text {
         color: green;
         font-weight: bold;
@@ -128,7 +127,7 @@
         color: red;
         text-align: center;
     }
-    
+
     .success-text {
         color: green;
     }
@@ -140,5 +139,4 @@
     .emphasize-text {
         font-style: italic;
     }
-
 }
