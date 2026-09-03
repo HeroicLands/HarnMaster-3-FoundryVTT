@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+#
+# Refuse to commit on a protected branch. See protected-branch.sh for the rule
+# and its opt-outs; pre-merge-commit is this hook's counterpart for merges.
+#
+# Installed for everyone via the package.json "prepare" script, which points git
+# at this directory (`git config core.hooksPath .githooks`) on `npm install`.
+
+. "$(dirname "$0")/protected-branch.sh"
+
+guard_protected_branch

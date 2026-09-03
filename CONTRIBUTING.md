@@ -31,6 +31,13 @@ Every change lands through a pull request.
 2. **Branch off current `main`**, named `<type>/<issue_#>_<short-kebab-summary>`
    — e.g. `feat/308_automatic-blind-rolls`, `bug/327_active-effects-attack-ml`.
    Issue-free housekeeping is `chore/<slug>`.
+
+   **Git refuses a commit on `main`.** Hooks in `.githooks/` — `pre-commit`
+   and `pre-merge-commit` — decline it, so the mistake surfaces before the
+   commit exists rather than at push time. `npm install` activates them. To
+   commit on `main` anyway, `git commit --no-verify`; to opt this checkout out
+   entirely, `git config hooks.allowCommitOnMain true`.
+
 3. **Make the change**, keeping it small and focused.
 4. **Declare the release.** Add a changeset — `npm run changeset` — saying
    whether this is a `patch`, `minor` or `major` and what changed. Write it for
