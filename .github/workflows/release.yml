@@ -4,161 +4,43 @@ name: Version and Release
 # system. Nothing here is started by hand.
 #
 #   1. A pull request declares its bump as a `.changeset/*.md` file.
-#   2. Merging it to `main` runs this workflow, which opens or updates the
-#      **Version Packages** pull request: the version bump plus the rewritten
-#      CHANGELOG.md. An unreleased state is therefore a pull request sitting in
-#      the queue, not an absence nobody can see.
-#   3. Merging *that* runs this workflow again with no changesets left, so it
-#      builds the system, packages it, and cuts the `v<version>` tag and the
-#      GitHub Release that Foundry installs from.
+#   2. Merging it to `main` opens or updates the **Version Packages** pull
+#      request: the version bump plus the rewritten CHANGELOG.md.
+#   3. Merging *that* leaves no changesets, which is the signal to build the
+#      system, package it, and cut the `v<version>` tag and the GitHub Release
+#      that Foundry installs from.
 #
-# Releases up to v1.6.3 were cut by hand. The tags they left follow the same
-# `v<version>` convention this workflow reads, so it picks up where they
-# stopped: an existing tag is skipped rather than re-cut.
+# The steps live in HeroicLands/.github, not here. Six repositories carried
+# near-identical copies of them, and this repository was one of the three the
+# rename defect actually bit: `changesets/action` renamed every multi-word
+# output to kebab-case at v2, a stale v1 name resolves to the empty string, so
+# `'' == 'false'` was always false and the release steps were skipped forever
+# while the job reported green (#427, HeroicLands/.github#12).
 #
 # This repository ships a **system**, not an npm package, so there is no
-# `publish:` step and no registry credential. The release *is* the tag and its
-# two assets: `system.zip`, and the `system.json` an already-installed system
-# checks for updates against.
+# publish step and no registry credential. The release *is* the tag and its two
+# assets: `system.zip`, and the `system.json` an already-installed system checks
+# for updates against.
 
 on:
     push:
         branches: [main]
     # Manual recovery: re-runs the decision for a version that is merged and
-    # versioned but never got its release. Cutting an existing tag is skipped
-    # rather than duplicated, so running this is safe.
+    # versioned but never got its release. An existing tag is skipped rather
+    # than duplicated, so running this is safe — and the 30 tags already on this
+    # repository are exactly what that guard reads, so it inherits them rather
+    # than re-cutting any.
     workflow_dispatch:
 
-# contents: write      -> push the version branch, create the tag and Release
-# pull-requests: write -> open and update the Version Packages pull request
+# Declared here rather than in the shared workflow: a called workflow cannot
+# grant itself more than its caller holds, so a fixed block there would have
+# capped every caller at the narrowest set.
 permissions:
-    contents: write
-    pull-requests: write
-
-# Two pushes to main must never race on the version pull request or the tag.
-concurrency:
-    group: release
-    cancel-in-progress: false
+    contents: write # push the version branch, create the tag and Release
+    pull-requests: write # open and update the Version Packages pull request
 
 jobs:
     release:
-        name: Version and release hm3
-        runs-on: ubuntu-latest
-
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v7
-              with:
-                  # `changeset version` reads the history to build the
-                  # changelog, and the decision below asks the remote for
-                  # existing tags.
-                  fetch-depth: 0
-
-            - name: Setup Node
-              uses: actions/setup-node@v7
-              with:
-                  node-version: 24
-                  cache: npm
-
-            - name: Install dependencies
-              run: npm ci
-
-            # With changesets pending: opens or updates the Version Packages
-            # pull request and stops. With none pending — the state right after
-            # that pull request merges — `has-changesets` is false, which is the
-            # signal that a freshly-versioned commit just landed.
-            #
-            # This package is `private: true`, so `.changeset/config.json`
-            # declares `privatePackages.version` — without it changesets 3
-            # versions nothing and reports success.
-            - name: Create or update the Version Packages PR
-              id: changesets
-              uses: changesets/action@v2
-              with:
-                  # The repository's own script, not a second spelling of it.
-                  # It must stay ONE command: this input is tokenized and
-                  # exec'd, never handed to a shell, so a `&&` chain written
-                  # here would be read as arguments to the first command. That
-                  # is exactly what broke every release in
-                  # `@heroiclands/content-build` (content-build#74) — an npm
-                  # script is the seam that does get a shell.
-                  version-script: npm run changeset:version
-                  commit-message: "chore(release): version packages"
-                  pr-title: "chore(release): version packages"
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-            # Release only when the version pull request has merged: no
-            # changesets remain AND this version has not already been tagged.
-            # Both halves are needed — the first says a bump just landed, the
-            # second keeps an ordinary push (or a re-run) from cutting the same
-            # release twice, and is what makes the hand-cut tags up to v1.6.3
-            # safe to inherit.
-            #
-            # The output is `has-changesets`. changesets/action v2 renamed every
-            # output to kebab-case (`hasChangesets` -> `has-changesets`,
-            # `pullRequestNumber` -> `pr-number`, `publishedPackages` ->
-            # `published-packages`), and reading a v1 name against a v2 action
-            # yields the empty string: `'' == 'false'` is false, so this step
-            # and every release step below it is skipped on every run, forever,
-            # while the job reports green. Read the name the pinned major
-            # actually declares in its own `action.yml`. Bracket notation
-            # keeps the hyphenated name unambiguous and matches the other
-            # HeroicLands release workflows.
-            - name: Decide whether to release
-              id: decide
-              if: steps.changesets.outputs['has-changesets'] == 'false'
-              run: |
-                  VERSION=$(node -p "require('./package.json').version")
-                  TAG="v$VERSION"
-                  if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1; then
-                      echo "Tag $TAG already exists — nothing to release."
-                      echo "release=false" >> "$GITHUB_OUTPUT"
-                  else
-                      echo "Version $VERSION is untagged — releasing $TAG."
-                      echo "release=true" >> "$GITHUB_OUTPUT"
-                      echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-                  fi
-
-            # `build:noci` rather than `build`, which begins with its own
-            # `npm ci` — the dependencies are already installed above. It
-            # compiles the styles, stages the assets, builds the packs and
-            # generates the manifest, so a release cannot be cut from a tree
-            # that does not build.
-            - name: Build system
-              if: steps.decide.outputs.release == 'true'
-              run: npm run build:noci
-
-            - name: Package system
-              if: steps.decide.outputs.release == 'true'
-              run: npm run build:pack-release
-
-            # Written to a file rather than a step output: a version's section
-            # can be very large when many changesets have accumulated between
-            # releases, and passing that much text through an action input
-            # delivers it via the process environment, which the runner will
-            # refuse to spawn past a certain size. `body_path` reads the file
-            # directly.
-            - name: Read changelog section for this version
-              if: steps.decide.outputs.release == 'true'
-              run: |
-                  mkdir -p build
-                  # Everything between the first "## " heading and the next
-                  # one, excluding the version header itself — the release
-                  # title already shows it.
-                  awk '/^## /{c++; if (c>=2) exit; next} c==1{print}' CHANGELOG.md > build/release-notes.md
-
-            # Creates the v<version> tag and the GitHub Release, attaching the
-            # two assets Foundry installs and updates from.
-            - name: Create GitHub Release
-              if: steps.decide.outputs.release == 'true'
-              uses: softprops/action-gh-release@v3
-              with:
-                  tag_name: ${{ steps.decide.outputs.tag }}
-                  name: Release ${{ steps.decide.outputs.tag }}
-                  body_path: build/release-notes.md
-                  files: |
-                      build/dist/system.zip
-                      build/dist/system.json
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: HeroicLands/.github/.github/workflows/release-foundry-package.yml@main
+        with:
+            package-kind: system
