@@ -58,7 +58,7 @@
         "e2e:sweep": "package-build e2e sweep",
         "container:test": "package-build container test",
         "changeset": "changeset",
-        "changeset:version": "changeset version && npm install --package-lock-only",
+        "changeset:version": "changeset version && package-build schema && npm install --package-lock-only",
         "changeset:check": "changeset status --since=origin/main"
     },
     "devDependencies": {
