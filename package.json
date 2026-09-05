@@ -23,7 +23,7 @@
         "clean": "package-build clean",
         "build": "npm ci && npm run build:noci",
         "build:local": "npm i && npm run build:noci",
-        "build:noci": "run-s build:css build:assets build:compiledb lint:roundtrip build:system",
+        "build:noci": "run-s build:css build:assets build:compiledb build:content-index lint:roundtrip build:system",
         "build:css": "sass --load-path=scss scss/hm3.scss build/stage/css/hm3.css",
         "watch:css": "sass --load-path=scss --watch scss/hm3.scss build/stage/css/hm3.css",
         "build:assets": "package-build assets",
@@ -59,13 +59,14 @@
         "container:test": "package-build container test",
         "changeset": "changeset",
         "changeset:version": "changeset version && package-build schema && npm install --package-lock-only",
-        "changeset:check": "changeset status --since=origin/main"
+        "changeset:check": "changeset status --since=origin/main",
+        "build:content-index": "content-build content-index"
     },
     "devDependencies": {
         "@changesets/cli": "^3.0.1",
         "@foundryvtt/foundryvtt-cli": "^3.0.4",
         "@heroiclands/hugo-theme": "^0.2.0",
-        "@heroiclands/package-build": "^17.0.0",
+        "@heroiclands/package-build": "^17.2.0",
         "cypress": "^15.21.1",
         "dotenv": "^17.4.2",
         "npm-run-all": "^4.1.5",
