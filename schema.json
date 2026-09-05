@@ -1,7 +1,7 @@
 {
     "version": 1,
     "system": "hm3",
-    "systemVersion": "1.6.3",
+    "systemVersion": "2.0.0",
     "documents": {
         "Item": {
             "armorgear": {
