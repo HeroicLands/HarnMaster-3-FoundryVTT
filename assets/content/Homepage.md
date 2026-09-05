@@ -1,5 +1,6 @@
 ---
 type: homepage
+shortcode: root
 title: HârnMaster 3 for Foundry VTT
 ---
 
