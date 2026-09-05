@@ -23,7 +23,7 @@
         "clean": "package-build clean",
         "build": "npm ci && npm run build:noci",
         "build:local": "npm i && npm run build:noci",
-        "build:noci": "run-s build:css build:assets build:compiledb build:content-index lint:roundtrip build:system",
+        "build:noci": "run-s build:css build:content-index build:assets build:compiledb lint:roundtrip build:system",
         "build:css": "sass --load-path=scss scss/hm3.scss build/stage/css/hm3.css",
         "watch:css": "sass --load-path=scss --watch scss/hm3.scss build/stage/css/hm3.css",
         "build:assets": "package-build assets",
