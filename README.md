@@ -11,7 +11,7 @@ This is a game system definition of the H&acirc;rnMaster 3 RPG for [Foundry Virt
 
 If you are looking for the official documentation, please see the [H&acirc;rnMaster 3 for Foundry VTT](https://www.heroiclands.org/hm3/) page.
 
-### H&acirc;rnMaster Copyright Notice
+# H&acirc;rnMaster Copyright Notice
 
 This is an unofficial H&acirc;rnFanon work. It is a derivative work from material created by N. Robin Crossby and is released for free distribution and personal use without the permission or endorsement of N. Robin Crossby or his estate.
 
