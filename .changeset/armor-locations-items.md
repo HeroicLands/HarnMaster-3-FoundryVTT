@@ -1,5 +1,5 @@
 ---
-"hm3": minor
+"hm3": patch
 ---
 
 Added: the 24 standard armor locations as compendium items.
