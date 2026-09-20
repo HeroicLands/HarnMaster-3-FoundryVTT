@@ -1,61 +1,30 @@
-# How `@heroiclands/package-build` builds this system.
-#
-# HM3 uses only the packaging half of the toolchain. Its compendium content is
-# committed JSON under `assets/packs/<name>/`, not a Markdown content tree, so
-# there is no `itemBuilders` registry and no `assets/content/`. The two halves
-# are independent: `packs:` below is a *declaration* of what this package ships,
-# and nothing here requires the packs to have been generated from Markdown.
-#
-# `foundryPackage` is not declared — it is read from `package.json`'s `name`.
-
 contentPackage: hm3
 packageKind: systems
 
 stats:
     lastModifiedBy: hm3build00000000
 
-# The Foundry core range. `minimum` is what every compiled document is stamped
-# with as `_stats.coreVersion`, so moving it moves the stamp.
 compatibility:
     minimum: "14"
     verified: "14.367"
 
-# The one pack list. `packs[]` in the generated `system.json` is derived from
-# it — label, type, name, the `hm3` system id and the `packs/<name>` path — so
-# a pack is declared here and nowhere else.
-#
-# Note: per-pack `ownership` is deliberately not carried. The manifest
-# generator does not emit it, so Foundry's defaults apply. This was a conscious
-# trade rather than an oversight.
+# Per-pack `ownership` is deliberately not carried: the manifest generator
+# does not emit it, so Foundry's defaults apply.
 packs:
     - { name: items, label: Items, type: Item }
     - { name: system-help, label: System Help, type: JournalEntry }
 
-# What this package publishes to the web. `homepage` is the default and is what
-# this repository would get with no `publish:` block at all — it is written out
-# because a mode inherited by omission reads, to the next person, as a question
-# nobody asked. It means: publish the authored homepage at `/hm3/` and nothing
-# else. There is no content tree here to publish, and `content` would look for
-# one; the other mode is not a thing this repository could switch to by editing
-# a line.
-#
-# `manifests` and `address` are left at their defaults for the same reason they
-# are absent everywhere else that has no cross-package links: HM3 neither
-# publishes a link manifest nor consumes one.
+# Written out explicitly, since a mode inherited by omission reads as a
+# question nobody asked: publish the authored homepage at `/hm3/` and nothing
+# else. There is no content tree here for `content` to publish.
 publish:
     site: homepage
 
-# Framing for the generated Hugo configuration. The content mount, the
-# navigation and every derived value are not configurable here — see
-# `docs/configuration.md` in `@heroiclands/package-build`.
 site:
-    # The host every package's imagery is served from; the theme resolves
-    # every relative asset against it.
     assets: https://cdn.heroiclands.org
-    # The site's `<meta name="description">`.
     description: The HârnMaster 3 system for Foundry VTT.
-    # The wording of the "page not found" page — this package has one route,
-    # so the routes back lead out to the rest of the site.
+    # This package has one route, so the routes back lead out to the rest of
+    # the site.
     notfound:
         tagline: This package has no page at
         sitenoun: site
@@ -69,36 +38,22 @@ site:
             - title: Source and issues
               url: https://github.com/HeroicLands/HarnMaster-3-FoundryVTT
               text: The repository, where bugs and requests are tracked.
-    # Not derived by the generator, so it survives here rather than being lost.
     hugo:
         markup:
             highlight:
                 style: monokai
 
 packageBuild:
-    # Where the data models are, so `package-build schema` can publish this
-    # system's `system` field sets as `schema.json`.
-    #
-    # Declared rather than discovered: a DataModel's schema is only
-    # introspectable inside Foundry, so the field sets are read out of the
-    # source as an AST, and the registry — not a directory walk — is what says
-    # which subtypes exist. Walking `*-models.js` would publish schemas for
-    # classes nothing registers and miss any whose filename did not match.
-    #
-    # One entry per document class because this system keeps one registry per
-    # file; a system that keeps both in a single configuration module names that
-    # file twice instead.
+    # One entry per document class: this system keeps one registry per file.
     schema:
         Item: { from: module/data/item-models.js, registry: itemModels }
         Actor: { from: module/data/actor-models.js, registry: actorModels }
 
-    # Everything Foundry loads that is not generated. `css/` is absent on
-    # purpose: it is compiled straight into the stage by `build:css`, and
-    # `system.json` is written into the stage by `build:system`.
-    #
-    # `template.json` is gone: the data model is `module/data/`, registered on
-    # CONFIG.Actor.dataModels / CONFIG.Item.dataModels, and the subtypes are
-    # declared as `documentTypes` in the manifest above.
+    # `css/` and `system.json` are absent: `build:css` and `build:system`
+    # write them into the stage directly. The data model lives in
+    # `module/data/`, registered on `CONFIG.Actor.dataModels` /
+    # `CONFIG.Item.dataModels`; its subtypes are declared as `documentTypes`
+    # in the manifest below.
     assets:
         - { from: module, to: module }
         - { from: templates, to: templates }
@@ -111,13 +66,10 @@ packageBuild:
         - { from: LICENSE, to: LICENSE }
         - { from: README.md, to: README.md }
         - { from: WALKTHROUGH.md, to: WALKTHROUGH.md }
-        # A release asset, not a committed file — `package-build schema` writes
-        # it to `build/schema.json`, and this stages it into the archive. A
-        # module that depends on this system reads its schema from the copy
-        # `content-build deps fetch` caches out of the release it pins — which
-        # is what makes the check happen against the version that module
-        # targets rather than against whatever this repository's `main` holds
-        # today.
+        # Not a committed file: `package-build schema` writes it to
+        # `build/schema.json`, and this stages it into the release archive so
+        # a dependent module's `deps fetch` reads the schema pinned to the
+        # release it targets.
         - { from: build/schema.json, to: schema.json }
 
     lang:
@@ -127,26 +79,21 @@ packageBuild:
     deploy:
         envPrefix: HM3
 
-    # The end-to-end harness: a disposable Foundry world, seeded from scratch,
-    # with Cypress driving a real browser against it.
-    #
-    # Almost nothing is stated here because almost nothing is this repository's
-    # to state. The world id and the Gamemaster derive from the package id
-    # (`hm3-e2e`, `Gamemaster` / `hm3-e2e`), the port is the conventional one
-    # for the `test` stage, and the Foundry build is `compatibility.minimum`
-    # above — the floor is the claim the suite exists to defend, so the claim
-    # and the evidence for it are one number. `npm run e2e:sweep -- <build>`
-    # runs the full suite against a build this repository does not pin.
     e2e:
-        # The one thing the harness does not own: what runs against the world.
+        # Almost nothing is declared here since almost none of it is this
+        # repository's to state: the world id and Gamemaster derive from the
+        # package id (`hm3-e2e`, `Gamemaster` / `hm3-e2e`), the port is the
+        # `test` stage's conventional one, and the Foundry build is
+        # `compatibility.minimum` above. `npm run e2e:sweep -- <build>` runs
+        # the full suite against a build this repository does not pin.
         suite:
             run: [npx, cypress, run]
             open: [npx, cypress, open]
 
-        # What the fast loop can rebuild, in the order it must be built. The
-        # asset pass empties the stage, so it goes first; `system` writes the
-        # manifest, which Foundry reads once at world launch, so producing it
-        # means the container is recreated rather than merely restarted.
+        # In the order they must run: `assets` empties the stage, so it runs
+        # first; `system` writes the manifest Foundry reads once at world
+        # launch, so producing it recreates the container instead of merely
+        # restarting it.
         build:
             assets: build:assets
             css: build:css
@@ -160,9 +107,6 @@ packageBuild:
         documents:
             actors: cypress/fixtures/actors
 
-    # Emitted as declared. The identity, the four release addresses, the
-    # version, the compatibility range and the pack list are derived instead,
-    # and are refused if also declared here.
     manifest:
         title: HarnMaster 3
         descriptionHtml: The HarnMaster system for FoundryVTT!
@@ -180,10 +124,6 @@ packageBuild:
         languages:
             - { lang: en, name: English, path: lang/en.json }
 
-        # The document subtypes this system provides. These used to be implied
-        # by template.json having a key per type; that file is deprecated in
-        # v14 and removed in v16, so they are declared here and their shapes
-        # live in module/data/ as data models.
         documentTypes:
             Actor:
                 character: {}
@@ -203,15 +143,9 @@ packageBuild:
                 armorlocation: {}
                 trait: {}
         # The compendium folder Foundry groups this system's packs under. Its
-        # `packs` list names packs by the same `name` the `packs:` block above
-        # declares, and must name all of them: a name that matches no pack
-        # resolves to nothing, and a pack named by no folder sits loose in the
-        # browser. Both are reported since package-build 6.0.0
-        # (HeroicLands/package-build#81, which #420 asked for): a folder naming
-        # a pack this package does not ship is an error that stops the manifest
-        # write, and a pack named by no folder is a warning. So this list still
-        # has to be edited by hand when a pack is added or removed, but no
-        # longer silently.
+        # `packs` list must name every pack declared above: a name matching no
+        # pack is an error, and a pack named by no folder is a warning. Edited
+        # by hand when a pack is added or removed.
         packFolders:
             - name: HârnMaster 3 System
               sorting: m
