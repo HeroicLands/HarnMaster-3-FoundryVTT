@@ -1,5 +1,5 @@
 ---
-"hm3": major
+"hm3": patch
 ---
 
 Support Foundry VTT v14, and drop support for v12 and v13.

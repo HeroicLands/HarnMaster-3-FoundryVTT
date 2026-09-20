@@ -1,5 +1,5 @@
 ---
-"hm3": minor
+"hm3": patch
 ---
 
 Publish this system's `system` field sets as `schema.json`.

@@ -1,5 +1,5 @@
 ---
-"hm3": minor
+"hm3": patch
 ---
 
 Build and release the system with `@heroiclands/package-build`, on the same

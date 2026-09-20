@@ -1,5 +1,5 @@
 ---
-"hm3": minor
+"hm3": patch
 ---
 
 Merge the compendium into a single `items` pack, and add the Cities/Price List
