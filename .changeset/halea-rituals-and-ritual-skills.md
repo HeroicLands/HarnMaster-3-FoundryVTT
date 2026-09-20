@@ -1,5 +1,5 @@
 ---
-"hm3": minor
+"hm3": patch
 ---
 
 Add Halea's rituals, and Ritual skills for seven more faiths.
