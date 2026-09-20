@@ -1,5 +1,11 @@
 # hm3
 
+## 1.6.5
+
+### Patch Changes
+
+- fe4ea86: **Compendiums** — A module that pins this release resolves the system's items by shortcode; nothing changes for a player or referee.
+
 ## 1.6.4
 
 ### Patch Changes
