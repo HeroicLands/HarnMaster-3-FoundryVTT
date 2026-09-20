@@ -18,9 +18,11 @@ name: Version and Release
 # while the job reported green (#427, HeroicLands/.github#12).
 #
 # This repository ships a **system**, not an npm package, so there is no
-# publish step and no registry credential. The release *is* the tag and its two
-# assets: `system.zip`, and the `system.json` an already-installed system checks
-# for updates against.
+# publish step and no registry credential. The release *is* the tag and its
+# assets: `system.zip`; the `system.json` an already-installed system checks
+# for updates against; and `schema.json`, which a module depending on this
+# system reads to check what it emits against what a document will actually
+# receive.
 
 on:
     push:

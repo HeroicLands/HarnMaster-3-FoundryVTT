@@ -63,13 +63,6 @@ assets/content/.obsidian/
 /coverage/
 /css/
 
-# The package homepage, emitted by `npm run build:site` from the note in
-# assets/content/. Build output, and the directory is wiped on every run.
-/site/content/
-
-# Hugo's own scratch lock, created in the Hugo root on every render.
-/site/.hugo_build.lock
-
 # Cypress run artifacts (specs/support/config are committed)
 /cypress/videos/
 /cypress/screenshots/
