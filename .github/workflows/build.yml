@@ -110,15 +110,6 @@ jobs:
             - name: Unit tests
               run: npm test
 
-            # `schema.json` is generated from the data models and committed, so
-            # that content builds — this system's own and those of modules that
-            # depend on it — can check what they emit against what a document
-            # will actually receive. A generated file nothing checks drifts from
-            # its generator silently, and this one is read by other
-            # repositories, so the drift would surface there rather than here.
-            - name: Schema artifact
-              run: npm run lint:schema
-
             # Compiles the styles, stages the assets, builds the compendium
             # packs from their committed JSON, and generates system.json. A
             # failure here means the system would not load.

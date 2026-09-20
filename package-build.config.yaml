@@ -45,14 +45,35 @@ packs:
 publish:
     site: homepage
 
-# Where the homepage is written. `out` is the only key that means anything in
-# `homepage` mode — the content surfaces are fenced off by the mode itself — but
-# it is required rather than defaulted, deliberately: the directory is wiped on
-# every run, and an unset value would resolve to the repository root, so the
-# build refuses it instead of resolving it. The path matches the sibling
-# convention; the tree is a build artifact and is gitignored.
+# Framing for the generated Hugo configuration. The content mount, the
+# navigation and every derived value are not configurable here — see
+# `docs/configuration.md` in `@heroiclands/package-build`.
 site:
-    out: site/content
+    # The host every package's imagery is served from; the theme resolves
+    # every relative asset against it.
+    assets: https://cdn.heroiclands.org
+    # The site's `<meta name="description">`.
+    description: The HârnMaster 3 system for Foundry VTT.
+    # The wording of the "page not found" page — this package has one route,
+    # so the routes back lead out to the rest of the site.
+    notfound:
+        tagline: This package has no page at
+        sitenoun: site
+        links:
+            - title: HârnMaster 3 for Foundry VTT
+              url: /
+              text: What the system does, and the manifest URL to install it.
+            - title: Heroic Lands
+              url: https://www.heroiclands.org/
+              text: Everything published here, from the top.
+            - title: Source and issues
+              url: https://github.com/HeroicLands/HarnMaster-3-FoundryVTT
+              text: The repository, where bugs and requests are tracked.
+    # Not derived by the generator, so it survives here rather than being lost.
+    hugo:
+        markup:
+            highlight:
+                style: monokai
 
 packageBuild:
     # Where the data models are, so `package-build schema` can publish this
@@ -90,12 +111,14 @@ packageBuild:
         - { from: LICENSE, to: LICENSE }
         - { from: README.md, to: README.md }
         - { from: WALKTHROUGH.md, to: WALKTHROUGH.md }
-        # Shipped in the archive, not merely committed. A module that depends on
-        # this system reads its schema from the copy `content-build deps fetch`
-        # caches out of the release it pins — which is what makes the check
-        # happen against the version that module targets rather than against
-        # whatever this repository's `main` holds today.
-        - { from: schema.json, to: schema.json }
+        # A release asset, not a committed file — `package-build schema` writes
+        # it to `build/schema.json`, and this stages it into the archive. A
+        # module that depends on this system reads its schema from the copy
+        # `content-build deps fetch` caches out of the release it pins — which
+        # is what makes the check happen against the version that module
+        # targets rather than against whatever this repository's `main` holds
+        # today.
+        - { from: build/schema.json, to: schema.json }
 
     lang:
         sources: lang/*.json
@@ -142,7 +165,7 @@ packageBuild:
     # and are refused if also declared here.
     manifest:
         title: HarnMaster 3
-        description: The HarnMaster system for FoundryVTT!
+        descriptionHtml: The HarnMaster system for FoundryVTT!
         authors:
             - name: Toasty
               discord: toasty#8538
