@@ -1,6 +1,6 @@
 {
     "$schema": "https://unpkg.com/@changesets/config@4.0.0/schema.json",
-    "changelog": "@changesets/cli/changelog",
+    "changelog": "@heroiclands/package-build/changelog",
     "commit": true,
     "baseBranch": "main",
     "privatePackages": {

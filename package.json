@@ -60,15 +60,15 @@
         "e2e:sweep": "package-build e2e sweep",
         "container:test": "package-build container test",
         "changeset": "changeset",
-        "changeset:version": "changeset version && npm install --package-lock-only",
+        "changeset:version": "changeset version && package-build changelog group && npm install --package-lock-only",
         "changeset:check": "changeset status --since=origin/main",
         "build:content-index": "content-build content-index"
     },
     "devDependencies": {
         "@changesets/cli": "^3.0.2",
         "@foundryvtt/foundryvtt-cli": "^3.0.4",
-        "@heroiclands/hugo-theme": "^0.7.0",
-        "@heroiclands/package-build": "^22.4.2",
+        "@heroiclands/hugo-theme": "^0.7.1",
+        "@heroiclands/package-build": "^22.4.4",
         "cypress": "^16.0.0",
         "dotenv": "^17.4.2",
         "npm-run-all": "^4.1.5",
