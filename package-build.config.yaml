@@ -23,6 +23,7 @@ publish:
 site:
     assets: https://cdn.heroiclands.org
     description: The HârnMaster 3 system for Foundry VTT.
+    search: false
     # This package has one route, so the routes back lead out to the rest of
     # the site.
     notfound:
