@@ -1,7 +1,8 @@
 ---
-type: homepage
 shortcode: root
-title: HârnMaster 3 for Foundry VTT
+name:
+  full: HârnMaster 3 for Foundry VTT
+type: homepage
 ---
 
 A game system definition of the HârnMaster 3 RPG for
