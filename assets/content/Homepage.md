@@ -1,7 +1,6 @@
 ---
 shortcode: root
-name:
-  full: HârnMaster 3 for Foundry VTT
+name: {full: HârnMaster 3 for Foundry VTT}
 type: homepage
 ---
 
