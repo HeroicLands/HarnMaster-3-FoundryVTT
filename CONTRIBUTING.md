@@ -107,9 +107,7 @@ keep it accurate against `README.md` and the manifest rather than letting it
 drift into claims the system does not make. `build/hugo/` is a build artifact
 — wiped on every run, and gitignored.
 
-The repository publishes in `homepage` mode (`publish.site` in
-`package-build.config.yaml`), which fences the content surfaces off entirely:
-the tree is never walked for anything but the homepage.
+The authored content tree contains only the homepage, so the site publishes that page.
 
 ## Running the system locally
 

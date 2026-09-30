@@ -1,5 +1,5 @@
 # What Prettier is not allowed to touch, on top of everything .gitignore
-# already excludes (content-build passes both files to Prettier's own
+# already excludes (package-build passes both files to Prettier's own
 # getFileInfo, so build output and node_modules need no entry here).
 
 # The committed compendium source. This is not a style preference; the two
@@ -7,7 +7,7 @@
 #
 # `assets/packs/<name>/` is written by @foundryvtt/foundryvtt-cli's extractPack,
 # via `npm run build:unpackdb`, and it emits 2-space JSON. The shared Prettier
-# configuration is 4-space, so `content-build format` reports every one of the
+# configuration is 4-space, so `package-build format` reports every one of the
 # 1,597 documents, and `--write` reindents all of them — measured at 1,597 files
 # changed, +70,110 / -70,589 lines, with no change of content anywhere.
 #

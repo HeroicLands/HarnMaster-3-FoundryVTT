@@ -9,7 +9,7 @@
 #
 # What stays this repository's: its build. The shared workflow runs
 # `npm run build:site` and knows nothing about what that script does — here it
-# compiles `assets/content/Homepage.md` with `content-build site` and renders it
+# compiles `assets/content/Homepage.md` with `package-build site` and renders it
 # with Hugo into `build/site/hm3/`.
 #
 # No page bounds are passed. `publish.site: homepage` in
