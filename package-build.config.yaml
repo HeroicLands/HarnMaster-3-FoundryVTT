@@ -14,12 +14,6 @@ packs:
     - { name: items, label: Items, type: Item }
     - { name: system-help, label: System Help, type: JournalEntry }
 
-# Written out explicitly, since a mode inherited by omission reads as a
-# question nobody asked: publish the authored homepage at `/hm3/` and nothing
-# else. There is no content tree here for `content` to publish.
-publish:
-    site: homepage
-
 site:
     assets: https://cdn.heroiclands.org
     description: The HârnMaster 3 system for Foundry VTT.
