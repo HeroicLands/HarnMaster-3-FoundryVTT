@@ -78,7 +78,3 @@ assets/content/.obsidian/
 
 # Generated types package declaration (built via `npm run build:sohl-types`)
 /packages/sohl-types/index.d.ts
-
-# Generated content-build declarations, emitted from the package's JSDoc at
-# pack time (`npm run build:content-build-types`). Sources are the `.mjs`.
-/packages/content-build/types/
