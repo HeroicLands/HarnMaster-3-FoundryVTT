@@ -80,6 +80,14 @@ packageBuild:
     deploy:
         envPrefix: HM3
 
+    # Shared with the other HeroicLands packages. Foundry binds a signed licence
+    # to the container hostname, so one declared name is one signature serving
+    # every package that declares it; `sohl` declares the same. The stage stays
+    # in the name, so each stage is still its own container over its own data
+    # root.
+    container:
+        name: heroiclands-foundry
+
     e2e:
         # Almost nothing is declared here since almost none of it is this
         # repository's to state: the world id and Gamemaster derive from the

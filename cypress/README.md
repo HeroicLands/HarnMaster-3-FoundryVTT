@@ -27,36 +27,34 @@ This is deliberate, and it is about licensing. Foundry signs a licence to the
 **container hostname**, which Docker takes from the container name:
 
 ```
-Config/license.json -> { host: "sohl-foundry-test", …, signature: … }
+Config/license.json -> { host: "heroiclands-foundry-test", …, signature: … }
 ```
 
 A container with a different name cannot verify that signature, and an unsigned
 key is refused outright by v13+. One instance therefore means one signed
 licence, rather than one licence consumed per package.
 
-### The wrinkle
+### Naming the shared instance
 
-`package-build` derives the container name from the package id
-(`containerName(packageId, stage)` → `hm3-foundry-test`) and sets `--hostname`
-to match. That is right for packages with a licence each, and wrong for a shared
-instance: it is the one thing standing between this suite and
-`npm run e2e:full` / `npm run e2e:sweep` working directly.
+`package-build` names a container after the package id by default, which is right
+for a package holding a licence of its own. This repository declares the shared
+name instead:
 
-Until the toolchain can be told the container name, start the shared instance by
-hand and run Cypress against it:
-
-```bash
-docker run --detach \
-  --name sohl-foundry-test --hostname sohl-foundry-test \
-  --publish 30003:30000 \
-  --volume "$FOUNDRYVTT_TEST_DATA:/data" \
-  -e FOUNDRY_WORLD=hm3-e2e \
-  felddy/foundryvtt:14
+```yaml
+packageBuild:
+  container:
+    name: heroiclands-foundry
 ```
 
-If it exits immediately with _"already locked by another process"_, remove the
-stale lock — `docker restart` does not clear it the way the toolchain's
-`container recreate` does:
+`container recreate` then sets `--hostname heroiclands-foundry-test`, the stored
+signature verifies, and `npm run e2e:full` and `npm run e2e:sweep` drive the
+shared instance directly. Every package declaring that name reaches the same
+container; the stage stays in the name, so `dev` and `test` remain two
+containers over two data roots.
+
+A container that exits immediately with _"already locked by another process"_ is
+holding a stale lock. `container recreate` sweeps it; `docker restart` does not.
+Removing it by hand works too:
 
 ```bash
 rm -rf "$FOUNDRYVTT_TEST_DATA/Config/options.json.lock"
