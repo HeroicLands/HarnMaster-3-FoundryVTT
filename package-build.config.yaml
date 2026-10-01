@@ -5,7 +5,7 @@ stats:
     lastModifiedBy: hm3build00000000
 
 compatibility:
-    minimum: "14"
+    minimum: "14.359"
     verified: "14.367"
 
 # Per-pack `ownership` is deliberately not carried: the manifest generator
