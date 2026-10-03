@@ -1,5 +1,11 @@
 # hm3
 
+## 1.7.0
+
+### Minor Changes
+
+**Install requirement** — the system requires Foundry 14.359 or newer.
+
 ## 1.6.5
 
 ### Patch Changes
