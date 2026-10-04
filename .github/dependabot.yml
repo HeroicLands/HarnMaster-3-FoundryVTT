@@ -9,13 +9,12 @@
 # a decision, not housekeeping, so it arrives as its own pull request with its
 # own changelog to read.
 #
-# That reasoning inverts below 1.0, which is where both first-party packages
-# sit. A `0.x` package signals a breaking change with a **minor** bump —
+# That reasoning inverts below 1.0, which is where the first-party package
+# sits. A `0.x` package signals a breaking change with a **minor** bump —
 # `0.4.0` to `0.5.0` is the break — and the major rule never fires, because
 # `1.0.0` never arrives. So `@heroiclands/*` is matched ahead of the catch-alls
-# and never grouped: each gets its own pull request for every update type. The
-# two are kept apart from each other as well, because a toolchain break and a
-# layout break are separate decisions. See #437.
+# and never grouped: it gets its own pull request for every update type. See
+# #437.
 version: 2
 updates:
     - package-ecosystem: npm
@@ -38,9 +37,6 @@ updates:
           package-build:
               patterns:
                   - "@heroiclands/package-build"
-          hugo-theme:
-              patterns:
-                  - "@heroiclands/hugo-theme"
           production-minor-patch:
               dependency-type: production
               update-types:
