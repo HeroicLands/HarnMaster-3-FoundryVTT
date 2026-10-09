@@ -9,6 +9,8 @@ name: Build
 on:
     pull_request:
         branches: [main]
+    push:
+        branches: [main]
 
 # A second push to the same branch supersedes the first; nothing here needs the
 # older run to finish.

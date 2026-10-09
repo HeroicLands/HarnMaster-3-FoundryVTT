@@ -10,12 +10,10 @@ name: Version and Release
 #      system, package it, and cut the `v<version>` tag and the GitHub Release
 #      that Foundry installs from.
 #
-# The steps live in HeroicLands/.github, not here. Six repositories carried
-# near-identical copies of them, and this repository was one of the three the
-# rename defect actually bit: `changesets/action` renamed every multi-word
-# output to kebab-case at v2, a stale v1 name resolves to the empty string, so
-# `'' == 'false'` was always false and the release steps were skipped forever
-# while the job reported green (#427, HeroicLands/.github#12).
+# The steps live in HeroicLands/.github, not here, so every package releases
+# the same way.
+#
+# Releasing is gated by the repository variable HL_RELEASE_ENABLED.
 #
 # This repository ships a **system**, not an npm package, so there is no
 # publish step and no registry credential. The release *is* the tag and its
@@ -29,20 +27,19 @@ on:
         branches: [main]
     # Manual recovery: re-runs the decision for a version that is merged and
     # versioned but never got its release. An existing tag is skipped rather
-    # than duplicated, so running this is safe — and the 30 tags already on this
-    # repository are exactly what that guard reads, so it inherits them rather
-    # than re-cutting any.
+    # than duplicated, so running this is safe.
     workflow_dispatch:
 
-# Declared here rather than in the shared workflow: a called workflow cannot
-# grant itself more than its caller holds, so a fixed block there would have
-# capped every caller at the narrowest set.
+# Contents are read-only: the shared workflow pushes with the release bot's
+# token, not the job token.
 permissions:
-    contents: write # push the version branch, create the tag and Release
-    pull-requests: write # open and update the Version Packages pull request
+    contents: read
 
 jobs:
     release:
-        uses: HeroicLands/.github/.github/workflows/release-foundry-package.yml@main
+        uses: HeroicLands/.github/.gitea/workflows/release-foundry-package.yml@main
         with:
             package-kind: system
+        secrets:
+            RELEASE_BOT_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
+            GH_RELEASE_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}

@@ -1,0 +1,27 @@
+name: No Attribution
+
+# Fail a pull request whose title, body, or commit messages carry AI/assistant
+# attribution. The rule, the pattern, and the reason it is anchored to the start
+# of a line all live in the shared action every HeroicLands repository calls.
+#
+# The local .githooks/commit-msg hook enforces the same pattern before a commit
+# is written. A git hook runs from a developer's own checkout, so it cannot move
+# into the action — those two are the pair to keep in sync, and the only pair.
+
+on:
+    pull_request:
+        types: [opened, edited, reopened, synchronize]
+
+permissions:
+    contents: read
+    pull-requests: read
+
+jobs:
+    no-attribution:
+        name: No AI attribution
+        runs-on: ubuntu-latest
+        steps:
+            # Needs no checkout: the subjects are the pull request, not the tree.
+            - uses: HeroicLands/.github/actions/no-attribution@main
+              with:
+                  token: ${{ github.token }}

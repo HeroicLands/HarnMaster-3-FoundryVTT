@@ -1,11 +1,10 @@
-# Build and publish this package's homepage at https://www.heroiclands.org/hm3/
-# (#424).
+# Build and publish this package's homepage at https://www.heroiclands.org/hm3/.
 #
 # Almost nothing is here, and that is the point. The runner, the completeness
 # guard, the hosting project, the custom domain and the upload are identical for
 # every package that publishes a subtree of heroiclands.org, so they live once in
 # `HeroicLands/.github` and this repository calls them. Two packages carried a
-# hand-written copy of that logic and the copies drifted (HeroicLands/.github#5).
+# hand-written copy of that logic and the copies drifted.
 #
 # What stays this repository's: its build. The shared workflow runs
 # `npm run build:site` and knows nothing about what that script does — here it
@@ -17,6 +16,8 @@
 # workflow *fails* if a homepage-mode caller passes `min-pages` or `max-pages`:
 # the bound is a boundary, and a boundary a caller can widen is not one.
 name: Deploy the HM3 site to Cloudflare Pages
+
+# Deploying is gated by the repository variable HL_DEPLOY_ENABLED.
 
 on:
     # Every push to `main` republishes the page. No path filter: a rebuild is
@@ -36,7 +37,7 @@ jobs:
         # and the shared workflow creates it on the first run. A project cannot
         # be renamed later without losing its deployment history, so the name is
         # settled here once.
-        uses: HeroicLands/.github/.github/workflows/deploy-package-site.yml@main
+        uses: HeroicLands/.github/.gitea/workflows/deploy-package-site.yml@main
         with:
             project: hm3-site
         # Passed by name, never `secrets: inherit` — inheriting would hand a
