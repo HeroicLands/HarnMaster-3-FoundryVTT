@@ -93,11 +93,13 @@ packageBuild:
             run: [npx, cypress, run]
             open: [npx, cypress, open]
 
-        # In the order they must run: `assets` empties the stage, so it runs
-        # first; `system` writes the manifest Foundry reads once at world
+        # In the order they must run: `schema` writes the `build/schema.json`
+        # that `assets` stages, so it runs before `assets`, which empties the
+        # stage; `system` writes the manifest Foundry reads once at world
         # launch, so producing it recreates the container instead of merely
         # restarting it.
         build:
+            schema: build:schema
             assets: build:assets
             css: build:css
             db: build:compiledb
