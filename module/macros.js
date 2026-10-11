@@ -1124,13 +1124,13 @@ export async function meleeCounterstrikeResume(
 ) {
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
-        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
+        ui.notifications.warn(`Attacker ${atkTokenId} could not be found on canvas.`);
         return null;
     }
 
     const defToken = canvas.tokens.get(defTokenId);
     if (!defToken) {
-        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
+        ui.notifications.warn(`Defender ${defTokenId} could not be found on canvas.`);
         return null;
     }
 
@@ -1194,13 +1194,13 @@ export async function dodgeResume(
 ) {
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
-        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
+        ui.notifications.warn(`Attacker ${atkTokenId} could not be found on canvas.`);
         return null;
     }
 
     const defToken = canvas.tokens.get(defTokenId);
     if (!defToken) {
-        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
+        ui.notifications.warn(`Defender ${defTokenId} could not be found on canvas.`);
         return null;
     }
 
@@ -1267,13 +1267,13 @@ export async function blockResume(
 ) {
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
-        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
+        ui.notifications.warn(`Attacker ${atkTokenId} could not be found on canvas.`);
         return null;
     }
 
     const defToken = canvas.tokens.get(defTokenId);
     if (!defToken) {
-        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
+        ui.notifications.warn(`Defender ${defTokenId} could not be found on canvas.`);
         return null;
     }
 
@@ -1340,13 +1340,13 @@ export async function ignoreResume(
 ) {
     const atkToken = canvas.tokens.get(atkTokenId);
     if (!atkToken) {
-        ui.notifications.warn(`Attacker ${atkToken.name} could not be found on canvas.`);
+        ui.notifications.warn(`Attacker ${atkTokenId} could not be found on canvas.`);
         return null;
     }
 
     const defToken = canvas.tokens.get(defTokenId);
     if (!defToken) {
-        ui.notifications.warn(`Defender ${defToken.name} could not be found on canvas.`);
+        ui.notifications.warn(`Defender ${defTokenId} could not be found on canvas.`);
         return null;
     }
 

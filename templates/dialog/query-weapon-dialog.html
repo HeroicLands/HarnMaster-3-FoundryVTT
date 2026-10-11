@@ -1,13 +1,13 @@
 <p>{{prompt}}<br /></p>
 
+{{#if weapons.length}}
 <div class="form-group">
     <label>Weapon:</label>
     <select name="weapon">
         {{selectOptions (toChoices weapons) selected=defaultWeapon}}
     </select>
 </div>
-
-{{#if modifierType}}
+{{/if}} {{#if modifierType}}
 <div class="form-group">
     <label>Addl {{modifierType}} Modifier:</label>
     <input type="number" name="addlModifier" value="{{defaultModifier}}" />

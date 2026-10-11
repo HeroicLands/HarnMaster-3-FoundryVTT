@@ -1,6 +1,12 @@
 import { HM3 } from "./config.js";
 
 /**
+ * Matches the parenthesised part of an item name that marks a skill
+ * specialty, e.g. "Axe (Battle)". The first capture group is the specialty.
+ */
+export const SPECIALTY_PATTERN = /\(([^)]+)\)/;
+
+/**
  * Determines whether the Skill Base Formula is valid. We perform that
  * validation here so even a skill not associated with a particular
  * actor can have its formula validated.

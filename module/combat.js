@@ -210,7 +210,7 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null) {
         if (weaponItem.system.isEquipped) {
             options["weapon"] = weaponItem;
         } else {
-            ui.notification.warn(`For ${attackToken.name} ${weaponItem.name} is not equipped.`);
+            ui.notifications.warn(`For ${attackToken.name} ${weaponItem.name} is not equipped.`);
             return null;
         }
     } else {
@@ -293,6 +293,9 @@ export async function meleeAttack(attackToken, defendToken, weaponItem = null) {
  * weapons (Array<Item>) a list of items (weapongear or missilegear)
  * defaultWeapon (Item) the default item choice
  * modifierType (string) A word to put between "Additional ??? Modifier"
+ * title (string) Window title; defaults to "<name> Select Weapon"
+ *
+ * With no weapons, only the modifier is asked for.
  *
  * @param {Object} options
  */
@@ -300,7 +303,7 @@ async function selectWeaponDialog(options) {
     let queryWeaponDialog = "systems/hm3/templates/dialog/query-weapon-dialog.html";
 
     const dialogOptions = {
-        title: `${options.name} Select Weapon`,
+        title: options.title ?? `${options.name} Select Weapon`,
     };
     dialogOptions.weapons = options.weapons.map((w) => w.name);
     dialogOptions.defaultWeapon = options.defaultWeapon;
@@ -324,7 +327,7 @@ async function selectWeaponDialog(options) {
             callback: (event, button) => {
                 const form = button.form;
                 const formAddlModifier = form.addlModifier ? parseInt(form.addlModifier.value) : 0;
-                const formWeapon = form.weapon.value;
+                const formWeapon = form.weapon ? form.weapon.value : null;
 
                 return { weapon: formWeapon, addlModifier: formAddlModifier };
             },
@@ -369,7 +372,9 @@ async function attackDialog(options) {
     }
 
     if (!options.weapon) {
-        ui.notifications.warn(`${attackerName} has no equipped weapons available for attack.`);
+        ui.notifications.warn(
+            `${options.attackerName} has no equipped weapons available for attack.`,
+        );
         return null;
     }
 
@@ -563,7 +568,7 @@ export async function meleeCounterstrikeResume(
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
         ui.notifications.warn(
-            `You do not have permissions to perform this operation on ${attackToken.name}`,
+            `You do not have permissions to perform this operation on ${defToken.name}`,
         );
         return null;
     }
@@ -763,6 +768,49 @@ export async function meleeCounterstrikeResume(
 }
 
 /**
+ * Whether a missile weapon is high-velocity, judged by its name.
+ *
+ * @param {string} weaponName Name of the attacker's missile weapon
+ * @returns {boolean}
+ */
+export function isHighVelocityMissile(weaponName) {
+    return /\bbow\b|shortbow|longbow|crossbow|\bsling\b|\barrow\b|\bbolt\b|\bbullet\b/i.test(
+        weaponName,
+    );
+}
+
+/**
+ * The EML a defender dodges at. Dodging a high-velocity missile uses half the
+ * dodge EML, rounded to the nearest whole number and never below 5, as for a
+ * missile blocked with a non-shield weapon.
+ *
+ * @param {number} dodgeEml The defender's full dodge EML
+ * @param {string} type Type of attack: "melee" or "missile"
+ * @param {string} weaponName Name of the attacker's weapon
+ * @returns {number}
+ */
+export function dodgeTargetEml(dodgeEml, type, weaponName) {
+    if (type === "missile" && isHighVelocityMissile(weaponName)) {
+        return Math.max(Math.round(dodgeEml / 2), 5);
+    }
+    return dodgeEml;
+}
+
+/**
+ * The dodge EML after the defender's additional modifier, before the roll
+ * clamps it to the 5 to 95 range every test uses.
+ *
+ * @param {number} dodgeEml The defender's full dodge EML
+ * @param {string} type Type of attack: "melee" or "missile"
+ * @param {string} weaponName Name of the attacker's weapon
+ * @param {number} addlModifier Additional modifier from the defence dialog
+ * @returns {number}
+ */
+export function dodgeModifiedEml(dodgeEml, type, weaponName, addlModifier) {
+    return dodgeTargetEml(dodgeEml, type, weaponName) + addlModifier;
+}
+
+/**
  * Resume the attack with the defender performing the "Dodge" defense.
  *
  * @param {*} atkToken Token representing the attacker
@@ -787,7 +835,7 @@ export async function dodgeResume(
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
         ui.notifications.warn(
-            `You do not have permissions to perform this operation on ${attackToken.name}`,
+            `You do not have permissions to perform this operation on ${defToken.name}`,
         );
         return null;
     }
@@ -802,18 +850,37 @@ export async function dodgeResume(
         target: effAML,
     });
 
-    const effDML = defToken.actor.system.dodge;
+    const effDML = dodgeTargetEml(defToken.actor.system.dodge, type, weaponName);
 
+    // The outnumbered penalty pre-fills the dialog's modifier, as for Block.
     let outnumberedMod = 0;
     if (defToken.actor?.system?.eph?.outnumbered > 1) {
         outnumberedMod = Math.floor((defToken.actor.system.eph.outnumbered - 1) * -10);
     }
 
+    const dialogResult = await selectWeaponDialog({
+        name: defToken.name,
+        title: `${defToken.name} Dodge`,
+        prompt: `${defToken.name} dodges ${weaponName}.`,
+        weapons: [],
+        defaultModifier: outnumberedMod,
+        modifierType: "Defense",
+    });
+
+    if (!dialogResult) return null;
+
+    const effModifiedDML = dodgeModifiedEml(
+        defToken.actor.system.dodge,
+        type,
+        weaponName,
+        dialogResult.addlModifier,
+    );
+
     const defRoll = await DiceHM3.rollTest({
         data: {},
         diceSides: 100,
         diceNum: 1,
-        modifier: outnumberedMod,
+        modifier: dialogResult.addlModifier,
         target: effDML,
     });
 
@@ -854,7 +921,12 @@ export async function dodgeResume(
             :   null,
         effAML: effAML,
         defense: "Dodge",
-        effDML: effDML + outnumberedMod,
+        mlType: "DML",
+        effDML: effModifiedDML,
+        addlModifierAbs: Math.abs(dialogResult.addlModifier),
+        addlModifierSign: dialogResult.addlModifier < 0 ? "-" : "+",
+        origEML: effDML,
+        effEML: effModifiedDML,
         attackRoll: atkRoll.rollObj.total,
         atkRollResult: atkRoll.description,
         defenseRoll: defRoll.rollObj.total,
@@ -932,7 +1004,7 @@ export async function blockResume(
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
         ui.notifications.warn(
-            `You do not have permissions to perform this operation on ${attackToken.name}`,
+            `You do not have permissions to perform this operation on ${defToken.name}`,
         );
         return null;
     }
@@ -962,10 +1034,7 @@ export async function blockResume(
     // can either block with a shield (at full DML) or with a melee weapon (at 1/2 DML).
     if (type === "missile") {
         atkWeapon = atkToken.actor.itemTypes.missilegear.find((w) => w.name === weaponName);
-        const highVelocityMissile =
-            /\bbow\b|shortbow|longbow|crossbow|\bsling\b|\barrow\b|\bbolt\b|\bbullet\b/i.test(
-                weaponName,
-            );
+        const highVelocityMissile = isHighVelocityMissile(weaponName);
 
         if (highVelocityMissile) {
             if (!shields.length) {
@@ -1170,6 +1239,24 @@ export async function blockResume(
     return chatData;
 }
 
+/**
+ * Logs one debug line for a weapon break roll: whether the Weapon Damage rule is
+ * enabled, the formula, the dice results and the outcome.
+ *
+ * @param {boolean} ruleEnabled Whether the Weapon Damage setting is on
+ * @param {string} weaponName Name of the weapon checked
+ * @param {Roll} roll Evaluated break roll
+ * @param {number} weaponQuality Quality of the weapon checked
+ * @param {boolean} broke Whether the weapon broke
+ */
+export function logWeaponBreakRoll(ruleEnabled, weaponName, roll, weaponQuality, broke) {
+    const dice = roll.dice[0].values.join(" + ");
+    console.debug(
+        `HM3 | Weapon Damage rule enabled: ${ruleEnabled}; ${weaponName}: formula ${roll.formula}, ` +
+            `dice ${dice} = ${roll.total} against quality ${weaponQuality}, weapon broke: ${broke}`,
+    );
+}
+
 export async function checkWeaponBreak(atkWeapon, defWeapon) {
     const atkToken = atkWeapon?.parent?.token;
     const defToken = defWeapon?.parent?.token;
@@ -1203,6 +1290,10 @@ export async function checkWeaponBreak(atkWeapon, defWeapon) {
         defWeaponBroke = defBreakRoll.total > defWeaponQuality;
         atkWeaponBroke = !defWeaponBroke && atkBreakRoll.total > atkWeaponQuality;
     }
+
+    const ruleEnabled = game.settings.get("hm3", "weaponDamage");
+    logWeaponBreakRoll(ruleEnabled, atkWeapon.name, atkBreakRoll, atkWeaponQuality, atkWeaponBroke);
+    logWeaponBreakRoll(ruleEnabled, defWeapon.name, defBreakRoll, defWeaponQuality, defWeaponBroke);
 
     const chatData = {};
 
@@ -1280,7 +1371,7 @@ export async function ignoreResume(
     if (!isValidToken(atkToken) || !isValidToken(defToken)) return null;
     if (!defToken.isOwner) {
         ui.notifications.warn(
-            `You do not have permissions to perform this operation on ${attackToken.name}`,
+            `You do not have permissions to perform this operation on ${defToken.name}`,
         );
         return null;
     }

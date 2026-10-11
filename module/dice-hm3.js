@@ -216,7 +216,8 @@ export class DiceHM3 {
             type: rollData.type,
             title: rollData.label,
             origTarget: rollData.target,
-            modifier: roll.modifier,
+            modifier: Math.abs(roll.modifier),
+            plusMinus: roll.modifier < 0 ? "-" : "+",
             modifiedTarget: roll.target,
             isSuccess: roll.isSuccess,
             rollValue: roll.rollObj.total,
@@ -301,7 +302,7 @@ export class DiceHM3 {
         const isSuccess = roll.total > item.system.masteryLevel;
 
         const re = RegExp("\(([^\)]+)\)");
-        const specMatch = item.name.match(/\(([^\)]+)\)/);
+        const specMatch = item.name.match(utility.SPECIALTY_PATTERN);
         const chatTemplate = "systems/hm3/templates/chat/standard-test-card.html";
 
         const chatTemplateData = {
