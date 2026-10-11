@@ -5,6 +5,7 @@ import {
     stringReplacer,
     parseAEValue,
     getAssocSkill,
+    nameMatchesFilter,
 } from "../module/utility.js";
 
 describe("romanize", () => {
@@ -115,5 +116,23 @@ describe("getAssocSkill", () => {
 
     it("matches sub-skill in square brackets", () => {
         expect(getAssocSkill("Broadsword [Sword]", skills, "default")).toBe("Sword");
+    });
+});
+
+describe("nameMatchesFilter", () => {
+    it("matches everything when the filter is empty", () => {
+        expect(nameMatchesFilter("Sword", "")).toBe(true);
+        expect(nameMatchesFilter("Sword", undefined)).toBe(true);
+        expect(nameMatchesFilter(undefined, null)).toBe(true);
+    });
+
+    it("matches a substring regardless of case", () => {
+        expect(nameMatchesFilter("Long Sword", "sWOR")).toBe(true);
+        expect(nameMatchesFilter("long sword", "LONG")).toBe(true);
+    });
+
+    it("rejects a name that does not contain the filter", () => {
+        expect(nameMatchesFilter("Dagger", "sword")).toBe(false);
+        expect(nameMatchesFilter(undefined, "sword")).toBe(false);
     });
 });

@@ -585,13 +585,30 @@ export class HarnMasterBaseActorSheet extends HandlebarsApplicationMixin(ActorSh
         // and `this.element` persists, so a fresh `.bind()` each time would
         // stack handlers rather than replace them.
         this.#onClick ??= this.#dispatchClick.bind(this);
-        this.#onKeyup ??= this.#dispatchKeyup.bind(this);
+        this.#onInput ??= this.#dispatchInput.bind(this);
+        this.#onChange ??= this.#swallowFilterChange.bind(this);
         this.element.addEventListener("click", this.#onClick);
-        this.element.addEventListener("keyup", this.#onKeyup);
+        this.element.addEventListener("input", this.#onInput);
+        this.element.addEventListener("change", this.#onChange, true);
+
+        // A render replaces the inputs, so put each typed value back and
+        // re-apply it to the fresh rows.
+        for (const selector of Object.keys(this.constructor.FILTERS)) {
+            const input = this.element.querySelector(selector);
+            const value = this.#filterValues.get(selector);
+            if (input && value) {
+                input.value = value;
+                this.#applyFilter(selector, value);
+            }
+        }
     }
 
     #onClick = null;
-    #onKeyup = null;
+    #onInput = null;
+    #onChange = null;
+
+    /** Filter text typed on this sheet, keyed by filter input selector. */
+    #filterValues = new Map();
 
     /**
      * Route a click to the first handler whose selector matches an ancestor of
@@ -614,20 +631,44 @@ export class HarnMasterBaseActorSheet extends HandlebarsApplicationMixin(ActorSh
     }
 
     /**
-     * Apply a name filter as it is typed.
-     * @param {KeyboardEvent} event
+     * Apply a name filter as it is typed, hiding rows in place.
+     * @param {InputEvent} event
      */
-    #dispatchKeyup(event) {
-        for (const [selector, { rows, attr }] of Object.entries(this.constructor.FILTERS)) {
+    #dispatchInput(event) {
+        for (const selector of Object.keys(this.constructor.FILTERS)) {
             const input = event.target.closest(selector);
             if (!input) continue;
-            const filter = (input.value || "").toLowerCase();
-            for (const row of this.element.querySelectorAll(rows)) {
-                const name = (row.getAttribute(attr) || "").toLowerCase();
-                row.style.display = !filter || name.includes(filter) ? "" : "none";
-            }
+            this.#filterValues.set(selector, input.value || "");
+            this.#applyFilter(selector, input.value);
             return;
         }
+    }
+
+    /**
+     * Show the rows whose name passes the filter and hide the rest.
+     * @param {string} selector - key of {@link FILTERS}
+     * @param {string} filter
+     */
+    #applyFilter(selector, filter) {
+        const { rows, attr } = this.constructor.FILTERS[selector];
+        for (const row of this.element.querySelectorAll(rows)) {
+            row.style.display =
+                utility.nameMatchesFilter(row.getAttribute(attr), filter) ? "" : "none";
+        }
+    }
+
+    /**
+     * A filter box is not a document field. Its `change` (fired on blur, as
+     * the pointer goes down on the next control) must not reach the form's
+     * submit-on-change, which re-renders the sheet and replaces the control
+     * before the click lands.
+     * @param {Event} event
+     */
+    #swallowFilterChange(event) {
+        const isFilter = Object.keys(this.constructor.FILTERS).some((s) =>
+            event.target.closest?.(s),
+        );
+        if (isFilter) event.stopPropagation();
     }
 
     /* -------------------------------------------- */

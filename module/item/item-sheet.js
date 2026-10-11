@@ -1,5 +1,6 @@
 import { onManageActiveEffect } from "../effect.js";
 import * as utility from "../utility.js";
+import { descriptionPageUuid } from "../description-page.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
@@ -134,6 +135,8 @@ export class HarnMasterItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
             }
         }
 
+        data.descriptionPage = await this.#resolveDescriptionPage();
+
         data.effects = {};
         this.item.effects.forEach((effect) => {
             effect._getSourceName().then(() => {
@@ -147,6 +150,43 @@ export class HarnMasterItemSheet extends HandlebarsApplicationMixin(ItemSheetV2)
         });
 
         return data;
+    }
+
+    /* -------------------------------------------- */
+
+    /**
+     * When the description is a pointer to a journal page, resolve it for display.
+     * @returns {Promise<{html: string, uuid: string, name: string, unavailable: boolean} | null>}
+     *   `null` for an ordinary description.
+     */
+    async #resolveDescriptionPage() {
+        const description = this.item.system.description;
+        const uuid = descriptionPageUuid(description);
+        if (!uuid) return null;
+
+        const { TextEditor } = foundry.applications.ux;
+        const options = { relativeTo: this.item };
+        let page = null;
+        try {
+            page = await fromUuid(uuid);
+        } catch (err) {
+            page = null;
+        }
+
+        if (page?.text?.content) {
+            return {
+                html: await TextEditor.implementation.enrichHTML(page.text.content, options),
+                uuid,
+                name: page.name,
+                unavailable: false,
+            };
+        }
+        return {
+            html: await TextEditor.implementation.enrichHTML(description, options),
+            uuid,
+            name: "",
+            unavailable: true,
+        };
     }
 
     /* -------------------------------------------- */

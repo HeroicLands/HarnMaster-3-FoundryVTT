@@ -1,3 +1,6 @@
 {
-    "HM3.Editor.Highlight": "Highlight"
+    "HM3.Actor.ViewFacadeArt": "View Façade Artwork",
+    "HM3.Editor.Highlight": "Highlight",
+    "HM3.Item.DescriptionPageUnavailable": "The journal page this description points to is unavailable.",
+    "HM3.Item.OpenDescriptionPage": "Open description page"
 }

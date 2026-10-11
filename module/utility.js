@@ -576,6 +576,19 @@ export function parseAEValue(string) {
 }
 
 /**
+ * Whether a row's name passes a sheet's name filter: an empty filter passes
+ * every row, otherwise the name must contain the filter, ignoring case.
+ * @param {string|undefined|null} name
+ * @param {string|undefined|null} filter
+ * @returns {boolean}
+ */
+export function nameMatchesFilter(name, filter) {
+    const needle = (filter || "").toLowerCase();
+    if (!needle) return true;
+    return (name || "").toLowerCase().includes(needle);
+}
+
+/**
  * Whether an item-targeted Active Effect change ("<item name>:<magnitude>")
  * names an item of one of the given types and carries a numeric magnitude.
  *

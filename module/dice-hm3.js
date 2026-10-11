@@ -1,4 +1,5 @@
 import * as utility from "./utility.js";
+import { chatRollMode } from "./roll-mode.js";
 
 export class DiceHM3 {
     /*--------------------------------------------------------------------------------*/
@@ -100,7 +101,7 @@ export class DiceHM3 {
         };
 
         const messageOptions = {
-            rollMode: game.settings.get("core", "rollMode"),
+            rollMode: chatRollMode(rollData.type),
         };
 
         // Create a chat message
@@ -243,7 +244,7 @@ export class DiceHM3 {
         };
 
         const messageOptions = {
-            rollMode: game.settings.get("core", "rollMode"),
+            rollMode: chatRollMode(rollData.type),
         };
 
         // Create a chat message

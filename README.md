@@ -105,6 +105,12 @@ The following capabilities are supported in both characters and creatures:
   - Spell EML and Ritual Invocation EML (accounting for spell level or invocation circle)
   - Weapon Attack ML (AML) and Defense ML (DML)
 
+## Automatic Blind Rolls
+
+A GM can have chosen rolls made blind without the roller asking. In the system settings, turn on **Automatic Blind Rolls** and list the names in **Automatic Blind Roll Names**, separated by commas (for example `Stealth, Awareness`). Skill, spell, ritual invocation and psionic talent rolls are matched by the item's name, and the other d100 and d6 rolls by their type (`shock`, `stumble`, `fumble`, `dodge`, `healing`, and `<ability>-d6` or `<ability>-d100` for ability tests). Matching ignores case and surrounding spaces.
+
+A roll becomes blind only when it was made as a Public Roll; Self, GM and Blind rolls are never changed. Attack, damage and injury rolls are not affected.
+
 ## Special Considerations
 
 There are a few things to keep in mind as you are filling out your characters.

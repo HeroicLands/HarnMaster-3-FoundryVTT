@@ -16,6 +16,7 @@ import * as macros from "./macros.js";
 import * as combat from "./combat.js";
 import * as effect from "./effect.js";
 import { DiceHM3 } from "./dice-hm3.js";
+import { addFacadeArtOption } from "./facade-art.js";
 
 Hooks.once("init", async function () {
     console.log(`HM3 | Initializing the HM3 Game System\n${HM3.ASCII}`);
@@ -168,6 +169,8 @@ Hooks.once("init", async function () {
         },
     });
 });
+
+Hooks.on("getActorContextOptions", addFacadeArtOption);
 
 Hooks.on("renderChatMessageHTML", (message, html, data) => {
     // Display action buttons

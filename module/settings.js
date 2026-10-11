@@ -95,6 +95,24 @@ export const registerSystemSettings = function () {
         type: Boolean,
     });
 
+    game.settings.register("hm3", "autoBlindRolls", {
+        name: "Automatic Blind Rolls",
+        hint: "Make public rolls of the names listed below blind rolls. Rolls made with any other roll mode are left alone.",
+        scope: "world",
+        config: true,
+        default: false,
+        type: Boolean,
+    });
+
+    game.settings.register("hm3", "autoBlindRollNames", {
+        name: "Automatic Blind Roll Names",
+        hint: "Comma-separated skill, spell, invocation or psionic names (for example: Stealth, Awareness), or roll types such as shock, whose public rolls are made blind. Case is ignored.",
+        scope: "world",
+        config: true,
+        default: "",
+        type: String,
+    });
+
     game.settings.register("hm3", "distanceUnits", {
         name: "Distance Units",
         hint: "What units should be used for a missile weapon's short/medium/long/extreme range attributes?",
