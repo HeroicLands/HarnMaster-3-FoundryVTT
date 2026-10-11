@@ -754,7 +754,10 @@ export class HarnMasterActor extends Actor {
                 let assocSkill = itemData.assocSkill;
                 if (typeof combatSkills[assocSkill] !== "undefined") {
                     let skillEml = combatSkills[assocSkill].eml;
-                    itemData.attackMasteryLevel = (skillEml || 0) + (itemData.attackModifier || 0);
+                    itemData.attackMasteryLevel =
+                        (skillEml || 0) +
+                        (itemData.attackModifier || 0) +
+                        utility.actorAMLModifier(eph, it.type);
                 }
             } else if (it.type === "weapongear") {
                 // Reset mastery levels in case nothing matches
@@ -779,8 +782,12 @@ export class HarnMasterActor extends Actor {
                 if (typeof combatSkills[assocSkill] !== "undefined") {
                     let skillEml = combatSkills[assocSkill].eml;
                     itemData.attackMasteryLevel =
-                        (skillEml || 0) + (itemData.attack || 0) + (itemData.attackModifier || 0);
-                    itemData.defenseMasteryLevel = (skillEml || 0) + (itemData.defense || 0);
+                        (skillEml || 0) +
+                        (itemData.attack || 0) +
+                        (itemData.attackModifier || 0) +
+                        utility.actorAMLModifier(eph, it.type);
+                    itemData.defenseMasteryLevel =
+                        (skillEml || 0) + (itemData.defense || 0) + utility.actorDMLModifier(eph);
                 }
             }
         });
@@ -1209,14 +1216,10 @@ export class HarnMasterActor extends Actor {
                     if (val.length != 2) return false;
                     const magnitude = Number.parseInt(val[1], 10);
                     if (isNaN(magnitude)) return false;
-                    const skillName = val[0];
-                    for (let item in this.items.values()) {
-                        if (
-                            item.name === skillName &&
-                            (item.type === "weapongear" || item.type === "missilegear")
-                        )
-                            return true;
-                    }
+                    return utility.weaponEffectNamesItem(chg, this.items, [
+                        "weapongear",
+                        "missilegear",
+                    ]);
                 }
 
                 return false;
@@ -1228,10 +1231,7 @@ export class HarnMasterActor extends Actor {
                     if (val.length != 2) return false;
                     const magnitude = Number.parseInt(val[1], 10);
                     if (isNaN(magnitude)) return false;
-                    const skillName = val[0];
-                    for (let item in this.items.values()) {
-                        if (item.name === skillName && item.type === "weapongear") return true;
-                    }
+                    return utility.weaponEffectNamesItem(chg, this.items, ["weapongear"]);
                 }
 
                 return false;
@@ -1368,31 +1368,6 @@ export class HarnMasterActor extends Actor {
             this.roundChange(skill, change);
         }
     }
-
-    /*    applyWeaponActiveEffect(weapon) {
-        // Organize non-disabled effects by their application priority
-        const changes = this.effects.reduce((chgs, e) => {
-            if (e.disabled) return chgs;
-            if (!['weapongear', 'missilegear'].includes(weapon.type)) return chgs;
-            const weaponChanges = e.changes.filter(
-                chg => ['system.eph.meleeAMLMod', 'system.eph.meleeDMLMod', 'system.eph.missileAMLMod'].includes(chg.key));
-            return chgs.concat(weaponChanges.map(c => {
-                c = foundry.utils.duplicate(c);
-                c.key = c.key === 'system.eph.meleeDMLMod' ? 'system.defenseMasteryLevel' : 'system.attackMasteryLevel';
-                c.effect = e;
-                c.priority = c.priority ?? (c.mode * 10);
-                return c;
-            }));
-        }, []);
-        changes.sort((a, b) => a.priority - b.priority);
-
-        // Apply all changes
-        for (let change of changes) {
-            change.effect.apply(weapon, change);
-            this.roundChange(weapon, change);
-        }
-    }
-*/
 
     /**
      * Run a custom macro assigned to this item.

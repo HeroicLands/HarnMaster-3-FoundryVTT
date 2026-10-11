@@ -574,3 +574,46 @@ export function parseAEValue(string) {
     const postString = string.slice(lastColon + 1).trim();
     return [preString, postString];
 }
+
+/**
+ * Whether an item-targeted Active Effect change ("<item name>:<magnitude>")
+ * names an item of one of the given types and carries a numeric magnitude.
+ *
+ * @param {{value: string}} chg The Active Effect change
+ * @param {Iterable<{name: string, type: string}>} items The actor's items
+ * @param {string[]} types Item types the change may target
+ * @returns {boolean}
+ */
+export function weaponEffectNamesItem(chg, items, types) {
+    const val = parseAEValue(String(chg.value ?? ""));
+    if (val.length !== 2) return false;
+    if (Number.isNaN(Number.parseInt(val[1], 10))) return false;
+    for (const item of items) {
+        if (item.name === val[0] && types.includes(item.type)) return true;
+    }
+    return false;
+}
+
+/**
+ * The actor-wide attack modifier an Active Effect contributes to a weapon:
+ * Melee Attacks for a melee weapon, Missile Attacks for a missile weapon.
+ *
+ * @param {Object} eph The actor's ephemeral data
+ * @param {string} itemType "weapongear" or "missilegear"
+ * @returns {number}
+ */
+export function actorAMLModifier(eph, itemType) {
+    const mod = itemType === "missilegear" ? eph.missileAMLMod : eph.meleeAMLMod;
+    return Number.isFinite(mod) ? mod : 0;
+}
+
+/**
+ * The actor-wide defense modifier an Active Effect contributes to a melee
+ * weapon's defense mastery level (Melee Defenses).
+ *
+ * @param {Object} eph The actor's ephemeral data
+ * @returns {number}
+ */
+export function actorDMLModifier(eph) {
+    return Number.isFinite(eph.meleeDMLMod) ? eph.meleeDMLMod : 0;
+}
