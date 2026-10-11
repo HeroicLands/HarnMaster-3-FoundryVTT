@@ -1,5 +1,6 @@
 import * as utility from "./utility.js";
 import { chatRollMode } from "./roll-mode.js";
+import { calcInjury, calcWeaponAspect, interpretRoll, selectArmorLocation } from "./dice-logic.js";
 
 export class DiceHM3 {
     /*--------------------------------------------------------------------------------*/
@@ -606,102 +607,12 @@ export class DiceHM3 {
         result.location = armorLocationItem.name;
         result.armorType = armorLocationData.layers === "" ? "None" : armorLocationData.layers;
 
-        // determine effective impact (impact - armor)
-        if (aspect === "Blunt") {
-            result.armorValue = armorLocationData.blunt;
-        } else if (aspect === "Edged") {
-            result.armorValue = armorLocationData.edged;
-        } else if (aspect === "Piercing") {
-            result.armorValue = armorLocationData.piercing;
-        } else {
-            result.armorValue = armorLocationData.fire;
-        }
-        result.effectiveImpact = Math.max(impact - result.armorValue, 0);
-
-        // Determine Injury Level
-        if (result.effectiveImpact === 0) {
-            result.injuryLevelText = "NA";
-        } else if (result.effectiveImpact >= 17) {
-            result.injuryLevelText = armorLocationData.effectiveImpact.ei17;
-        } else if (result.effectiveImpact >= 13) {
-            result.injuryLevelText = armorLocationData.effectiveImpact.ei13;
-        } else if (result.effectiveImpact >= 9) {
-            result.injuryLevelText = armorLocationData.effectiveImpact.ei9;
-        } else if (result.effectiveImpact >= 5) {
-            result.injuryLevelText = armorLocationData.effectiveImpact.ei5;
-        } else {
-            result.injuryLevelText = armorLocationData.effectiveImpact.ei1;
-        }
-
-        // Calculate injury level and whether it is a kill shot.
-        // Convert all 'K4' and 'K5' to 'G4' and 'G5'
-        switch (result.injuryLevelText) {
-            case "M1":
-                result.injuryLevel = 1;
-                break;
-
-            case "S2":
-                result.injuryLevel = 2;
-                break;
-
-            case "S3":
-                result.injuryLevel = 3;
-                break;
-
-            case "G4":
-                result.injuryLevel = 4;
-                result.isAmputate =
-                    enableAmputate && armorLocationData.isAmputate && aspect === "Edged";
-                break;
-
-            case "K4":
-                result.injuryLevel = 4;
-                result.isKillShot = true;
-                result.isAmputate =
-                    enableAmputate && armorLocationData.isAmputate && aspect === "Edged";
-                break;
-
-            case "G5":
-                result.injuryLevel = 5;
-                result.isAmputate =
-                    enableAmputate && armorLocationData.isAmputate && aspect === "Edged";
-                break;
-
-            case "K5":
-                result.injuryLevel = 5;
-                result.isKillShot = true;
-                result.isAmputate =
-                    enableAmputate && armorLocationData.isAmputate && aspect === "Edged";
-                break;
-
-            case "NA":
-                result.injuryLevel = 0;
-                break;
-        }
-
-        // Either mark as injured, or if not injured just immediately return.
-        if (result.injuryLevel > 0) {
-            result.isInjured = true;
-        } else {
-            return result;
-        }
-
-        // Optional Rule - Bloodloss (Combat 14)
-        result.isBleeder = enableBloodloss && result.injuryLevel >= 4 && result.aspect != "Fire";
-
-        // Optional Rule - Limb Injuries (Combat 14)
-        if (armorLocationData.isFumble) {
-            result.isFumble = enableLimbInjuries && result.injuryLevel >= 4;
-            result.isFumbleRoll =
-                enableLimbInjuries || (!result.isFumble && result.injuryLevel >= 2);
-        }
-
-        // Optional Rule - Limb Injuries (Combat 14)
-        if (armorLocationData.isStumble) {
-            result.isStumble = enableLimbInjuries && result.injuryLevel >= 4;
-            result.isStumbleRoll =
-                enableLimbInjuries || (!result.isStumble && result.injuryLevel >= 2);
-        }
+        const injury = calcInjury(impact, aspect, armorLocationData, {
+            enableAmputate,
+            enableBloodloss,
+            enableLimbInjuries,
+        });
+        Object.assign(result, injury);
 
         return result;
     }
@@ -715,57 +626,7 @@ export class DiceHM3 {
      * @param {*} items
      */
     static _calcLocation(location, aim, items) {
-        const lcAim = aim.toLowerCase();
-        let result = null;
-        if (location.toLowerCase() === "random") {
-            // First, get total of all probWeight for a given aim
-            let totalWeight = 0;
-            let numArmorLocations = 0;
-            items.forEach((it) => {
-                if (it.type === "armorlocation") {
-                    totalWeight += it.system.probWeight[lcAim];
-                    numArmorLocations++;
-                }
-            });
-
-            // if no armorlocations found, then return null
-            if (numArmorLocations === 0) {
-                return null;
-            }
-
-            // At this point, we know we found armorlocations,
-            // but it is possible that they all have a weight
-            // of zero.  In that case, we will end up just
-            // picking the first one.
-
-            // Assuming we have found some weights, we can now
-            // roll to get a random number.
-            let rollWeight = 0;
-            if (totalWeight > 0) {
-                rollWeight = Math.floor(MersenneTwister.random() * totalWeight) + 1;
-            }
-
-            // find the location that meets that number
-            let done = false;
-            items.forEach((it) => {
-                if (!done && it.type === "armorlocation") {
-                    rollWeight -= it.system.probWeight[lcAim];
-                    if (rollWeight <= 0) {
-                        result = it;
-                        done = true;
-                    }
-                }
-            });
-        } else {
-            // Not random, let's just find the designated item
-            items.forEach((it) => {
-                if (result === null && it.type === "armorlocation" && it.name === location) {
-                    result = it;
-                }
-            });
-        }
-
-        return result;
+        return selectArmorLocation(location, aim, items, () => MersenneTwister.random());
     }
 
     /*--------------------------------------------------------------------------------*/
@@ -777,7 +638,8 @@ export class DiceHM3 {
      * to collect information about the damage.
      *
      * rollData is expected to contain the following values:
-     *  weapon: Selected weapon (or blank for none)
+     *  weapon: Selected weapon's name (or blank for none)
+     *  weaponId: id of the selected weapon, if known
      *  speaker: the Speaker to use in Chat
      *  rollMode: the rollMode to use
      *  actorData: actor data
@@ -787,7 +649,11 @@ export class DiceHM3 {
     static async damageRoll(rollData) {
         const speaker = rollData.speaker || ChatMessage.getSpeaker();
 
-        let weapon = DiceHM3.calcWeaponAspect(rollData.weapon, rollData.data.items);
+        let weapon = DiceHM3.calcWeaponAspect(
+            rollData.weapon,
+            rollData.data.items,
+            rollData.weaponId,
+        );
 
         const dialogOptions = {
             type: "damage",
@@ -869,46 +735,10 @@ export class DiceHM3 {
      *
      * @param {*} weapon Name of weapon
      * @param {*} items List of items containing 'weapongear' items.
+     * @param {string} [weaponId] Id of the weapon; without it the first weapon of that name is used.
      */
-    static calcWeaponAspect(weapon, items) {
-        // Note that although "Fire" is in this list, because it is a
-        // type of damage, no normal weapon uses it as its aspect.
-        // It is here so that it can be selected (no default impact
-        // damage would be specified for that aspect).
-        const result = {
-            defaultAspect: "Other",
-            aspects: {
-                Blunt: 0,
-                Edged: 0,
-                Piercing: 0,
-                Fire: 0,
-                Other: 0,
-            },
-        };
-
-        // Search for the specified weapon, and then choose the aspect with
-        // the greatest impact (this will become the default aspect)
-        items.forEach((it) => {
-            const itemData = it.system;
-            if (it.type === "weapongear" && it.name === weapon) {
-                let maxImpact = Math.max(itemData.blunt, itemData.piercing, itemData.edged, 0);
-                result.aspects["Blunt"] = itemData.blunt;
-                result.aspects["Edged"] = itemData.edged;
-                result.aspects["Piercing"] = itemData.piercing;
-                if (maxImpact === itemData.piercing) {
-                    result.defaultAspect = "Piercing";
-                } else if (maxImpact === itemData.edged) {
-                    result.defaultAspect = "Edged";
-                } else if (maxImpact === itemData.blunt) {
-                    result.defaultAspect = "Blunt";
-                } else {
-                    // This shouldn't happen, but if all else fails, choose "Other"
-                    result.defaultAspect = "Other";
-                }
-            }
-        });
-
-        return result;
+    static calcWeaponAspect(weapon, items, weaponId) {
+        return calcWeaponAspect(weapon, items, weaponId);
     }
 
     /**
@@ -1272,81 +1102,24 @@ export class DiceHM3 {
             console.error(`Roll evaluation failed, diceSpec=${diceSpec}`);
         }
         const modifier = Number(testData.modifier);
-        const baseTargetNum = Number(testData.target) + modifier;
-        // Ensure target num is between 9 and 95; always a 5% chance of success/failure
-        const targetNum = Math.max(Math.min(baseTargetNum, 95), 5);
-        let isCrit = roll.total % 5 === 0;
-        const levelDesc = isCrit ? "Critical" : "Marginal";
-        let description = "";
-        let isSuccess = false;
-
-        if (diceType === "d100") {
-            // ********** Failure ***********
-            if (roll.total > targetNum) {
-                description = levelDesc + " Failure";
-            }
-            // ********** Success ***********
-            else {
-                description = levelDesc + " Success";
-                isSuccess = true;
-            }
-        } else {
-            isCrit = false; // d6 rolls have no criticals associated with them
-            isSuccess = roll.total <= targetNum;
-            description = isSuccess ? "Success" : "Failure";
-        }
+        const { targetNum, isCapped, isCritical, isSuccess, description } = interpretRoll(
+            diceType,
+            roll.total,
+            Number(testData.target),
+            modifier,
+        );
 
         let rollResults = {
             type: testData.type,
             target: targetNum,
-            isCapped: baseTargetNum !== targetNum,
+            isCapped: isCapped,
             modifier: modifier,
             rollObj: roll,
-            isCritical: isCrit,
+            isCritical: isCritical,
             isSuccess: isSuccess,
             description: description,
             preData: testData,
         };
         return rollResults;
-    }
-
-    /*--------------------------------------------------------------------------------*/
-    /*        UTILITY FUNCTIONS
-    /*--------------------------------------------------------------------------------*/
-
-    /**
-     * Calculate and return the name of a random hit location based on weights.
-     *
-     * @param {*} items List of items containing hitlocation items
-     * @param {*} aim One of 'low', 'mid', or 'high'
-     */
-    static hitLocation(items, aim) {
-        const hlAim = aim === "high" || aim === "low" ? aim : "mid";
-        let roll = new Roll("1d100");
-        let rollResult = roll.total;
-        let result = `Unknown (roll=${rollResult})`;
-        let done = false;
-        items.forEach((it) => {
-            // If we finally exhaust rollResult, just return immediately,
-            // so we finish this forEach as quickly as possible
-            if (rollResult > 0) {
-                if (it.type === "hitlocation") {
-                    let probWeight = it.system.probWeight[hlAim];
-                    // if probWeight is not zero, then there is a possiblity
-                    // of a match
-                    if (probWeight != 0) {
-                        rollResult -= probWeight;
-                        if (rollResult <= 0) {
-                            // At this point, we have a match! We have
-                            // exhausted the rollResult, so we can
-                            // set the result equal to this location name
-                            result = it.name;
-                        }
-                    }
-                }
-            }
-        });
-
-        return result;
     }
 }

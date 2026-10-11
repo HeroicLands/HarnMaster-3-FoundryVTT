@@ -1,5 +1,11 @@
 import { HM3 } from "../config.js";
 import * as utility from "../utility.js";
+import {
+    calcPenaltyPct,
+    calcPsionicEml,
+    calcSkillEml,
+    injurySeverity,
+} from "../actor/actor-logic.js";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -67,13 +73,19 @@ export class HarnMasterItem extends Item {
             switch (itemData.type) {
                 case "Combat":
                 case "Physical":
-                    itemData.effectiveMasteryLevel =
-                        itemData.masteryLevel - pctPhysPen + sbModifier;
+                    itemData.effectiveMasteryLevel = calcSkillEml(
+                        itemData.masteryLevel,
+                        pctPhysPen,
+                        sbModifier,
+                    );
                     break;
 
                 default:
-                    itemData.effectiveMasteryLevel =
-                        itemData.masteryLevel - pctUnivPen + sbModifier;
+                    itemData.effectiveMasteryLevel = calcSkillEml(
+                        itemData.masteryLevel,
+                        pctUnivPen,
+                        sbModifier,
+                    );
                     break;
             }
 
@@ -88,7 +100,7 @@ export class HarnMasterItem extends Item {
         } else if (this.type === "psionic") {
             if (!itemData.masteryLevel || itemData.masteryLevel < 0) itemData.masteryLevel = 0;
             utility.calcSkillBase(this);
-            itemData.effectiveMasteryLevel = itemData.masteryLevel - pctUnivPen;
+            itemData.effectiveMasteryLevel = calcPsionicEml(itemData.masteryLevel, pctUnivPen);
         } else if (this.type === "injury") {
             // Just make sure if injuryLevel is negative, we set it to zero
             itemData.injuryLevel = Math.max(itemData.injuryLevel || 0, 0);
@@ -321,15 +333,7 @@ export class HarnMasterItem extends Item {
     static calcInjurySeverity(injury) {
         const data = injury.system;
 
-        if (data.injuryLevel === 0) {
-            data.severity = "";
-        } else if (data.injuryLevel == 1) {
-            data.severity = "M1";
-        } else if (data.injuryLevel <= 3) {
-            data.severity = `S${data.injuryLevel}`;
-        } else {
-            data.severity = `G${data.injuryLevel}`;
-        }
+        data.severity = injurySeverity(data.injuryLevel);
     }
 
     /**
@@ -340,6 +344,6 @@ export class HarnMasterItem extends Item {
      * @returns
      */
     static calcPenaltyPct(value) {
-        return (value || 0) * 5;
+        return calcPenaltyPct(value);
     }
 }

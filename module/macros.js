@@ -1,5 +1,6 @@
 import { DiceHM3 } from "./dice-hm3.js";
 import * as combat from "./combat.js";
+import { outnumberedModifier } from "./combat-logic.js";
 import * as utility from "./utility.js";
 import { HM3 } from "./config.js";
 
@@ -506,6 +507,7 @@ export async function weaponDamageRoll(itemName, aspect = null, myActor = null) 
             weaponName: item.name,
         },
         weapon: item.name,
+        weaponId: item.id,
         data: actor,
         speaker: speaker,
         aspect: aspect ? aspect : null,
@@ -619,10 +621,7 @@ export async function weaponAttackRoll(itemName, noDialog = false, myActor = nul
 export async function weaponDefendRoll(itemName, noDialog = false, myActor = null) {
     const { actor, item, speaker } = await getItemAndActor(itemName, myActor, "weapongear");
 
-    let outnumberedMod = 0;
-    if (actor.system?.eph?.outnumbered > 1) {
-        outnumberedMod = Math.floor(actor.system.eph.outnumbered - 1) * -10;
-    }
+    const outnumberedMod = outnumberedModifier(actor.system?.eph?.outnumbered);
 
     const stdRollData = {
         label: `${item.name} Defense`,

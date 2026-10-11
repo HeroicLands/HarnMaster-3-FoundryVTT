@@ -1,5 +1,26 @@
 import { DiceHM3 } from "./dice-hm3.js";
-import { HM3 } from "./config.js";
+import { weaponAspects } from "./dice-logic.js";
+import {
+    dodgeModifiedEml,
+    dodgeTargetEml,
+    highestImpactWeapon,
+    isHighVelocityMissile,
+    meleeCombatResult,
+    missileCombatResult,
+    missileHalvedEml,
+    missileRangeBand,
+    missileRangeModifier,
+    outnumberedModifier,
+    rollResultCode,
+} from "./combat-logic.js";
+
+export {
+    dodgeModifiedEml,
+    dodgeTargetEml,
+    isHighVelocityMissile,
+    meleeCombatResult,
+    missileCombatResult,
+} from "./combat-logic.js";
 
 /**
  * Initiates a missile attack.
@@ -414,18 +435,14 @@ async function attackDialog(options) {
         // Set range based on distance
         if (options.distance) {
             dialogOptions.distance = options.distance;
-            if (options.distance <= weaponData.range.short) {
-                dialogOptions.defaultRange = shortDesc;
-            } else if (options.distance <= weaponData.range.medium) {
-                dialogOptions.defaultRange = mediumDesc;
-            } else if (options.distance <= weaponData.range.long) {
-                dialogOptions.defaultRange = longDesc;
-            } else if (options.distance <= weaponData.range.extreme) {
-                dialogOptions.defaultRange = extremeDesc;
-            } else {
-                dialogOptions.defaultRange = extremeDesc;
-                dialogOptions.rangeExceedsExtreme = true;
-            }
+            const { band, exceedsExtreme } = missileRangeBand(options.distance, weaponData.range);
+            dialogOptions.defaultRange = {
+                short: shortDesc,
+                medium: mediumDesc,
+                long: longDesc,
+                extreme: extremeDesc,
+            }[band];
+            dialogOptions.rangeExceedsExtreme = exceedsExtreme;
         } else {
             // Distance not specified, set it to extreme by default
             dialogOptions.defaultRange = extremeDesc;
@@ -468,19 +485,9 @@ async function attackDialog(options) {
 
                 if (formRange) {
                     // Grab range and impact mod (from selected range) for missile weapon
-                    if (formRange.startsWith("Short")) {
-                        result.range = "Short";
-                        result.rangeMod = 0;
-                    } else if (formRange.startsWith("Medium")) {
-                        result.range = "Medium";
-                        result.rangeMod = -20;
-                    } else if (formRange.startsWith("Long")) {
-                        result.range = "Long";
-                        result.rangeMod = -40;
-                    } else {
-                        result.range = "Extreme";
-                        result.rangeMod = -80;
-                    }
+                    const { range, rangeMod } = missileRangeModifier(formRange);
+                    result.range = range;
+                    result.rangeMod = rangeMod;
                     result.impactMod = dialogOptions.ranges[formRange] || 0;
                 } else {
                     // Grab impact mod (from selected aspect) for melee weapon
@@ -525,22 +532,10 @@ function defaultMeleeWeapon(token) {
     if (!isValidToken(token)) return { weapons: [], defaultWeapon: null };
 
     const equippedWeapons = token.actor.itemTypes.weapongear.filter((w) => w.system.isEquipped);
-    let defaultWeapon = null;
-    if (equippedWeapons.length > 0) {
-        let maxImpact = -1;
-        equippedWeapons.forEach((w) => {
-            const data = w.system;
-            const impactMax = Math.max(data.blunt, data.edged, data.piercing);
-            if (impactMax > maxImpact) {
-                maxImpact = impactMax;
-                defaultWeapon = w;
-            }
-        });
-    }
 
     return {
         weapons: equippedWeapons,
-        defaultWeapon: defaultWeapon,
+        defaultWeapon: highestImpactWeapon(equippedWeapons),
     };
 }
 
@@ -589,9 +584,7 @@ export async function meleeCounterstrikeResume(
     options.attackerName = defToken.name;
     options.defenderName = atkToken.name;
 
-    if (defToken.actor?.system?.eph?.outnumbered > 1) {
-        options.defaultModifier = Math.floor(defToken.actor.system.eph.outnumbered - 1) * -10;
-    }
+    options.defaultModifier = outnumberedModifier(defToken.actor?.system?.eph?.outnumbered);
 
     const csDialogResult = await attackDialog(options);
     if (!csDialogResult) return null;
@@ -627,8 +620,8 @@ export async function meleeCounterstrikeResume(
         await game.dice3d.showForRoll(cRoll, game.user, true);
     }
 
-    const atkResult = `${atkRoll.isCritical ? "c" : "m"}${atkRoll.isSuccess ? "s" : "f"}`;
-    const defResult = `${csRoll.isCritical ? "c" : "m"}${csRoll.isSuccess ? "s" : "f"}`;
+    const atkResult = rollResultCode(atkRoll);
+    const defResult = rollResultCode(csRoll);
     const combatResult = meleeCombatResult(
         atkResult,
         defResult,
@@ -768,49 +761,6 @@ export async function meleeCounterstrikeResume(
 }
 
 /**
- * Whether a missile weapon is high-velocity, judged by its name.
- *
- * @param {string} weaponName Name of the attacker's missile weapon
- * @returns {boolean}
- */
-export function isHighVelocityMissile(weaponName) {
-    return /\bbow\b|shortbow|longbow|crossbow|\bsling\b|\barrow\b|\bbolt\b|\bbullet\b/i.test(
-        weaponName,
-    );
-}
-
-/**
- * The EML a defender dodges at. Dodging a high-velocity missile uses half the
- * dodge EML, rounded to the nearest whole number and never below 5, as for a
- * missile blocked with a non-shield weapon.
- *
- * @param {number} dodgeEml The defender's full dodge EML
- * @param {string} type Type of attack: "melee" or "missile"
- * @param {string} weaponName Name of the attacker's weapon
- * @returns {number}
- */
-export function dodgeTargetEml(dodgeEml, type, weaponName) {
-    if (type === "missile" && isHighVelocityMissile(weaponName)) {
-        return Math.max(Math.round(dodgeEml / 2), 5);
-    }
-    return dodgeEml;
-}
-
-/**
- * The dodge EML after the defender's additional modifier, before the roll
- * clamps it to the 5 to 95 range every test uses.
- *
- * @param {number} dodgeEml The defender's full dodge EML
- * @param {string} type Type of attack: "melee" or "missile"
- * @param {string} weaponName Name of the attacker's weapon
- * @param {number} addlModifier Additional modifier from the defence dialog
- * @returns {number}
- */
-export function dodgeModifiedEml(dodgeEml, type, weaponName, addlModifier) {
-    return dodgeTargetEml(dodgeEml, type, weaponName) + addlModifier;
-}
-
-/**
  * Resume the attack with the defender performing the "Dodge" defense.
  *
  * @param {*} atkToken Token representing the attacker
@@ -894,8 +844,8 @@ export async function dodgeResume(
         await game.dice3d.showForRoll(dRoll, game.user, true);
     }
 
-    const atkResult = `${atkRoll.isCritical ? "c" : "m"}${atkRoll.isSuccess ? "s" : "f"}`;
-    const defResult = `${defRoll.isCritical ? "c" : "m"}${defRoll.isSuccess ? "s" : "f"}`;
+    const atkResult = rollResultCode(atkRoll);
+    const defResult = rollResultCode(defRoll);
     let combatResult = null;
     if (type === "melee") {
         combatResult = meleeCombatResult(atkResult, defResult, "dodge", impactMod);
@@ -1074,10 +1024,7 @@ export async function blockResume(
         );
     }
 
-    let outnumberedMod = 0;
-    if (defToken.actor?.system?.eph?.outnumbered > 1) {
-        outnumberedMod = Math.floor(defToken.actor.system.eph.outnumbered - 1) * -10;
-    }
+    const outnumberedMod = outnumberedModifier(defToken.actor?.system?.eph?.outnumbered);
 
     const options = {
         name: defToken.name,
@@ -1105,7 +1052,7 @@ export async function blockResume(
     // a sheild, then it will defend at 1/2 DML.
     if (type === "missile") {
         if (!shields.some((s) => s.name === dialogResult.weapon.name)) {
-            effDML = Math.max(Math.round(effDML / 2), 5);
+            effDML = missileHalvedEml(effDML);
         }
     }
 
@@ -1127,8 +1074,8 @@ export async function blockResume(
         await game.dice3d.showForRoll(dRoll, game.user, true);
     }
 
-    const atkResult = `${atkRoll.isCritical ? "c" : "m"}${atkRoll.isSuccess ? "s" : "f"}`;
-    const defResult = `${defRoll.isCritical ? "c" : "m"}${defRoll.isSuccess ? "s" : "f"}`;
+    const atkResult = rollResultCode(atkRoll);
+    const defResult = rollResultCode(defRoll);
 
     let combatResult;
     if (type === "melee") {
@@ -1394,7 +1341,7 @@ export async function ignoreResume(
         await game.dice3d.showForRoll(aRoll, game.user, true);
     }
 
-    const atkResult = `${atkRoll.isCritical ? "c" : "m"}${atkRoll.isSuccess ? "s" : "f"}`;
+    const atkResult = rollResultCode(atkRoll);
     let combatResult;
     if (type === "melee") {
         combatResult = meleeCombatResult(atkResult, null, "ignore", impactMod);
@@ -1465,141 +1412,6 @@ export async function ignoreResume(
 }
 
 /**
- * Display the results of meele combat.
- *
- * @param {String} atkResult The result from the attack, comprised of "cs", "cf", "ms", or "mf"
- * @param {String} defResult The result from the defense, comprised of "cs", "cf", "ms", or "mf"
- * @param {String} defense The type of defense: "ignore", "block", "counterstrike", or "dodge"
- * @param {Number} atkAddlImpact Additional impact for the attacker
- * @param {Number} defAddlImpact If counterstrike defense, the additional impact for the defender (counterstriker)
- */
-export function meleeCombatResult(
-    atkResult,
-    defResult,
-    defense,
-    atkAddlImpact = 0,
-    defAddlImpact = 0,
-) {
-    let outcome = null;
-    let index = null;
-    const defenseTable = HM3.meleeCombatTable[defense];
-    if (defenseTable) {
-        if (defense === "ignore") {
-            index = atkResult;
-        } else {
-            index = `${atkResult}:${defResult}`;
-        }
-        outcome = defenseTable[index];
-    }
-
-    if (!outcome) return null;
-
-    const result = { outcome: outcome, desc: "Attack misses.", csDesc: "Counterstrike misses." };
-
-    if (defense !== "counterstrike") {
-        if (outcome.atkDice) {
-            result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
-        } else if (outcome.atkFumble && outcome.defFumble) {
-            result.desc = "Both Attacker and Defender Fumble";
-        } else if (outcome.atkFumble) {
-            result.desc = `Attacker fumbles.`;
-        } else if (outcome.defFumble) {
-            result.desc = `Defender fumbles.`;
-        } else if (outcome.defStumble && outcome.atkStumble) {
-            result.desc = `Both attacker and defender stumble.`;
-        } else if (outcome.atkStumble) {
-            result.desc = `Attacker stumbles.`;
-        } else if (outcome.defStumble) {
-            result.desc = `Defender stumbles.`;
-        } else if (outcome.block) {
-            result.desc = `Attack blocked.`;
-        } else if (outcome.dta) {
-            result.desc = `Defender gains Tactical Advantage.`;
-        }
-    } else {
-        if (outcome.atkDice) {
-            result.desc = `Attacker strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
-        } else if (outcome.atkFumble) {
-            result.desc = `Attacker fumbles.`;
-        } else if (outcome.atkStumble) {
-            result.desc = `Attacker stumbles.`;
-        }
-
-        if (outcome.defDice) {
-            result.csDesc = `Counterstriker strikes for ${diceFormula(outcome.defDice, defAddlImpact)} impact.`;
-        } else if (outcome.defFumble) {
-            result.csDesc = "Counterstriker fumbles.";
-        } else if (outcome.defStumble) {
-            result.csDesc = "Counterstriker stumbles.";
-        } else if (outcome.block) {
-            result.desc = "Attacker blocked.";
-            result.csDesc = `Counterstriker blocked.`;
-        } else if (outcome.dta) {
-            result.csDesc = `Counterstriker achieves Tactical Advantage!`;
-        } else if (outcome.miss) {
-            result.csDesc = `Counterstrike misses.`;
-        }
-    }
-
-    return result;
-}
-
-/**
- * Calculate and display the results of the missile combat.
- *
- * @param {String} atkResult The result from the attack, comprised of "cs", "cf", "ms", or "mf"
- * @param {String} defResult The result from the defense, comprised of "cs", "cf", "ms", or "mf"
- * @param {String} defense The type of defense: "ignore", "block", "counterstrike", or "dodge"
- * @param {Number} atkAddlImpact Any additional impact
- */
-export function missileCombatResult(atkResult, defResult, defense, atkAddlImpact = 0) {
-    let outcome = null;
-    let index = null;
-    const defenseTable = HM3.missileCombatTable[defense];
-    if (defenseTable) {
-        if (defense === "ignore") {
-            index = atkResult;
-        } else {
-            index = `${atkResult}:${defResult}`;
-        }
-        outcome = defenseTable[index];
-    }
-
-    if (!outcome) return null;
-
-    const result = { outcome: outcome, desc: "No result" };
-
-    if (outcome.atkDice && !outcome.defDice) {
-        result.desc = `Missile strikes for ${diceFormula(outcome.atkDice, atkAddlImpact)} impact.`;
-    } else if (outcome.wild) {
-        result.desc = `Missile goes wild; effects at GM discretion.`;
-    } else if (outcome.block) {
-        result.desc = `Defender blocks missile!`;
-    } else if (outcome.miss) {
-        result.desc = `Missile missed.`;
-    }
-
-    return result;
-}
-
-/**
- * Return the dice formula meeting the specified parameters
- *
- * @param {*} numDice  Number of 6-sided dice to include in the formula
- * @param {*} addlImpact Any additional impact to include in the formula
- */
-function diceFormula(numDice, addlImpact) {
-    if (numDice <= 0) {
-        return "no";
-    }
-    if (addlImpact) {
-        return `${numDice}d6${addlImpact < 0 ? "-" : "+"}${Math.abs(addlImpact)}`;
-    } else {
-        return `${numDice}d6`;
-    }
-}
-
-/**
  * Returns a structure specifying the default aspect for a weapon, as well as the
  * impact values for all other aspects.  The default aspect is always the aspect
  * with the greatest impact.
@@ -1608,33 +1420,7 @@ function diceFormula(numDice, addlImpact) {
  * @param {*} items List of items containing 'weapongear' items.
  */
 function calcWeaponAspect(weapon) {
-    const data = weapon.system;
-
-    // Note that although "Fire" is in this list, because it is a
-    // type of damage, no normal weapon uses it as its aspect.
-    // It is here so that it can be selected (no default impact
-    // damage would be specified for that aspect).
-    const result = {
-        defaultAspect: null,
-        aspects: {},
-    };
-
-    // Any impact < 0 indicates that aspect is not available
-    const maxImpact = Math.max(data.blunt, data.piercing, data.edged);
-    if (maxImpact >= 0) {
-        if (data.blunt >= 0) result.aspects["Blunt"] = data.blunt;
-        if (data.edged >= 0) result.aspects["Edged"] = data.edged;
-        if (data.piercing >= 0) result.aspects["Piercing"] = data.piercing;
-        if (maxImpact === data.piercing) {
-            result.defaultAspect = "Piercing";
-        } else if (maxImpact === data.edged) {
-            result.defaultAspect = "Edged";
-        } else if (maxImpact === data.blunt) {
-            result.defaultAspect = "Blunt";
-        }
-    }
-
-    return result;
+    return weaponAspects(weapon.system);
 }
 
 /**
