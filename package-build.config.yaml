@@ -1,6 +1,10 @@
 contentPackage: hm3
 packageKind: systems
 
+authors:
+    - name: Tom Rodriguez
+      discord: toasty#8538
+
 stats:
     lastModifiedBy: hm3build00000000
 
@@ -115,9 +119,6 @@ packageBuild:
     manifest:
         title: HarnMaster 3
         descriptionHtml: The HarnMaster system for FoundryVTT!
-        authors:
-            - name: Toasty
-              discord: toasty#8538
         license: LICENSE
         readme: README.md
         flags:
