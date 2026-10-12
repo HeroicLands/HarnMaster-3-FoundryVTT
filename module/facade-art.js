@@ -1,13 +1,17 @@
+import { ART_PATHS } from "./art-paths.js";
+
 /** The images a new character, creature or container is created with. */
 const DEFAULT_FACADE_ART = new Set([
-    "systems/hm3/images/svg/knight-silhouette.svg",
-    "systems/hm3/images/svg/monster-silhouette.svg",
-    "systems/hm3/images/icons/svg/chest.svg",
+    "systems/hm3/assets/images/knightsilhouette.svg",
+    "systems/hm3/assets/images/monstersilhouette.svg",
+    "systems/hm3/assets/icons/chest.svg",
 ]);
 
 /**
  * The façade image of an actor, when the current user may see it
- * and it is not one of the default images.
+ * and it is not one of the default images. A default named by its `images/`
+ * path, as a document the world migration has not reached still carries it,
+ * is a default too.
  *
  * @param {object|undefined} actor An Actor, or any object with `visible` and `system.bioImage`.
  * @returns {string|undefined} The image path, or undefined when there is nothing to show.
@@ -15,8 +19,8 @@ const DEFAULT_FACADE_ART = new Set([
 export function facadeArtSrc(actor) {
     if (!actor?.visible) return undefined;
     const src = actor.system?.bioImage;
-    if (typeof src !== "string" || src.trim() === "" || DEFAULT_FACADE_ART.has(src))
-        return undefined;
+    if (typeof src !== "string" || src.trim() === "") return undefined;
+    if (DEFAULT_FACADE_ART.has(ART_PATHS.get(src) ?? src)) return undefined;
     return src;
 }
 

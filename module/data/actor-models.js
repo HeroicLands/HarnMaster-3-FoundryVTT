@@ -28,7 +28,7 @@ export class ActorBaseModel extends foundry.abstract.TypeDataModel {
             bioImage: new fields.StringField({
                 required: true,
                 blank: true,
-                initial: "systems/hm3/images/svg/knight-silhouette.svg",
+                initial: "systems/hm3/assets/images/knightsilhouette.svg",
             }),
             species: new fields.StringField({ required: true, blank: true, initial: "" }),
             fatigue: new fields.NumberField({ required: true, nullable: false, initial: 0 }),
@@ -212,7 +212,7 @@ export class ContainerModel extends foundry.abstract.TypeDataModel {
             bioImage: new fields.StringField({
                 required: true,
                 blank: true,
-                initial: "systems/hm3/images/icons/svg/chest.svg",
+                initial: "systems/hm3/assets/icons/chest.svg",
             }),
             description: new fields.HTMLField({ required: true, blank: true, initial: "" }),
             macros: new fields.SchemaField({}),

@@ -1,63 +1,116 @@
+import { ART_PATHS } from "./art-paths.js";
+
+/** Worlds stamped below this version run the legacy actor, item, scene and compendium steps. */
+export const LEGACY_MIGRATION_VERSION = "1.2.19";
+
+/** Worlds stamped below this version run the art path pass. */
+export const ART_MIGRATION_VERSION = "1.6.6";
+
+/** Invocation spelling changed independently of the destructive legacy schema pass. */
+export const DEITY_MIGRATION_VERSION = "1.6.6";
+
+const versionParts = (v) =>
+    String(v)
+        .split(".")
+        .map((n) => parseInt(n, 10) || 0);
+
+function isBelow(version, threshold) {
+    const a = versionParts(version);
+    const b = versionParts(threshold);
+    for (let i = 0; i < Math.max(a.length, b.length); i++) {
+        const x = a[i] ?? 0;
+        const y = b[i] ?? 0;
+        if (x !== y) return x < y;
+    }
+    return false;
+}
+
+/**
+ * Decide which migration steps a world needs.
+ * @param {string|number|undefined} storedVersion  The world's stamped migration version; empty when never stamped
+ * @return {{legacy: boolean, art: boolean, deity: boolean}}       `legacy` covers the actor, item, scene and compendium steps
+ */
+export function migrationStepsFor(storedVersion) {
+    // A world that was never stamped is as likely new as old, so only the art pass runs.
+    if (!storedVersion || storedVersion === "0") return { legacy: false, art: true, deity: false };
+    return {
+        legacy: isBelow(storedVersion, LEGACY_MIGRATION_VERSION),
+        art: isBelow(storedVersion, ART_MIGRATION_VERSION),
+        deity: isBelow(storedVersion, DEITY_MIGRATION_VERSION),
+    };
+}
+
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
+ * @param {{legacy: boolean, art: boolean, deity: boolean}} [steps]  Which steps to run; see `migrationStepsFor`
  * @return {Promise}      A Promise which resolves once the migration is completed
  */
-export const migrateWorld = async function () {
+export const migrateWorld = async function (steps = { legacy: true, art: true, deity: true }) {
     ui.notifications.info(
         `Applying HM3 System Migration for version ${game.system.version}. Please be patient and do not close your game or shut down your server.`,
         { permanent: true },
     );
     console.log(`HM3 | Starting Migration`);
 
-    // Migrate World Actors
-    for (let a of game.actors.contents) {
-        try {
-            const updateData = migrateActorData(a.toObject());
-            if (!foundry.utils.isObjectEmpty(updateData)) {
-                console.log(`HM3 | Migrating Actor ${a.name}`);
-                await a.update(updateData, { enforceTypes: false });
+    if (steps.legacy) {
+        // Migrate World Actors
+        for (let a of game.actors.contents) {
+            try {
+                const updateData = migrateActorData(a.toObject());
+                if (!foundry.utils.isEmpty(updateData)) {
+                    console.log(`HM3 | Migrating Actor ${a.name}`);
+                    await a.update(updateData, { enforceTypes: false });
+                }
+            } catch (err) {
+                err.message = `Failed HM3 system migration for Actor ${a.name}: ${err.message}`;
+                console.error(err);
             }
-        } catch (err) {
-            err.message = `Failed HM3 system migration for Actor ${a.name}: ${err.message}`;
-            console.error(err);
+        }
+
+        // Migrate World Items
+        for (let i of game.items.contents) {
+            try {
+                const updateData = migrateItemData(i.toObject());
+                if (!foundry.utils.isEmpty(updateData)) {
+                    console.log(`HM3 | Migrating Item ${i.name}`);
+                    await i.update(updateData, { enforceTypes: false });
+                }
+            } catch (err) {
+                err.message = `Failed HM3 system migration for Item ${i.name}: ${err.message}`;
+                console.error(err);
+            }
+        }
+
+        // Migrate Actor Override Tokens
+        for (let s of game.scenes.contents) {
+            try {
+                const updateData = migrateSceneData(s.toObject());
+                if (!foundry.utils.isEmpty(updateData)) {
+                    console.log(`HM3 | Migrating Scene ${s.name}`);
+                    await s.update(updateData, { enforceTypes: false });
+                }
+            } catch (err) {
+                err.message = `Failed HM3 system migration for Scene ${s.name}: ${err.message}`;
+                console.error(err);
+            }
+        }
+
+        // Migrate World Compendium Packs
+        console.log(`HM3 | Migrating Compendium Packs`);
+        for (let p of game.packs) {
+            if (p.metadata.package !== "world") continue;
+            if (!["Actor", "Item", "Scene"].includes(p.documentName)) continue;
+            console.log(`HM3 | Starting Migration for Pack ${p.metadata.label}`);
+            await migrateCompendium(p);
         }
     }
 
-    // Migrate World Items
-    for (let i of game.items.contents) {
-        try {
-            const updateData = migrateItemData(i.toObject());
-            if (!foundry.utils.isObjectEmpty(updateData)) {
-                console.log(`HM3 | Migrating Item ${i.name}`);
-                await i.update(updateData, { enforceTypes: false });
-            }
-        } catch (err) {
-            err.message = `Failed HM3 system migration for Item ${i.name}: ${err.message}`;
-            console.error(err);
-        }
-    }
+    if (steps.deity && !steps.legacy) await migrateWorldDeity();
 
-    // Migrate Actor Override Tokens
-    for (let s of game.scenes.contents) {
-        try {
-            const updateData = migrateSceneData(s.toObject());
-            if (!foundry.utils.ObjectEmpty(updateData)) {
-                console.log(`HM3 | Migrating Scene ${s.name}`);
-                await s.update(updateData, { enforceTypes: false });
-            }
-        } catch (err) {
-            err.message = `Failed HM3 system migration for Scene ${s.name}: ${err.message}`;
-            console.error(err);
-        }
-    }
-
-    // Migrate World Compendium Packs
-    console.log(`HM3 | Migrating Compendium Packs`);
-    for (let p of game.packs) {
-        if (p.metadata.package !== "world") continue;
-        if (!["Actor", "Item", "Scene"].includes(p.documentName)) continue;
-        console.log(`HM3 | Starting Migration for Pack ${p.metadata.label}`);
-        await migrateCompendium(p);
+    // Rewrite the system's art paths from images/ to assets/
+    if (steps.art) {
+        console.log(`HM3 | Migrating art paths`);
+        await migrateWorldArt();
     }
 
     // Set the migration as complete
@@ -76,8 +129,8 @@ export const migrateWorld = async function () {
  * @return {Promise}
  */
 export const migrateCompendium = async function (pack) {
-    const doc = pack.documentName;
-    if (!["Actor", "Item", "Scene"].includes(doc)) return;
+    const documentName = pack.documentName;
+    if (!["Actor", "Item", "Scene"].includes(documentName)) return;
 
     // Unlock the pack for editing
     const wasLocked = pack.locked;
@@ -91,7 +144,7 @@ export const migrateCompendium = async function (pack) {
     for (let doc of documents) {
         let updateData = {};
         try {
-            switch (doc) {
+            switch (documentName) {
                 case "Actor":
                     updateData = migrateActorData(doc.toObject());
                     break;
@@ -104,19 +157,19 @@ export const migrateCompendium = async function (pack) {
             }
 
             // Save the entry, if data was changed
-            if (foundry.utils.isObjectEmpty(updateData)) continue;
+            if (foundry.utils.isEmpty(updateData)) continue;
             await doc.update(updateData);
-            console.log(`Migrated ${doc} ${doc.name} in Compendium ${pack.collection}`);
+            console.log(`Migrated ${documentName} ${doc.name} in Compendium ${pack.collection}`);
         } catch (err) {
             // Handle migration failures
-            err.message = `Failed dnd5e system migration for ${doc.name} in pack ${pack.collection}: ${err.message}`;
+            err.message = `Failed HM3 system migration for ${doc.name} in pack ${pack.collection}: ${err.message}`;
             console.error(err);
         }
     }
 
     // Apply the original locked status for the pack
     await pack.configure({ locked: wasLocked });
-    console.log(`Migrated all ${doc} entities from Compendium ${pack.collection}`);
+    console.log(`Migrated all ${documentName} entities from Compendium ${pack.collection}`);
 };
 
 /* -------------------------------------------- */
@@ -336,12 +389,7 @@ export const migrateItemData = function (item) {
         updateData["system.macros.type"] = "script";
     }
 
-    if (item.type === "invocation" && item.system.hasOwnProperty("diety")) {
-        if (!item.system.deity && item.system.diety) {
-            updateData["system.deity"] = item.system.diety;
-        }
-        updateData["system.-=diety"] = null;
-    }
+    Object.assign(updateData, migrateInvocationDeityData(item));
 
     if (item.type === "weapongear") {
         if (item.system.hasOwnProperty("squeeze")) {
@@ -454,13 +502,13 @@ export const migrateItemData = function (item) {
  */
 export const migrateSceneData = function (scene) {
     const tokens = scene.tokens.map((token) => {
-        const t = token.toJSON();
+        const t = foundry.utils.duplicate(token);
         if (!t.actorId || t.actorLink) {
             t.actorData = {};
         } else if (!game.actors.has(t.actorId)) {
             t.actorId = null;
             t.actorData = {};
-        } else if (!t.actorLink) {
+        } else if (t.actorData) {
             const actorData = foundry.utils.duplicate(t.actorData);
             actorData.type = token.actor?.type;
             const update = migrateActorData(actorData);
@@ -550,4 +598,379 @@ export async function purgeFlags(pack) {
         console.log(`HM3 | Purged flags from ${doc.name}`);
     }
     await pack.configure({ locked: true });
+}
+
+/* -------------------------------------------- */
+/*  Art Path Migration                          */
+/* -------------------------------------------- */
+
+/**
+ * A whole `systems/hm3/images/…` path: not preceded by a path character, so a
+ * path that merely ends in it (`modules/x/systems/hm3/images/…`, a full URL) is
+ * not one, and not followed by one, so it ends where the path ends. A single
+ * leading slash is allowed and kept.
+ */
+const SYSTEM_ART_PATH =
+    /(?<![A-Za-z0-9_.\/:-])(\/?)(systems\/hm3\/images\/[A-Za-z0-9_.\/-]+)(?![A-Za-z0-9_.\/-])/g;
+
+/**
+ * Rewrite every whole `systems/hm3/images/…` path in a string through
+ * {@link ART_PATHS}: a bare path, one inside HTML (`src="…"`) and one inside
+ * markdown image syntax alike. A path the table does not name, a path under
+ * `assets/` and any other path are left as they are, so a second run changes
+ * nothing.
+ *
+ * @param {unknown} value A stored path, or HTML or markdown text.
+ * @returns {unknown} The rewritten string, or `value` itself when it is not a
+ *   string or names no old path.
+ */
+export function rewriteSystemArtPath(value) {
+    if (typeof value !== "string" || !value.includes("systems/hm3/images/")) return value;
+    return value.replace(SYSTEM_ART_PATH, (match, slash, path) =>
+        ART_PATHS.has(path) ? `${slash}${ART_PATHS.get(path)}` : match,
+    );
+}
+
+/**
+ * Record `value`'s rewrite at `key` of `update` when it differs.
+ *
+ * @returns {boolean} Whether anything was recorded.
+ */
+function setRewritten(update, key, value) {
+    const rewritten = rewriteSystemArtPath(value);
+    if (rewritten === value) return false;
+    update[key] = rewritten;
+    return true;
+}
+
+/**
+ * The update for each member of an embedded collection that changed, each
+ * carrying its `_id`, or `undefined` when none did.
+ */
+function embeddedArt(collection, migrate) {
+    if (!Array.isArray(collection)) return undefined;
+    const updates = [];
+    for (const member of collection) {
+        if (!member?._id) continue;
+        const update = migrate(member);
+        if (Object.keys(update).length) updates.push({ _id: member._id, ...update });
+    }
+    return updates.length ? updates : undefined;
+}
+
+/** `{ src }` for a texture whose `src` changed, else `undefined`. */
+function textureArt(texture) {
+    const update = {};
+    return setRewritten(update, "src", texture?.src) ? update : undefined;
+}
+
+/** The update for an Active Effect: its `img`. */
+function migrateEffectArt(effect) {
+    const update = {};
+    setRewritten(update, "img", effect.img);
+    return update;
+}
+
+/**
+ * The art-path update for an Item's source: `img`, and each embedded effect's
+ * `img`.
+ *
+ * @param {object} item An Item's source data, as `toObject()` returns it.
+ * @returns {object} The update; empty when nothing names an old path.
+ */
+export function migrateItemArt(item) {
+    const update = {};
+    setRewritten(update, "img", item.img);
+    const effects = embeddedArt(item.effects, migrateEffectArt);
+    if (effects) update.effects = effects;
+    return update;
+}
+
+/**
+ * The fields an Actor and an unlinked token's actor delta share: `img`,
+ * `system.bioImage`, and the embedded items and effects.
+ */
+function actorBodyArt(actor) {
+    const update = {};
+    setRewritten(update, "img", actor.img);
+    const system = {};
+    if (setRewritten(system, "bioImage", actor.system?.bioImage)) update.system = system;
+    const items = embeddedArt(actor.items, migrateItemArt);
+    if (items) update.items = items;
+    const effects = embeddedArt(actor.effects, migrateEffectArt);
+    if (effects) update.effects = effects;
+    return update;
+}
+
+/**
+ * The art-path update for a token: its texture and dynamic-ring subject, and
+ * for an unlinked token the actor delta (`delta`, or `actorData` in data that
+ * still carries it).
+ */
+function tokenArt(token) {
+    const update = {};
+    const texture = textureArt(token.texture);
+    if (texture) update.texture = texture;
+    const subject = {};
+    if (setRewritten(subject, "texture", token.ring?.subject?.texture)) {
+        update.ring = { subject };
+    }
+    for (const key of ["delta", "actorData"]) {
+        if (!token[key] || typeof token[key] !== "object") continue;
+        const delta = actorBodyArt(token[key]);
+        if (Object.keys(delta).length) update[key] = delta;
+    }
+    return update;
+}
+
+/**
+ * The art-path update for an Actor's source: `img`, the prototype token's
+ * texture and ring subject, `system.bioImage`, and the embedded items (with
+ * their effects) and effects.
+ *
+ * @param {object} actor An Actor's source data, as `toObject()` returns it.
+ * @returns {object} The update; empty when nothing names an old path.
+ */
+export function migrateActorArt(actor) {
+    const update = actorBodyArt(actor);
+    if (actor.prototypeToken) {
+        const token = tokenArt({
+            texture: actor.prototypeToken.texture,
+            ring: actor.prototypeToken.ring,
+        });
+        if (Object.keys(token).length) update.prototypeToken = token;
+    }
+    return update;
+}
+
+/** A tile or a note: its texture. */
+function placeableTextureArt(placeable) {
+    const texture = textureArt(placeable.texture);
+    return texture ? { texture } : {};
+}
+
+/** A scene level: its background, foreground and fog images. */
+function levelArt(level) {
+    const update = {};
+    for (const key of ["background", "foreground", "fog"]) {
+        const texture = textureArt(level[key]);
+        if (texture) update[key] = texture;
+    }
+    return update;
+}
+
+/**
+ * The art-path update for a Scene's source: its tokens (with the deltas of
+ * unlinked ones), tiles and notes, and the background, foreground and fog
+ * images of its levels, which is where a scene's background is stored.
+ *
+ * @param {object} scene A Scene's source data, as `toObject()` returns it.
+ * @returns {object} The update; empty when nothing names an old path.
+ */
+export function migrateSceneArt(scene) {
+    const update = {};
+    const tokens = embeddedArt(scene.tokens, tokenArt);
+    if (tokens) update.tokens = tokens;
+    const tiles = embeddedArt(scene.tiles, placeableTextureArt);
+    if (tiles) update.tiles = tiles;
+    const notes = embeddedArt(scene.notes, placeableTextureArt);
+    if (notes) update.notes = notes;
+    const levels = embeddedArt(scene.levels, levelArt);
+    if (levels) update.levels = levels;
+    return update;
+}
+
+/** A journal page: its `src`, and the images in its HTML and markdown text. */
+function pageArt(page) {
+    const update = {};
+    setRewritten(update, "src", page.src);
+    const text = {};
+    setRewritten(text, "content", page.text?.content);
+    setRewritten(text, "markdown", page.text?.markdown);
+    if (Object.keys(text).length) update.text = text;
+    return update;
+}
+
+/**
+ * The art-path update for a JournalEntry's source: each page's `src` and the
+ * images its text embeds.
+ *
+ * @param {object} entry A JournalEntry's source data, as `toObject()` returns it.
+ * @returns {object} The update; empty when nothing names an old path.
+ */
+export function migrateJournalArt(entry) {
+    const update = {};
+    const pages = embeddedArt(entry.pages, pageArt);
+    if (pages) update.pages = pages;
+    return update;
+}
+
+/**
+ * The art-path update for a Macro's source: its `img`.
+ *
+ * @param {object} macro A Macro's source data, as `toObject()` returns it.
+ * @returns {object} The update; empty when nothing names an old path.
+ */
+export function migrateMacroArt(macro) {
+    const update = {};
+    setRewritten(update, "img", macro.img);
+    return update;
+}
+
+/** A table result: its `img`. */
+function resultArt(result) {
+    const update = {};
+    setRewritten(update, "img", result.img);
+    return update;
+}
+
+/**
+ * The art-path update for a RollTable's source: its `img` and each result's.
+ *
+ * @param {object} table A RollTable's source data, as `toObject()` returns it.
+ * @returns {object} The update; empty when nothing names an old path.
+ */
+export function migrateRollTableArt(table) {
+    const update = {};
+    setRewritten(update, "img", table.img);
+    const results = embeddedArt(table.results, resultArt);
+    if (results) update.results = results;
+    return update;
+}
+
+/** The art-path rewrite for each document class the migration visits. */
+const ART_MIGRATIONS = Object.freeze({
+    Actor: migrateActorArt,
+    Item: migrateItemArt,
+    Scene: migrateSceneArt,
+    JournalEntry: migrateJournalArt,
+    Macro: migrateMacroArt,
+    RollTable: migrateRollTableArt,
+});
+
+/**
+ * The art-path rewrite for a document class.
+ *
+ * @param {string} documentName A document class name, such as `"Actor"`.
+ * @returns {((source: object) => object)|undefined} Its rewrite, or
+ *   `undefined` for a class that stores none of the system's art.
+ */
+export function artMigrationFor(documentName) {
+    return Object.hasOwn(ART_MIGRATIONS, documentName) ? ART_MIGRATIONS[documentName] : undefined;
+}
+
+/**
+ * Rewrite one document's stored art paths, updating it only when something
+ * changed. A failure is logged and does not stop the migration.
+ *
+ * @param {foundry.abstract.Document} doc The document.
+ * @param {string} where Where it is, for the log.
+ */
+async function migrateDocumentArt(doc, where) {
+    const migrate = artMigrationFor(doc.documentName);
+    if (!migrate) return;
+    try {
+        const update = migrate(doc.toObject());
+        if (!Object.keys(update).length) return;
+        console.log(`HM3 | Migrating art paths of ${doc.documentName} ${doc.name}${where}`);
+        await doc.update(update);
+    } catch (err) {
+        err.message = `Failed HM3 art path migration for ${doc.documentName} ${doc.name}${where}: ${err.message}`;
+        console.error(err);
+    }
+}
+
+/**
+ * Rewrite the system's art paths across the world: actors, items, scenes,
+ * journal entries, macros and roll tables, then every unlocked world
+ * compendium holding one of those. A locked compendium is left as it is; its
+ * old paths still resolve to the copy of the art the system ships under
+ * `images/`.
+ */
+export async function migrateWorldArt() {
+    for (const collection of [
+        game.actors,
+        game.items,
+        game.scenes,
+        game.journal,
+        game.macros,
+        game.tables,
+    ]) {
+        for (const doc of collection.contents) await migrateDocumentArt(doc, "");
+    }
+
+    for (const pack of game.packs) {
+        if (pack.metadata.packageType !== "world" && pack.metadata.package !== "world") continue;
+        if (pack.locked || !artMigrationFor(pack.documentName)) continue;
+        const where = ` in Compendium ${pack.collection}`;
+        try {
+            for (const doc of await pack.getDocuments()) await migrateDocumentArt(doc, where);
+        } catch (err) {
+            err.message = `Failed HM3 art path migration for Compendium ${pack.collection}: ${err.message}`;
+            console.error(err);
+        }
+    }
+}
+
+/**
+ * Return only the invocation spelling update, preserving existing deity values.
+ * This pass is safe on modern items and does not apply legacy schema changes.
+ * @param {object} item - Source item data.
+ * @returns {object} The minimal deity update, or an empty object.
+ */
+export function migrateInvocationDeityData(item) {
+    if (item.type !== "invocation" || !Object.hasOwn(item.system ?? {}, "diety")) return {};
+    const update = { "system.-=diety": null };
+    if (!item.system.deity && item.system.diety) update["system.deity"] = item.system.diety;
+    return update;
+}
+
+/** Update a world/compendium actor or item without running legacy migrations. */
+async function migrateDocumentDeity(doc) {
+    const data = doc.toObject();
+    let update = {};
+    if (doc.documentName === "Item") update = migrateInvocationDeityData(data);
+    if (doc.documentName === "Actor") {
+        const items = (data.items ?? []).flatMap((item) => {
+            const patch = migrateInvocationDeityData(item);
+            return Object.keys(patch).length ? [{ _id: item._id, ...patch }] : [];
+        });
+        if (items.length) update = { items };
+    }
+    if (Object.keys(update).length) await doc.update(update, { enforceTypes: false });
+    if (doc.documentName === "Scene") {
+        // Scene/compendium source may carry synthetic items in either the v14
+        // delta or older actorData. Patch only those embedded invocations.
+        const tokens = (data.tokens ?? []).flatMap((token) => {
+            if (token.actorLink) return [];
+            const patch = { _id: token._id };
+            for (const key of ["delta", "actorData"]) {
+                const items = (token[key]?.items ?? []).flatMap((item) => {
+                    const update = migrateInvocationDeityData(item);
+                    return Object.keys(update).length ? [{ _id: item._id, ...update }] : [];
+                });
+                if (items.length) patch[key] = { items };
+            }
+            return Object.keys(patch).length > 1 ? [patch] : [];
+        });
+        if (tokens.length) await doc.update({ tokens }, { enforceTypes: false });
+    }
+}
+
+/** Migrate deity spelling across modern world and world-owned compendium documents. */
+export async function migrateWorldDeity() {
+    for (const collection of [game.actors, game.items, game.scenes]) {
+        for (const doc of collection.contents) await migrateDocumentDeity(doc);
+    }
+    for (const pack of game.packs) {
+        if (pack.metadata.package !== "world" && pack.metadata.packageType !== "world") continue;
+        if (!["Actor", "Item", "Scene"].includes(pack.documentName)) continue;
+        const wasLocked = pack.locked;
+        try {
+            await pack.configure({ locked: false });
+            for (const doc of await pack.getDocuments()) await migrateDocumentDeity(doc);
+        } finally {
+            await pack.configure({ locked: wasLocked });
+        }
+    }
 }

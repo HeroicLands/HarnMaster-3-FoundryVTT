@@ -3,7 +3,7 @@
     "name": "Sir Baris",
     "type": "character",
     "system": {
-        "bioImage": "systems/hm3/images/svg/knight-silhouette.svg",
+        "bioImage": "systems/hm3/assets/images/knightsilhouette.svg",
         "species": "Human",
         "fatigue": 0,
         "sunsign": "Ahnu",
@@ -65,7 +65,7 @@
         "occupation": "Knight"
     },
     "_key": "!actors!hm3e2eSirBaris01",
-    "img": "systems/hm3/images/svg/knight-silhouette.svg",
+    "img": "systems/hm3/assets/images/knightsilhouette.svg",
     "items": [],
     "effects": [],
     "folder": null,
@@ -81,7 +81,7 @@
         "width": 1,
         "height": 1,
         "texture": {
-            "src": "systems/hm3/images/svg/knight-silhouette.svg"
+            "src": "systems/hm3/assets/images/knightsilhouette.svg"
         }
     }
 }

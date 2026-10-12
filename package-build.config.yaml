@@ -57,6 +57,10 @@ packageBuild:
         - { from: module, to: module }
         - { from: templates, to: templates }
         - { from: lang, to: lang }
+        - { from: assets/icons, to: assets/icons }
+        - { from: assets/images, to: assets/images }
+        # The same art under the `images/` paths stored in worlds and modules,
+        # so a document the world migration cannot reach still resolves.
         - { from: images, to: images }
         - { from: fonts, to: fonts }
         - { from: audio, to: audio }

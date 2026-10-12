@@ -200,19 +200,9 @@ Hooks.on("updateCombat", async (combat, updateData) => {
 Hooks.once("ready", function () {
     // Determine whether a system migration is required
     const currentMigrationVersion = game.settings.get("hm3", "systemMigrationVersion");
-    const NEEDS_MIGRATION_VERSION = "1.6.6"; // Anything older than this must be migrated
-
-    if (currentMigrationVersion) {
-        let needMigration = foundry.utils.isNewerVersion(
-            NEEDS_MIGRATION_VERSION,
-            currentMigrationVersion,
-        );
-        if (needMigration && game.user.isGM) {
-            migrations.migrateWorld();
-        }
-    } else {
-        // A world with no stored version is new: it is stamped, not migrated.
-        game.settings.set("hm3", "systemMigrationVersion", game.system.version);
+    const steps = migrations.migrationStepsFor(currentMigrationVersion);
+    if ((steps.legacy || steps.art || steps.deity) && game.user.isGM) {
+        migrations.migrateWorld(steps);
     }
 
     Hooks.on("hotbarDrop", (bar, data, slot) => macros.createHM3Macro(data, slot));

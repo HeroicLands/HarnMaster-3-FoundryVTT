@@ -3,7 +3,7 @@
     "name": "Gârgún Warrior",
     "type": "creature",
     "system": {
-        "bioImage": "systems/hm3/images/svg/knight-silhouette.svg",
+        "bioImage": "systems/hm3/assets/images/knightsilhouette.svg",
         "species": "Gârgún",
         "fatigue": 0,
         "sunsign": "",
@@ -64,7 +64,7 @@
         "loadRating": 20
     },
     "_key": "!actors!hm3e2eGargunWar1",
-    "img": "systems/hm3/images/svg/knight-silhouette.svg",
+    "img": "systems/hm3/assets/images/knightsilhouette.svg",
     "items": [],
     "effects": [],
     "folder": null,
@@ -80,7 +80,7 @@
         "width": 1,
         "height": 1,
         "texture": {
-            "src": "systems/hm3/images/svg/knight-silhouette.svg"
+            "src": "systems/hm3/assets/images/knightsilhouette.svg"
         }
     }
 }
