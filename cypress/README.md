@@ -14,8 +14,12 @@ npm run build:noci                  # build the system
 npx package-build deploy test       # install it into the e2e data root
 npm run e2e:seed                    # (re)create the hm3-e2e world
 # start the shared Foundry container — see "One instance, many worlds" below
-npx cypress run                     # or: npx cypress open
+npx cypress run --browser chromium  # or: npx cypress open --browser chromium
 ```
+
+The suite runs on Chromium. `npm run e2e:full` and `npm run e2e:fast` pass
+`--browser chromium` themselves; a bare `npx cypress run` uses Electron, whose
+headless mode times out taking a screenshot.
 
 ## One instance, many worlds
 

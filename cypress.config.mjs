@@ -17,6 +17,11 @@ const port = resolveStagePort(buildConfig.e2eStage, {
 const { worldId, gmId, gmName, gmPassword } = resolveE2EWorld(buildConfig);
 
 export default defineConfig({
+    // What a spec needs to reach the seeded world, so no spec hard-codes it.
+    // The password is a secret: `env` is read only through `cy.env()`, where
+    // `expose` values are readable by any spec.
+    expose: { worldId, gmId, gmName },
+    env: { gmPassword },
     e2e: {
         baseUrl: `http://localhost:${port}`,
         supportFile: "cypress/support/e2e.js",
@@ -29,8 +34,5 @@ export default defineConfig({
         // fixtures to load from disk here, and videos cost more than they say.
         fixturesFolder: false,
         video: false,
-        // Everything a spec needs to reach the seeded world, so no spec has to
-        // hard-code a credential.
-        env: { worldId, gmId, gmName, gmPassword },
     },
 });

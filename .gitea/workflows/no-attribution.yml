@@ -19,7 +19,7 @@ permissions:
 jobs:
     no-attribution:
         name: No AI attribution
-        runs-on: ubuntu-latest
+        runs-on: light
         steps:
             # Needs no checkout: the subjects are the pull request, not the tree.
             - uses: HeroicLands/.github/actions/no-attribution@main

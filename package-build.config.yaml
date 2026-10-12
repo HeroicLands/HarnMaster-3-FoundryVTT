@@ -94,8 +94,10 @@ packageBuild:
         # `compatibility.minimum` above. `npm run e2e:sweep -- <build>` runs
         # the full suite against a build this repository does not pin.
         suite:
-            run: [npx, cypress, run]
-            open: [npx, cypress, open]
+            # Chromium, not Cypress's Electron: headless Electron times out on
+            # `cy.screenshot()` in the `before all` hook.
+            run: [npx, cypress, run, --browser, chromium]
+            open: [npx, cypress, open, --browser, chromium]
 
         # In the order they must run: `schema` writes the `build/schema.json`
         # that `assets` stages, so it runs before `assets`, which empties the

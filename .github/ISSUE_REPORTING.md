@@ -86,22 +86,21 @@ sync, from the repository and from every issue carrying it.
 > add none and note the gap in the body. Extending the registry is a deliberate
 > edit to **both** this table and `.github/labels.yml`.
 
-| Label              | Scope                                                                                           |
-| ------------------ | ----------------------------------------------------------------------------------------------- |
-| `compendium`       | The shipped compendium content — items, characters, journals, and their data.                   |
-| `cosmetic`         | Presentation only; does not affect function or a rules outcome.                                 |
-| `regression`       | Something that previously worked and stopped. Pairs with type `bug`.                            |
-| `devops`           | Build, tooling, pack pipeline, release, repository configuration.                               |
-| `security`         | Touches an attack surface: client script execution, world-data integrity, privilege escalation. |
-| `tech-debt`        | Restructuring or cleanup of working code; refactors.                                            |
-| `breaking-change`  | Alters a document ID, the data model, or pack compatibility in a way existing worlds notice.    |
-| `blocked`          | Cannot proceed until an external dependency or another issue clears.                            |
-| `documentation`    | Documentation about this repository — README, process, authoring guides.                        |
-| `duplicate`        | This issue or pull request already exists.                                                      |
-| `question`         | Further information is requested.                                                               |
-| `wontfix`          | This will not be worked on.                                                                     |
-| `good first issue` | Small, well-bounded, and a reasonable place for a new contributor to start.                     |
-| `help wanted`      | Extra attention is needed.                                                                      |
+| Label             | Scope                                                                                           |
+| ----------------- | ----------------------------------------------------------------------------------------------- |
+| `compendium`      | The shipped compendium content — items, characters, journals, and their data.                   |
+| `cosmetic`        | Presentation only; does not affect function or a rules outcome.                                 |
+| `regression`      | Something that previously worked and stopped. Pairs with type `bug`.                            |
+| `devops`          | Build, tooling, pack pipeline, release, repository configuration.                               |
+| `security`        | Touches an attack surface: client script execution, world-data integrity, privilege escalation. |
+| `tech-debt`       | Restructuring or cleanup of working code; refactors.                                            |
+| `breaking-change` | Alters a document ID, the data model, or pack compatibility in a way existing worlds notice.    |
+| `blocked`         | Cannot proceed until an external dependency or another issue clears.                            |
+| `documentation`   | Documentation about this repository — README, process, authoring guides.                        |
+| `duplicate`       | This issue or pull request already exists.                                                      |
+| `question`        | Further information is requested.                                                               |
+| `e2e`             | On a pull request, runs the full Foundry end-to-end suite.                                      |
+| `wontfix`         | This will not be worked on.                                                                     |
 
 There is deliberately no `system` or `code` label: almost every issue here is
 about the system code, so the label would carry no information.

@@ -3,28 +3,36 @@
  *
  * Authenticates against Foundry's `/join` endpoint — the same POST the join
  * screen makes — with the seeded Gamemaster, then loads `/game` and waits for
- * `game.ready`. Credentials come from `Cypress.env`, populated by
- * `cypress.config.mjs` from the same resolution the seed used, so a spec only
- * ever calls `cy.login()`.
+ * `game.ready`. The user id comes from `Cypress.expose` and the password
+ * from `cy.env`, both populated by `cypress.config.mjs` from the same
+ * resolution the seed used, so a spec only ever calls `cy.login()`.
  */
 Cypress.Commands.add("login", (opts = {}) => {
-    const userId = opts.userId ?? Cypress.env("gmId");
-    const password = opts.password ?? Cypress.env("gmPassword");
+    const userId = opts.userId ?? Cypress.expose("gmId");
+    const password =
+        opts.password === undefined ?
+            cy.env(["gmPassword"], { log: false })
+        :   cy.wrap({ gmPassword: opts.password }, { log: false });
 
-    cy.request({
-        method: "POST",
-        url: "/join",
-        // Foundry renamed this body field from `userid` to `userId` in 14.367;
-        // `sessions.authenticateUser` destructures one or the other depending
-        // on the build. Sending both spans the whole supported range — the
-        // handler takes the name it wants and ignores the other.
-        body: { action: "join", userid: userId, userId, password },
-    }).then((res) => {
-        // A successful join answers JSON. When the world is not active Foundry
-        // answers 200 with an HTML error page, so assert on the payload rather
-        // than the status code.
-        expect(res.body, "join response").to.have.property("status", "success");
-    });
+    password.then(({ gmPassword }) =>
+        cy
+            .request({
+                method: "POST",
+                url: "/join",
+                // Foundry renamed this body field from `userid` to `userId` in 14.367;
+                // `sessions.authenticateUser` destructures one or the other depending
+                // on the build. Sending both spans the whole supported range — the
+                // handler takes the name it wants and ignores the other.
+                body: { action: "join", userid: userId, userId, password: gmPassword },
+                log: false,
+            })
+            .then((res) => {
+                // A successful join answers JSON. When the world is not active Foundry
+                // answers 200 with an HTML error page, so assert on the payload rather
+                // than the status code.
+                expect(res.body, "join response").to.have.property("status", "success");
+            }),
+    );
 
     cy.visit("/game");
     cy.window({ timeout: 60000 }).its("game").its("ready").should("eq", true);
