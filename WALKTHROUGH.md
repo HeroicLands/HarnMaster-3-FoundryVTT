@@ -30,7 +30,7 @@ The skills tab displays all of the skills for the character, separated by skill 
 
 At the bottom of the skills tab is the section for Magic and Ritual skills. Magic skills are based on convocation, and here you provide your Convocational ML.
 
-Ritual skills are available per diety worshipped. Note that this is where piety scores are recorded, since each diety has a separate piety score.
+Ritual skills are available per deity worshipped. Note that this is where piety scores are recorded, since each deity has a separate piety score.
 
 ### Skills Detail Dialog
 

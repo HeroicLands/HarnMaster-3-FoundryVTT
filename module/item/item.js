@@ -182,14 +182,14 @@ export class HarnMasterItem extends Item {
                 }
             }
 
-            // If it is a invocation, initialize the diety to the
+            // If it is a invocation, initialize the deity to the
             // first ritual skill found; it is really unimportant what the
             // value is, so long as it is a valid skill for this character
-            if (itemData.type === "invocation" && !itemData.diety) {
+            if (itemData.type === "invocation" && !itemData.deity) {
                 for (let skill of this.actor.itemTypes.skill.values()) {
                     if (skill.system.type === "Ritual") {
-                        updateData["system.diety"] = skill.name;
-                        itemData.diety = skill.name;
+                        updateData["system.deity"] = skill.name;
+                        itemData.deity = skill.name;
                         break;
                     }
                 }
@@ -226,10 +226,10 @@ export class HarnMasterItem extends Item {
                     break;
 
                 case "invocation":
-                    // Base image on diety name
-                    updateData.img = utility.getImagePath(itemData.system.diety);
+                    // Base image on deity name
+                    updateData.img = utility.getImagePath(itemData.system.deity);
                     if (!updateData.img) {
-                        // If diety name wasn't found, use default
+                        // If deity name wasn't found, use default
                         updateData.img = utility.getImagePath(HM3.defaultRitualIconName);
                     }
                     break;

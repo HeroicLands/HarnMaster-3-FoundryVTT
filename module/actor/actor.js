@@ -751,16 +751,16 @@ export class HarnMasterActor extends Actor {
         });
     }
 
-    _setRitualInvocations(diety, sb, ml, eml) {
-        if (!diety || diety.length == 0) return;
+    _setRitualInvocations(deity, sb, ml, eml) {
+        if (!deity || deity.length == 0) return;
 
-        let lcDiety = diety.toLowerCase();
+        let lcDeity = deity.toLowerCase();
         this.items.forEach((it) => {
             const itemData = it.system;
             if (
                 it.type === "invocation" &&
-                itemData.diety &&
-                itemData.diety.toLowerCase() === lcDiety
+                itemData.deity &&
+                itemData.deity.toLowerCase() === lcDeity
             ) {
                 itemData.effectiveMasteryLevel = calcInvocationEml(eml, itemData.circle);
                 itemData.skillIndex = Math.floor(ml / 10);

@@ -121,11 +121,11 @@ The Description represents readily-apparent information about your character; th
 
 Your Biography represents your personal characteristics and backstory; those things that are not apparent to others unless you choose to share it. This may contain personal motivations as well as personal characteristics. Your biography will only be available to those will full access to your character, not to those with only limited access.
 
-### Diety and Piety
+### Deity and Piety
 
 The assumption is that a character may have one or more religions, and a piety associated with each one. If a character is initiated into a religion, they are assumed to have a base ML in the religion (presumably opening at SBx1) representing basic understanding of the rituals and requirements of the religion.
 
-Piety is therefore assocated with the religion/diety, and is indicated as part of the ritual skill for that diety. If you choose to not require characters to have any Ritual skill to get piety, you may simply leave the SB/ML at 0.
+Piety is therefore assocated with the religion/deity, and is indicated as part of the ritual skill for that deity. If you choose to not require characters to have any Ritual skill to get piety, you may simply leave the SB/ML at 0.
 
 ### Weapon Associated Skill
 

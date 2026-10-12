@@ -141,8 +141,9 @@ export class InvocationModel extends ItemBaseModel {
     /** @override */
     static defineSchema() {
         return Object.assign(super.defineSchema(), {
-            // Spelled "diety" in the stored data since the system's first
-            // release. Renaming it is a data migration, not a typo fix.
+            deity: new fields.StringField({ required: true, blank: true, initial: "" }),
+            // Declared so a document still holding the old spelling is not
+            // discarded on construction; migrateData moves it to `deity`.
             diety: new fields.StringField({ required: true, blank: true, initial: "" }),
             circle: new fields.NumberField({ required: true, nullable: false, initial: 1 }),
             effectiveMasteryLevel: new fields.NumberField({
@@ -151,6 +152,17 @@ export class InvocationModel extends ItemBaseModel {
                 initial: 0,
             }),
         });
+    }
+
+    /**
+     * Copy the stored `diety` spelling into `deity` on the raw source, before
+     * validation, so content created under the old spelling is upgraded
+     * whenever it is constructed.
+     * @override
+     */
+    static migrateData(source) {
+        if (!source.deity && source.diety) source.deity = source.diety;
+        return super.migrateData(source);
     }
 }
 

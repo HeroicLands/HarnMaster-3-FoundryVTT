@@ -336,6 +336,13 @@ export const migrateItemData = function (item) {
         updateData["system.macros.type"] = "script";
     }
 
+    if (item.type === "invocation" && item.system.hasOwnProperty("diety")) {
+        if (!item.system.deity && item.system.diety) {
+            updateData["system.deity"] = item.system.diety;
+        }
+        updateData["system.-=diety"] = null;
+    }
+
     if (item.type === "weapongear") {
         if (item.system.hasOwnProperty("squeeze")) {
             if (item.system.squeeze) {

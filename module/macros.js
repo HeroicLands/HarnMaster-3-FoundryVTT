@@ -328,7 +328,7 @@ export async function invokeRitualRoll(itemName, noDialog = false, myActor = nul
             sb: item.system.skillBase,
             si: item.system.skillIndex,
             invocationName: item.name,
-            diety: item.system.diety,
+            deity: item.system.deity,
             circle: item.system.circle,
         },
         speaker: speaker,

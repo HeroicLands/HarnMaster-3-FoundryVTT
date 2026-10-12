@@ -19,7 +19,7 @@
       "type": "script",
       "command": ""
     },
-    "diety": "Morgath",
+    "deity": "Morgath",
     "circle": 4,
     "effectiveMasteryLevel": 0
   },

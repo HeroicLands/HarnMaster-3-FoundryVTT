@@ -54,16 +54,16 @@
             data-tab="properties">
             <div class="grid grid-fixed-row grid-2col">
                 <div class="resource">
-                    <label class="resource-label" for="system.diety">Diety</label>
+                    <label class="resource-label" for="system.deity">Deity</label>
                     {{#if hasRitualSkills}}
-                    <select class="resource-value" name="system.diety" data-dtype="String">
-                        {{selectOptions (toChoices dieties) selected=idata.diety}}
+                    <select class="resource-value" name="system.deity" data-dtype="String">
+                        {{selectOptions (toChoices deities) selected=idata.deity}}
                     </select>
                     {{else}}
                     <input
                         type="text"
-                        name="system.diety"
-                        value="{{idata.diety}}"
+                        name="system.deity"
+                        value="{{idata.deity}}"
                         data-dtype="String" />
                     {{/if}}
                 </div>
