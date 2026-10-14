@@ -21,7 +21,7 @@ jobs:
         runs-on: light
         if: >-
             github.event_name != 'pull_request' ||
-            contains(github.event.pull_request.labels.*.name, 'e2e')
+            contains(github.event.pull_request.labels.*.name, 'ci/e2e')
         outputs:
             run: ${{ steps.time.outputs.run }}
         steps:

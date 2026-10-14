@@ -12,7 +12,7 @@ The core discipline is four axes, each answering a different question:
 
 - **Type** — _"what shape of work is this?"_ One per issue, from a closed set of five.
 - **Priority** — _"how soon and how badly does this need doing?"_ A GitHub issue field, one value, defaults to Medium.
-- **Labels** — _"what is this about?"_ Categorization only, chosen **only** from the registry in §3. Never invent a label.
+- **Labels** — _"what is this about?"_ Categorization only, chosen **only** from the organisation's label set (§3). Never invent a label.
 - **Milestone** — _"which capability gate does this advance?"_ At most one, from a curated set (§4).
 
 Keep the roles separate: do not encode priority, urgency, or work-shape as a
@@ -40,7 +40,7 @@ They are not redefined here.
 - A **bug** is _broken_; a **feature** is _missing_. That distinction resolves most ambiguity — decide which word fits before anything else.
 - An **epic** MUST link its sub-issues and SHOULD carry little implementation detail of its own.
 - A **spike** MUST state the question it answers and its timebox. It typically _spawns_ follow-up issues rather than doing the work.
-- A **refactor** that changes no external behavior is a **task**, labelled `tech-debt`.
+- A **refactor** that changes no external behavior is a **task**, labelled `flag/tech-debt`.
 
 **What "broken" means here.** This repository ships running code _and_ game data,
 so a bug is either: behavior that misfires (a roll that applies the wrong
@@ -48,9 +48,7 @@ modifier, a sheet that will not open, an active effect silently ignored), or a
 compendium document whose data is wrong in a way the rules can detect. A rule
 that was never implemented is not broken — that is a **feature**.
 
-> `bug` and `enhancement` were used as _labels_ in this repository until 2026-08.
-> They are the **type** axis now. Every issue that carried one had its type set
-> from it before the labels were retired; do not reintroduce them.
+> Bug and enhancement are issue **types**, never labels.
 
 ## 2. Priority (GitHub issue field)
 
@@ -72,38 +70,40 @@ answers "when I next sit down, what deserves my time?"
 
 - **MUST** set a priority on every issue.
 - **Default to Medium.** Anything higher MUST be justified in the body in one line. Do not inflate.
-- Priority is independent of type, labels and milestone. A `security` label is **not** automatically Urgent — judge impact, not topic.
+- Priority is independent of type, labels and milestone. A `flag/security` label is **not** automatically Urgent — judge impact, not topic.
 
-## 3. Labels — the closed registry
+## 3. Labels
 
-Labels are for **categorization only**. The table below is the complete,
-authoritative set for this repository. Its machine-readable twin is
-[`.github/labels.yml`](labels.yml), which the `labels-sync` workflow reconciles
-onto GitHub. The set is **closed** — a label not in the registry is deleted on
-sync, from the repository and from every issue carrying it.
+Labels are defined once for the whole organisation, in `labels.yml` of the
+`HeroicLands/.github` repository. This repository keeps no registry of its own,
+and does not create labels; a label that does not exist there is not applied.
+If none fits, note the gap in the issue body for a maintainer to decide.
 
-> **MUST NOT invent, rename, or improvise labels.** If no existing label fits,
-> add none and note the gap in the body. Extending the registry is a deliberate
-> edit to **both** this table and `.github/labels.yml`.
+| Group         | Labels                                                                                                                       |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `type/`       | `type/bug`, `type/feature`, `type/epic`, `type/task`, `type/spike` — exactly one per issue                                   |
+| `area/`       | `area/documentation`, `area/devops`, `area/tests`, `area/content`, `area/system`, `area/site`, `area/layout`, `area/styling` |
+| `flag/`       | `flag/breaking-change`, `flag/security`, `flag/regression`, `flag/tech-debt`                                                 |
+| `status/`     | `status/blocked`, `status/question`                                                                                          |
+| `resolution/` | `resolution/duplicate`, `resolution/wontfix`                                                                                 |
+| `ci/`         | `ci/e2e`                                                                                                                     |
 
-| Label             | Scope                                                                                           |
-| ----------------- | ----------------------------------------------------------------------------------------------- |
-| `compendium`      | The shipped compendium content — items, characters, journals, and their data.                   |
-| `cosmetic`        | Presentation only; does not affect function or a rules outcome.                                 |
-| `regression`      | Something that previously worked and stopped. Pairs with type `bug`.                            |
-| `devops`          | Build, tooling, pack pipeline, release, repository configuration.                               |
-| `security`        | Touches an attack surface: client script execution, world-data integrity, privilege escalation. |
-| `tech-debt`       | Restructuring or cleanup of working code; refactors.                                            |
-| `breaking-change` | Alters a document ID, the data model, or pack compatibility in a way existing worlds notice.    |
-| `blocked`         | Cannot proceed until an external dependency or another issue clears.                            |
-| `documentation`   | Documentation about this repository — README, process, authoring guides.                        |
-| `duplicate`       | This issue or pull request already exists.                                                      |
-| `question`        | Further information is requested.                                                               |
-| `e2e`             | On a pull request, runs the full Foundry end-to-end suite.                                      |
-| `wontfix`         | This will not be worked on.                                                                     |
+**When to use them here**
 
-There is deliberately no `system` or `code` label: almost every issue here is
-about the system code, so the label would carry no information.
+- `area/content` — the shipped compendium content: items, characters, journals, and their data.
+- `area/styling` — presentation only; does not affect function or a rules outcome.
+- `area/devops` — build, tooling, pack pipeline, release, repository configuration.
+- `area/documentation` — README, process and authoring guides.
+- `flag/breaking-change` — alters a document ID, the data model, or pack compatibility in a way existing worlds notice.
+- `flag/security` — touches an attack surface: client script execution, world-data integrity, privilege escalation.
+- `ci/e2e` — on a pull request, runs the full Foundry end-to-end suite.
+- There is deliberately no use of `area/system`: almost every issue here is about the system code, so the label would carry no information.
+
+**Label rules**
+
+- Labels are additive and orthogonal — `area/content` + `area/devops` + `flag/regression` on one bug is fine.
+- Do not use a label to express something a type, the priority field, or a milestone already expresses.
+- Progress toward a capability is tracked by **milestones** (§4), not labels.
 
 ## 4. Milestones — capability gates
 

@@ -49,7 +49,6 @@
         "lint:content-links": "package-build links",
         "lint:format": "package-build format",
         "lint:lang": "package-build lang check",
-        "lint:labels": "package-build labels check",
         "lint:markdown": "package-build markdown",
         "lint:markdown:fix": "package-build markdown --fix",
         "lint:packs": "node utils/check-no-compiled-packs.mjs",
