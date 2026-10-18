@@ -1,5 +1,45 @@
 # hm3
 
+## 1.7.0
+
+### Minor Changes
+
+**Install requirement** — the system requires Foundry 14.359 or newer.
+
+### Patch Changes
+
+The system's artwork moves to new locations; a world updates its images when it next loads, and the old locations keep working for now.
+
+A GM can list skills whose public rolls are made blind automatically.
+
+A new armour item named "crested helm" gets the crested helmet icon instead of a broken image.
+
+The d6 ability roll no longer ends in an error after posting its card, and the actor's custom roll macro and ability roll hook now run.
+
+An attribute roll made on d6 now shows a positive modifier with a plus sign, as the d100 roll does.
+
+Choosing a defence for a token you do not control, or one that is not on the scene, shows a warning instead of doing nothing. Attacking with a weapon that is not equipped, or dismissing the weapon choice, also says so.
+
+Choosing Dodge opens a dialog with an additional modifier, as Block does.
+
+Dodging a high-velocity missile rolls against half the dodge skill.
+
+The Actors directory's right-click menu can show an actor's façade artwork, with Show Players.
+
+Typing in a sheet's filter no longer swallows the next click, and the filter stays applied.
+
+An invocation's deity is stored under its correct spelling; existing worlds and compendium content are upgraded on load.
+
+An item whose description points to a journal page shows that page's text on its sheet.
+
+Psionic talents in the standard items compendium show their fatigue cost in brackets, such as Hex [F2], and gain no specialty bonus on development rolls.
+
+With two weapons of the same name, a damage roll uses the aspects of the weapon rolled for.
+
+When a block checks for weapon breakage, the browser console logs each weapon's dice, its quality and whether it broke, at debug level.
+
+**Combat** — An Active Effect bonus to Weapon Attack ML, Melee Attacks or Missile Attacks now applies to the attack roll and the Eff AML shown on the attack card.
+
 ## 1.6.5
 
 ### Patch Changes
