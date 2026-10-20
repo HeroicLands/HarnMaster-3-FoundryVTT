@@ -7,14 +7,17 @@ import { ART_PATHS } from "../module/art-paths.js";
 const ROOT = path.resolve(import.meta.dirname, "..");
 const PREFIX = "systems/hm3/";
 
-/** Every file under a repository directory, as repository-relative paths. */
+/**
+ * Every file under a repository directory, as repository-relative paths.
+ * Provenance records (`provenance.yaml` and `<file>.yaml` sidecars) are not art.
+ */
 function filesUnder(dir) {
     const out = [];
     const walk = (rel) => {
         for (const entry of fs.readdirSync(path.join(ROOT, rel), { withFileTypes: true })) {
             const child = `${rel}/${entry.name}`;
             if (entry.isDirectory()) walk(child);
-            else if (entry.isFile()) out.push(child);
+            else if (entry.isFile() && !entry.name.endsWith(".yaml")) out.push(child);
         }
     };
     walk(dir);
