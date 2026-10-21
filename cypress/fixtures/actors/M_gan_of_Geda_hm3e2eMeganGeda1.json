@@ -3,7 +3,7 @@
     "name": "Mêgan of Geda",
     "type": "character",
     "system": {
-        "bioImage": "systems/hm3/assets/images/knightsilhouette.svg",
+        "bioImage": "systems/hm3/images/knightsilhouette.svg",
         "species": "Human",
         "fatigue": 0,
         "sunsign": "Tai",
@@ -65,7 +65,7 @@
         "occupation": "Shek-Pvar"
     },
     "_key": "!actors!hm3e2eMeganGeda1",
-    "img": "systems/hm3/assets/images/knightsilhouette.svg",
+    "img": "systems/hm3/images/knightsilhouette.svg",
     "items": [],
     "effects": [],
     "folder": null,
@@ -81,7 +81,7 @@
         "width": 1,
         "height": 1,
         "texture": {
-            "src": "systems/hm3/assets/images/knightsilhouette.svg"
+            "src": "systems/hm3/images/knightsilhouette.svg"
         }
     }
 }

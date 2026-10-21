@@ -3,7 +3,7 @@
     "name": "Treasure Chest",
     "type": "container",
     "system": {
-        "bioImage": "systems/hm3/assets/icons/chest.svg",
+        "bioImage": "systems/hm3/icons/chest.svg",
         "description": "",
         "macros": {},
         "capacity": {
@@ -11,7 +11,7 @@
         }
     },
     "_key": "!actors!hm3e2eTreasChest",
-    "img": "systems/hm3/assets/icons/chest.svg",
+    "img": "systems/hm3/icons/chest.svg",
     "items": [],
     "effects": [],
     "folder": null,
@@ -27,7 +27,7 @@
         "width": 1,
         "height": 1,
         "texture": {
-            "src": "systems/hm3/assets/icons/chest.svg"
+            "src": "systems/hm3/icons/chest.svg"
         }
     }
 }

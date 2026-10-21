@@ -24,10 +24,12 @@ function filesUnder(dir) {
     return out.sort();
 }
 
+/** The repository file a Foundry path names: the stage copies `assets/icons/*` to `icons/*` and `assets/images/*` to `images/*`. */
 const repoPath = (foundryPath) => {
     expect(foundryPath.startsWith(PREFIX)).toBe(true);
     return foundryPath.slice(PREFIX.length);
 };
+const assetPath = (foundryPath) => `assets/${repoPath(foundryPath)}`;
 
 describe("ART_PATHS", () => {
     it("names a file under images/ in every key", () => {
@@ -38,9 +40,9 @@ describe("ART_PATHS", () => {
         }
     });
 
-    it("names a file under assets/icons/ or assets/images/ in every value", () => {
+    it("names a file under icons/ or images/ that is shipped from assets/ in every value", () => {
         for (const value of ART_PATHS.values()) {
-            const rel = repoPath(value);
+            const rel = assetPath(value);
             expect(/^assets\/(icons|images)\/[a-z0-9]+\.[a-z]+$/.test(rel), value).toBe(true);
             expect(fs.existsSync(path.join(ROOT, rel)), value).toBe(true);
         }
@@ -48,16 +50,16 @@ describe("ART_PATHS", () => {
 
     it("covers every file under images/ and every file under the asset roots, once", () => {
         const keys = [...ART_PATHS.keys()].map(repoPath).sort();
-        const values = [...ART_PATHS.values()].map(repoPath).sort();
+        const values = [...ART_PATHS.values()].map(assetPath).sort();
         expect(keys).toEqual(filesUnder("images"));
         expect(values).toEqual([...filesUnder("assets/icons"), ...filesUnder("assets/images")]);
         expect(new Set(values).size).toBe(values.length);
     });
 
-    it("files each icon under assets/icons/ and every other image under assets/images/", () => {
+    it("files each icon under icons/ and every other image under images/", () => {
         for (const [key, value] of ART_PATHS) {
             const root = repoPath(key).startsWith("images/icons/") ? "icons" : "images";
-            expect(repoPath(value).startsWith(`assets/${root}/`), key).toBe(true);
+            expect(repoPath(value).startsWith(`${root}/`), key).toBe(true);
         }
     });
 
@@ -75,7 +77,7 @@ describe("ART_PATHS", () => {
     it("moves each file without changing its bytes", () => {
         for (const [key, value] of ART_PATHS) {
             const before = fs.readFileSync(path.join(ROOT, repoPath(key)));
-            const after = fs.readFileSync(path.join(ROOT, repoPath(value)));
+            const after = fs.readFileSync(path.join(ROOT, assetPath(value)));
             expect(after.equals(before), key).toBe(true);
         }
     });

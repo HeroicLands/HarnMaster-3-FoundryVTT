@@ -12,13 +12,13 @@ import {
 } from "../module/migrations.js";
 
 const OLD_ICON = "systems/hm3/images/icons/svg/tied-scroll.svg";
-const NEW_ICON = "systems/hm3/assets/icons/tiedscroll.svg";
+const NEW_ICON = "systems/hm3/icons/tiedscroll.svg";
 const OLD_PNG = "systems/hm3/images/icons/png/ilvir.png";
-const NEW_PNG = "systems/hm3/assets/icons/ilvir.png";
+const NEW_PNG = "systems/hm3/icons/ilvir.png";
 const OLD_KNIGHT = "systems/hm3/images/svg/knight-silhouette.svg";
-const NEW_KNIGHT = "systems/hm3/assets/images/knightsilhouette.svg";
+const NEW_KNIGHT = "systems/hm3/images/knightsilhouette.svg";
 const OLD_HELP = "systems/hm3/images/help/combat-tab.jpg";
-const NEW_HELP = "systems/hm3/assets/images/combattab.jpg";
+const NEW_HELP = "systems/hm3/images/combattab.jpg";
 const FOREIGN = "icons/svg/mystery-man.svg";
 
 describe("rewriteSystemArtPath", () => {

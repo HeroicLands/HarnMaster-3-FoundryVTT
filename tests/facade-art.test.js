@@ -19,9 +19,9 @@ describe("facadeArtSrc", () => {
 
     it("returns undefined for each default silhouette", () => {
         for (const src of [
-            "systems/hm3/assets/images/knightsilhouette.svg",
-            "systems/hm3/assets/images/monstersilhouette.svg",
-            "systems/hm3/assets/icons/chest.svg",
+            "systems/hm3/images/knightsilhouette.svg",
+            "systems/hm3/images/monstersilhouette.svg",
+            "systems/hm3/icons/chest.svg",
         ]) {
             expect(facadeArtSrc(actor(src))).toBeUndefined();
         }

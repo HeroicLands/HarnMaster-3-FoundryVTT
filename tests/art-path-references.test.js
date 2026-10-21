@@ -24,34 +24,40 @@ function filesUnder(dir) {
 }
 
 describe("references to the system's art", () => {
-    it("name assets/, never systems/hm3/images/", () => {
+    it("name the flat icons/ and images/ files, never the legacy images/ subdirectories", () => {
         const offenders = [];
         for (const dir of SCANNED) {
             for (const file of filesUnder(dir)) {
                 if (EXEMPT.has(file)) continue;
                 const text = fs.readFileSync(path.join(ROOT, file), "utf8");
-                const count = text.split("systems/hm3/images/").length - 1;
+                const count = (text.match(/systems\/hm3\/images\/[^/"'\s)]+\//g) ?? []).length;
                 if (count) offenders.push(`${file}: ${count}`);
             }
         }
         expect(offenders).toEqual([]);
     });
 
-    it("leave no stylesheet pointing into images/", () => {
-        const offenders = filesUnder("scss").filter((file) =>
-            /url\(\s*["']?\.\.\/images\//.test(fs.readFileSync(path.join(ROOT, file), "utf8")),
-        );
+    it("leave no stylesheet pointing at a file the flat images/ lacks", () => {
+        const offenders = [];
+        for (const file of filesUnder("scss")) {
+            const text = fs.readFileSync(path.join(ROOT, file), "utf8");
+            for (const [, name] of text.matchAll(/url\(\s*["']?\.\.\/images\/([^"')\s]+)/g)) {
+                if (!fs.existsSync(path.join(ROOT, "assets/images", name)))
+                    offenders.push(`${file}: ${name}`);
+            }
+        }
         expect(offenders).toEqual([]);
     });
 
     it("name a file that exists", () => {
         const missing = [];
-        const pattern = /systems\/hm3\/(assets\/[A-Za-z0-9_./-]+)/g;
+        const pattern = /systems\/hm3\/((?:icons|images)\/[A-Za-z0-9_.-]+)(?=["'\s)]|$)/g;
         for (const dir of SCANNED) {
             for (const file of filesUnder(dir)) {
                 const text = fs.readFileSync(path.join(ROOT, file), "utf8");
                 for (const [, rel] of text.matchAll(pattern)) {
-                    if (!fs.existsSync(path.join(ROOT, rel))) missing.push(`${file}: ${rel}`);
+                    if (!fs.existsSync(path.join(ROOT, "assets", rel)))
+                        missing.push(`${file}: ${rel}`);
                 }
             }
         }

@@ -2,9 +2,9 @@ import { ART_PATHS } from "./art-paths.js";
 
 /** The images a new character, creature or container is created with. */
 const DEFAULT_FACADE_ART = new Set([
-    "systems/hm3/assets/images/knightsilhouette.svg",
-    "systems/hm3/assets/images/monstersilhouette.svg",
-    "systems/hm3/assets/icons/chest.svg",
+    "systems/hm3/images/knightsilhouette.svg",
+    "systems/hm3/images/monstersilhouette.svg",
+    "systems/hm3/icons/chest.svg",
 ]);
 
 /**
