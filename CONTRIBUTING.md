@@ -99,12 +99,12 @@ frontmatter envelope is `type` and an optional `title`. It compiles to a page
 rather than to a compendium document, so it appears in no pack.
 
 ```bash
-npm run build:site       # writes build/hugo/content/_index.md, and renders it
+npm run build:site       # renders it into build/site/hm3/
 ```
 
 It is **authored, not generated**: everything on it is a person's choice, so
 keep it accurate against `README.md` and the manifest rather than letting it
-drift into claims the system does not make. `build/hugo/` is a build artifact
+drift into claims the system does not make. `build/site/` is a build artifact
 — wiped on every run, and gitignored.
 
 The authored content tree contains only the homepage, so the site publishes that page.

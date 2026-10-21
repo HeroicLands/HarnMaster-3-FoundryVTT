@@ -8,13 +8,12 @@
 #
 # What stays this repository's: its build. The shared workflow runs
 # `npm run build:site` and knows nothing about what that script does — here it
-# compiles `assets/content/Homepage.md` with `package-build site` and renders it
-# with Hugo into `build/site/hm3/`.
+# renders `assets/content/Homepage.md` with `package-build site build` into
+# `build/site/hm3/`.
 #
-# No page bounds are passed. `publish.site: homepage` in
-# `package-build.config.yaml` fixes the count at exactly one, and the shared
-# workflow *fails* if a homepage-mode caller passes `min-pages` or `max-pages`:
-# the bound is a boundary, and a boundary a caller can widen is not one.
+# No page bounds are passed. The content tree holds only the homepage, and a
+# caller that states no bound is held by the shared workflow to exactly one
+# page.
 name: Deploy the HM3 site to Cloudflare Pages
 
 # Deploying is gated by the repository variable HL_DEPLOY_ENABLED.
@@ -37,7 +36,7 @@ jobs:
         # and the shared workflow creates it on the first run. A project cannot
         # be renamed later without losing its deployment history, so the name is
         # settled here once.
-        uses: HeroicLands/.github/.gitea/workflows/deploy-package-site.yml@83bb0cd0af7db952098ef5fe2e8312e7f41040eb # main
+        uses: HeroicLands/.github/.gitea/workflows/deploy-package-site.yml@3112eb1a40012b0f91a3f5c4aa8c47c43ebad0ef # main
         with:
             project: hm3-site
         # Passed by name, never `secrets: inherit` — inheriting would hand a

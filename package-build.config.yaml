@@ -37,10 +37,6 @@ site:
             - title: Source and issues
               url: https://github.com/HeroicLands/HarnMaster-3-FoundryVTT
               text: The repository, where bugs and requests are tracked.
-    hugo:
-        markup:
-            highlight:
-                style: monokai
 
 packageBuild:
     # One entry per document class: this system keeps one registry per file.
