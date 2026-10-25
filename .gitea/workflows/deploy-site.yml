@@ -36,7 +36,7 @@ jobs:
         # and the shared workflow creates it on the first run. A project cannot
         # be renamed later without losing its deployment history, so the name is
         # settled here once.
-        uses: HeroicLands/.github/.gitea/workflows/deploy-package-site.yml@3112eb1a40012b0f91a3f5c4aa8c47c43ebad0ef # main
+        uses: HeroicLands/.github/.gitea/workflows/deploy-package-site.yml@d5df169d556decffa602bcfc566f1b391a57ad09 # main
         with:
             project: hm3-site
         # Passed by name, never `secrets: inherit` — inheriting would hand a
