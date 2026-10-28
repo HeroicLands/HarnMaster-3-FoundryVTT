@@ -2,4 +2,6 @@
 "hm3": patch
 ---
 
-Psionic talents in the standard items compendium show their fatigue cost in brackets, such as Hex [F2], and gain no specialty bonus on development rolls.
+**Compendiums**
+
+- Psionic talents in the standard items compendium show their fatigue cost in brackets, such as Hex [F2], and gain no specialty bonus on development rolls.

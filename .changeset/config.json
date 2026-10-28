@@ -1,6 +1,11 @@
 {
     "$schema": "https://unpkg.com/@changesets/config@4.0.0/schema.json",
-    "changelog": "@heroiclands/package-build/changelog",
+    "changelog": [
+        "@heroiclands/package-build/changelog",
+        {
+            "labels": ["Characters and sheets", "Compendiums", "Rules and combat", "Website"]
+        }
+    ],
     "commit": true,
     "baseBranch": "main",
     "privatePackages": {

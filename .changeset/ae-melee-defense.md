@@ -2,4 +2,6 @@
 "hm3": patch
 ---
 
-**Combat** — An Active Effect bonus to Melee Defenses applies to a block's defence roll.
+**Rules and combat**
+
+- An Active Effect bonus to Melee Defenses applies to a block's defence roll.

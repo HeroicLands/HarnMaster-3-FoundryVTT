@@ -2,4 +2,6 @@
 "hm3": patch
 ---
 
-A GM can list skills whose public rolls are made blind automatically.
+**Rules and combat**
+
+- A GM can list skills whose public rolls are made blind automatically.
