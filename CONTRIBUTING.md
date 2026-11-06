@@ -122,3 +122,13 @@ Nobody cuts a release by hand. Merging a pull request that carries a changeset
 opens (or updates) a **Version Packages** pull request; merging _that_ builds
 the system, tags `v<version>`, and publishes the GitHub Release with
 `system.zip` and `system.json` attached.
+
+## Pull request checks
+
+A pull request whose title starts with `WIP:` runs the light checks. An existing
+required check runs a short guard and fails, blocking merges while the expensive
+steps stay skipped. Remove the prefix with `earl pr ready`; it starts fresh
+required checks before scheduling a merge. Changing the title by hand does not
+start those checks. Main, release and manual runs keep their existing checks.
+
+Check the workflow gating locally with `node --test utils/wip-workflows.test.mjs`.

@@ -77,19 +77,6 @@ jobs:
             - name: Markdown
               run: npm run lint:markdown
 
-    build:
-        name: Build
-        runs-on: build
-        steps:
-            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-            - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
-              with:
-                  node-version: ${{ vars.CI_NODE_VERSION || '24' }}
-                  cache: npm
-
-            - name: Install dependencies
-              run: npm ci
-
             # A localization file whose keys collide on a dotted prefix makes
             # foundry.utils.expandObject throw, and Foundry then drops the whole
             # translation — so this is a build failure, not a lint opinion.
@@ -102,12 +89,51 @@ jobs:
             # the system would not load.
             - name: Unit tests
               run: npm test
+            - name: Check WIP workflow gating
+              if: ${{ !cancelled() }}
+              run: node --test utils/wip-workflows.test.mjs
+
+    build:
+        name: Build
+        needs: content-lint
+        if: ${{ !cancelled() }}
+        runs-on: build
+        steps:
+            - name: Require a ready pull request
+              id: ready
+              env:
+                  PR_TITLE: ${{ github.event.pull_request.title }}
+              run: |
+                  case "${PR_TITLE-}" in
+                      [Ww][Ii][Pp]:*)
+                          echo "WIP pull request: the long checks have not run. Remove WIP with earl pr ready." >&2
+                          exit 1
+                          ;;
+                  esac
+            - name: Require light checks
+              run: test "${LIGHT_RESULT-success}" = success
+              env:
+                  LIGHT_RESULT: ${{ needs.content-lint.result }}
+              id: light_checks
+              if: ${{ !startsWith(github.event.pull_request.title, 'WIP:') && steps.ready.outcome == 'success' && (success()) }}
+            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+              if: ${{ !startsWith(github.event.pull_request.title, 'WIP:') && steps.ready.outcome == 'success' && steps.light_checks.outcome == 'success' && (success()) }}
+            - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+              with:
+                  node-version: ${{ vars.CI_NODE_VERSION || '24' }}
+                  cache: npm
+              if: ${{ !startsWith(github.event.pull_request.title, 'WIP:') && steps.ready.outcome == 'success' && steps.light_checks.outcome == 'success' && (success()) }}
+
+            - name: Install dependencies
+              run: npm ci
+              if: ${{ !startsWith(github.event.pull_request.title, 'WIP:') && steps.ready.outcome == 'success' && steps.light_checks.outcome == 'success' && (success()) }}
 
             # Compiles the styles, stages the assets, builds the compendium
             # packs from their committed JSON, and generates system.json. A
             # failure here means the system would not load.
             - name: Build
               run: npm run build:noci
+              if: ${{ !startsWith(github.event.pull_request.title, 'WIP:') && steps.ready.outcome == 'success' && steps.light_checks.outcome == 'success' && (success()) }}
 
             # The manifest is generated, so the thing worth asserting is that it
             # came out loadable: the id Foundry keys everything off, and one
@@ -121,3 +147,4 @@ jobs:
                     if (m.packs.length !== 2) throw new Error(`${m.packs.length} packs, expected 2`);
                     console.log(`system.json ok: ${m.id} ${m.version}, ${m.packs.length} packs`);
                   '
+              if: ${{ !startsWith(github.event.pull_request.title, 'WIP:') && steps.ready.outcome == 'success' && steps.light_checks.outcome == 'success' && (success()) }}
