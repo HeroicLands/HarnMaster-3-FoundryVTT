@@ -42,6 +42,6 @@ jobs:
     full-e2e:
         needs: requested
         if: ${{ needs.requested.outputs.run == 'true' && !startsWith(github.event.pull_request.title, 'WIP:') }}
-        uses: HeroicLands/.github/.gitea/workflows/e2e-full.yml@0bb7fa3d15b9cad324e5c859808de7660998bfe0 # main
+        uses: HeroicLands/.github/.gitea/workflows/e2e-full.yml@5d2db91909feba6a8c99013ac15c9a155f066445 # main
         with:
             package: hm3

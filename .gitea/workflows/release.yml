@@ -37,7 +37,7 @@ permissions:
 
 jobs:
     release:
-        uses: HeroicLands/.github/.gitea/workflows/release-foundry-package.yml@ab21b497b7907fc189365ab17bfc4425145cce58 # main
+        uses: HeroicLands/.github/.gitea/workflows/release-foundry-package.yml@5d2db91909feba6a8c99013ac15c9a155f066445 # main
         with:
             package-kind: system
         secrets:
