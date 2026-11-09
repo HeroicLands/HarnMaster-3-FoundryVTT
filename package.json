@@ -1,7 +1,7 @@
 {
     "name": "hm3",
     "private": true,
-    "version": "1.6.5",
+    "version": "1.7.0",
     "homepage": "https://www.heroiclands.org/hm3/",
     "type": "module",
     "license": "SEE LICENSE IN LICENSE",
