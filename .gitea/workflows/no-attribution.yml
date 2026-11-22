@@ -22,6 +22,6 @@ jobs:
         runs-on: light
         steps:
             # Needs no checkout: the subjects are the pull request, not the tree.
-            - uses: HeroicLands/.github/actions/no-attribution@5a31ee2627a7b464710f0942dbfb4c19a4f90f94 # main
+            - uses: HeroicLands/.github/actions/no-attribution@37b1fa7cb6eb63fe6e54531e66a4d0ca61094442 # main
               with:
                   token: ${{ github.token }}
