@@ -4,4 +4,4 @@
 
 **Compendiums**
 
-- An invocation's deity is stored under its correct spelling; existing worlds and compendium content are upgraded on load.
+- Invocations retain their deity on sheets and chat cards and use the matching ritual skill for their roll targets.
