@@ -1,5 +1,33 @@
 # hm3
 
+## 1.7.0
+
+**Characters and sheets**
+
+- The system requires Foundry 14.359 or newer.
+- A new armor item named "crested helm" gets the crested helmet icon instead of a broken image.
+- The Actors directory's right-click menu can show an actor's façade artwork, with Show Players.
+- Typing in a sheet's filter no longer swallows the next click, and the filter stays applied.
+- An item whose description points to a journal page shows that page's text on its sheet.
+
+**Compendiums**
+
+- Invocations retain their deity on sheets and chat cards and use the matching ritual skill for their roll targets.
+- Psionic talents in the standard items compendium show their fatigue cost in brackets, such as Hex [F2], and gain no specialty bonus on development rolls.
+
+**Rules and combat**
+
+- Active Effect bonuses to Weapon Attack ML, Melee Attacks or Missile Attacks apply to attack rolls and Eff AML on the attack card.
+- An Active Effect bonus to Melee Defenses applies to a block's defense roll.
+- A GM can list skills whose public rolls are made blind automatically.
+- d6 ability rolls post their chat cards, complete without an error and run the actor's custom roll macro.
+- An attribute roll made on d6 now shows a positive modifier with a plus sign, as the d100 roll does.
+- Choosing a defense for a token you do not control, or one that is not on the scene, shows a warning instead of doing nothing.
+- Attacking with a weapon that is not equipped, or dismissing the weapon choice, shows a message.
+- Choosing Dodge opens a dialog with an additional modifier, as Block does.
+- Dodging a high-velocity missile rolls against half the dodge skill.
+- With two weapons of the same name, a damage roll uses the aspects of the weapon rolled for.
+
 ## 1.6.5
 
 ### Patch Changes
