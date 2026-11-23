@@ -1,5 +1,6 @@
 contentPackage: hm3
 packageKind: systems
+userAgentUrl: https://www.heroiclands.org/
 
 authors:
     - name: Tom Rodriguez
